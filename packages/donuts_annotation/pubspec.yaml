@@ -1,0 +1,8 @@
+name: donuts_annotation
+description: "donuts annotation."
+version: 0.0.1
+repository: https://github.com/powerboo/donuts.git
+
+environment:
+  sdk: ">=3.2.4 <4.0.0"
+  flutter: ">=1.17.0"
