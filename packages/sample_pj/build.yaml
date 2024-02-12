@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          field_rename: snake
+      donuts|abstractInterfaceFactoryBuilder:
+        options:
+          build_extensions:
+            ".dart": ".abstract_interface_factory.yaml"

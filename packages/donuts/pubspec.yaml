@@ -10,10 +10,13 @@ dependencies:
   build: ^2.3.1
   analyzer: ^5.7.1
   source_gen: ^1.2.7
-  code_builder: ^4.4.0
+  code_builder: ^4.10.0
   freezed: ^2.4.6
   json_serializable: ^6.7.1
   source_gen_test: ^1.0.6
+  dart_style: ^2.3.2
+  donuts_annotation:
+    path: ../donuts_annotation
 
 dev_dependencies:
   build_runner: ^2.3.3

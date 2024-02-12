@@ -7,7 +7,3 @@ class AggregateRoot {
 class KeyArgument {
   const KeyArgument();
 }
-
-class KeyMember {
-  const KeyMember();
-}
