@@ -4,7 +4,7 @@
 // AbstractInterfaceFactoryGenerator
 // **************************************************************************
 
-import 'package:sample_pj/sample_aggregate_root.dart';
+import 'package:sample_pj/aggregate_root/sample_aggregate_root.dart';
 
 abstract interface class SampleAggregateRootFactory {
   SampleAggregateRoot create({required String value});

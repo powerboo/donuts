@@ -1,8 +1,9 @@
 import 'package:donuts/src/generator/factory/abstract_interface_factory_generator.dart';
-import 'package:test/scaffolding.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 import 'package:test/test.dart';
 import 'package:path/path.dart' as p;
+
+import '../../common/test_function.dart';
 
 void main() async {
   initializeBuildLogTracking();
@@ -11,13 +12,35 @@ void main() async {
     clearBuildLog();
   });
 
-  final path = p.join('test', 'factory', 'test_data');
+  final path = p.join('test', 'factory', 'abstract_interface_factory', 'test_data');
 
   // /*
-  // does not have default constructor
-  final doesNotHaveDefaultConstructor = await initializeLibraryReaderForDirectory(
+  // parent dir is aggregate root
+  final parentDirIsAggregateRoot = await initializeLibraryReaderForDirectoryWithDirectory(
     path,
-    'does_not_have_default_constructor.dart',
+    'aggregate_root/parent_dir_is_aggregate_root_class.dart',
+  );
+
+  testAnnotatedElements(
+    parentDirIsAggregateRoot,
+    AbstractInterfaceFactoryGenerator(),
+  );
+
+  // parent dir is aggregate root
+  final parentDirIsOtherDir = await initializeLibraryReaderForDirectoryWithDirectory(
+    path,
+    'other_dir/parent_dir_is_other_dir_class.dart',
+  );
+
+  testAnnotatedElements(
+    parentDirIsOtherDir,
+    AbstractInterfaceFactoryGenerator(),
+  );
+
+  // does not have default constructor
+  final doesNotHaveDefaultConstructor = await initializeLibraryReaderForDirectoryWithDirectory(
+    path,
+    'aggregate_root/does_not_have_default_constructor.dart',
   );
 
   testAnnotatedElements(
@@ -26,9 +49,9 @@ void main() async {
   );
 
   // annotated field does not exists
-  final annotatedFieldDoesNotExists = await initializeLibraryReaderForDirectory(
+  final annotatedFieldDoesNotExists = await initializeLibraryReaderForDirectoryWithDirectory(
     path,
-    'annotated_argument_does_not_exists.dart',
+    'aggregate_root/annotated_argument_does_not_exists.dart',
   );
 
   testAnnotatedElements(
@@ -37,9 +60,9 @@ void main() async {
   );
 
   // duplicate key argument
-  final duplicateKeyArgument = await initializeLibraryReaderForDirectory(
+  final duplicateKeyArgument = await initializeLibraryReaderForDirectoryWithDirectory(
     path,
-    'duplicate_key_argument.dart',
+    'aggregate_root/duplicate_key_argument.dart',
   );
 
   testAnnotatedElements(
@@ -48,9 +71,9 @@ void main() async {
   );
 
   // common class
-  final commonClass = await initializeLibraryReaderForDirectory(
+  final commonClass = await initializeLibraryReaderForDirectoryWithDirectory(
     path,
-    'common_class.dart',
+    'aggregate_root/common_class.dart',
   );
 
   testAnnotatedElements(
@@ -59,27 +82,25 @@ void main() async {
   );
 
   // freezed class
-  final freezedClass = await initializeLibraryReaderForDirectory(
+  final freezedClass = await initializeLibraryReaderForDirectoryWithDirectory(
     path,
-    'freezed_class.dart',
+    'aggregate_root/freezed_class.dart',
   );
 
   testAnnotatedElements(
     freezedClass,
     AbstractInterfaceFactoryGenerator(),
   );
-  // */
 
+  // */
   // json serializable class
-  final jsonSerializableClass = await initializeLibraryReaderForDirectory(
+  final jsonSerializableClass = await initializeLibraryReaderForDirectoryWithDirectory(
     path,
-    'json_serializable_class.dart',
+    'aggregate_root/json_serializable_class.dart',
   );
 
   testAnnotatedElements(
     jsonSerializableClass,
     AbstractInterfaceFactoryGenerator(),
   );
-  // /*
-  // */
 }

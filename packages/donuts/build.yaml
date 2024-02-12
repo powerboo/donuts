@@ -1,8 +1,14 @@
 builders:
-  donuts|swaggerYamlBuilder:
+  donuts|abstractInterfaceFactoryBuilder:
     import: "package:donuts/builder.dart"
     builder_factories: ["abstractInterfaceFactoryBuilder"]
-    build_extensions: { ".dart": [".abstract_interface_factory.dart"] }
+    build_extensions:
+      {
+        "^lib/{{dir}}/aggregate_root/{{file}}.dart":
+          [
+            "^lib/donuts/factory/{{dir}}/{{file}}.abstract_interface_factory.dart",
+          ],
+      }
     auto_apply: dependents
     build_to: source
     applies_builders: ["source_gen|combining_builder"]
