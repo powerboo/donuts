@@ -13,6 +13,7 @@ void main() async {
 
   final path = p.join('test', 'factory', 'test_data');
 
+  // /*
   // does not have default constructor
   final doesNotHaveDefaultConstructor = await initializeLibraryReaderForDirectory(
     path,
@@ -47,16 +48,38 @@ void main() async {
   );
 
   // common class
-  final annotatedVariable = await initializeLibraryReaderForDirectory(
+  final commonClass = await initializeLibraryReaderForDirectory(
     path,
     'common_class.dart',
   );
 
   testAnnotatedElements(
-    annotatedVariable,
+    commonClass,
     AbstractInterfaceFactoryGenerator(),
   );
 
-  /*
+  // freezed class
+  final freezedClass = await initializeLibraryReaderForDirectory(
+    path,
+    'freezed_class.dart',
+  );
+
+  testAnnotatedElements(
+    freezedClass,
+    AbstractInterfaceFactoryGenerator(),
+  );
+  // */
+
+  // json serializable class
+  final jsonSerializableClass = await initializeLibraryReaderForDirectory(
+    path,
+    'json_serializable_class.dart',
+  );
+
+  testAnnotatedElements(
+    jsonSerializableClass,
+    AbstractInterfaceFactoryGenerator(),
+  );
+  // /*
   // */
 }

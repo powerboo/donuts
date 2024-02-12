@@ -109,16 +109,27 @@ class AbstractInterfaceFactoryGenerator extends GeneratorForAnnotation<Aggregate
             if (arg is! ParameterElement) {
               continue;
             }
-
-            p0.optionalParameters.add(Parameter((p0) {
-              p0.name = arg.name;
-              p0.type = Reference(
-                arg.type.getDisplayString(withNullability: true),
-                arg.library?.identifier,
-              );
-              p0.named = true;
-              p0.required = arg.isRequired;
-            }));
+            if (arg.isPositional) {
+              p0.requiredParameters.add(Parameter((p0) {
+                p0.name = arg.name;
+                p0.type = Reference(
+                  arg.type.getDisplayString(withNullability: true),
+                  arg.library?.identifier,
+                );
+                p0.named = false;
+                p0.required = false;
+              }));
+            } else {
+              p0.optionalParameters.add(Parameter((p0) {
+                p0.name = arg.name;
+                p0.type = Reference(
+                  arg.type.getDisplayString(withNullability: true),
+                  arg.library?.identifier,
+                );
+                p0.named = true;
+                p0.required = arg.isRequired;
+              }));
+            }
           }
         });
         final restore = Method((p0) {
@@ -129,15 +140,27 @@ class AbstractInterfaceFactoryGenerator extends GeneratorForAnnotation<Aggregate
               continue;
             }
 
-            p0.optionalParameters.add(Parameter((p0) {
-              p0.name = arg.name;
-              p0.type = Reference(
-                arg.type.getDisplayString(withNullability: true),
-                arg.library?.identifier,
-              );
-              p0.named = true;
-              p0.required = arg.isRequired;
-            }));
+            if (arg.isPositional) {
+              p0.requiredParameters.add(Parameter((p0) {
+                p0.name = arg.name;
+                p0.type = Reference(
+                  arg.type.getDisplayString(withNullability: true),
+                  arg.library?.identifier,
+                );
+                p0.named = false;
+                p0.required = false;
+              }));
+            } else {
+              p0.optionalParameters.add(Parameter((p0) {
+                p0.name = arg.name;
+                p0.type = Reference(
+                  arg.type.getDisplayString(withNullability: true),
+                  arg.library?.identifier,
+                );
+                p0.named = true;
+                p0.required = arg.isRequired;
+              }));
+            }
           }
         });
 

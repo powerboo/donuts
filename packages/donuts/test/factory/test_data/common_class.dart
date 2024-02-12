@@ -5,8 +5,14 @@ import 'package:source_gen_test/source_gen_test.dart';
 import 'package:__test__/common_class.dart';
 
 abstract interface class CommonClassFactory {
-  CommonClass create({required String name});
-  CommonClass restore({
+  CommonClass create(
+    String value,
+    String? nullableValue, {
+    required String name,
+  });
+  CommonClass restore(
+    String value,
+    String? nullableValue, {
     required CommonClassId commonClassId,
     required String name,
   });
@@ -16,7 +22,9 @@ abstract interface class CommonClassFactory {
 class CommonClass {
   final CommonClassId commonClassId;
   final String name;
-  const CommonClass({
+  const CommonClass(
+    String value,
+    String? nullableValue, {
     @KeyArgument() required this.commonClassId,
     required this.name,
   });
