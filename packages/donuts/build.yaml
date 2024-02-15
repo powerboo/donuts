@@ -1,14 +1,12 @@
 builders:
   donuts|abstractInterfaceFactoryBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{dir}}/{{file}}.dart": "lib/donuts/factory/{{dir}}/{{file}}.abstract_interface_factory.dart"
     import: "package:donuts/builder.dart"
     builder_factories: ["abstractInterfaceFactoryBuilder"]
-    build_extensions:
-      {
-        "^lib/{{dir}}/aggregate_root/{{file}}.dart":
-          [
-            "^lib/donuts/factory/{{dir}}/{{file}}.abstract_interface_factory.dart",
-          ],
-      }
+    build_extensions: {}
     auto_apply: dependents
     build_to: source
     applies_builders: ["source_gen|combining_builder"]
