@@ -16,8 +16,7 @@ abstract interface class ParentDirIsAggregateRootClassFactory {
     required String key,
     required String name,
   });
-}
-''')
+}''')
 @AggregateRoot()
 class ParentDirIsAggregateRootClass {
   final String name;

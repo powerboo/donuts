@@ -22,8 +22,7 @@ abstract interface class FreezedClassFactory {
     required String freezedClass,
     String? nullableString,
   });
-}
-''')
+}''')
 @AggregateRoot()
 @freezed
 class FreezedClass with _$FreezedClass {

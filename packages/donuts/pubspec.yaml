@@ -15,8 +15,7 @@ dependencies:
   json_serializable: ^6.7.1
   source_gen_test: ^1.0.6
   dart_style: ^2.3.2
-  donuts_annotation:
-    path: ../donuts_annotation
+  donuts_annotation: ^0.0.1
   build_config: ^1.1.1
 
 dev_dependencies:

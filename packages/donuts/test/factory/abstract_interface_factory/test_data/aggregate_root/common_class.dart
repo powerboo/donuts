@@ -16,8 +16,7 @@ abstract interface class CommonClassFactory {
     required CommonClassId commonClassId,
     required String name,
   });
-}
-''')
+}''')
 @AggregateRoot()
 class CommonClass {
   final CommonClassId commonClassId;

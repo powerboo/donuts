@@ -19,8 +19,7 @@ abstract interface class JsonSerializableClassFactory {
     required int key,
     bool? isOk,
   });
-}
-''')
+}''')
 @AggregateRoot()
 @JsonSerializable()
 class JsonSerializableClass {

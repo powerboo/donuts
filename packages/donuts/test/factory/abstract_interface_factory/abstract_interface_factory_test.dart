@@ -14,7 +14,6 @@ void main() async {
 
   final path = p.join('test', 'factory', 'abstract_interface_factory', 'test_data');
 
-  // /*
   // parent dir is aggregate root
   final parentDirIsAggregateRoot = await initializeLibraryReaderForDirectoryWithDirectory(
     path,
@@ -80,6 +79,7 @@ void main() async {
     commonClass,
     AbstractInterfaceFactoryGenerator(),
   );
+  // */
 
   // freezed class
   final freezedClass = await initializeLibraryReaderForDirectoryWithDirectory(
@@ -92,7 +92,6 @@ void main() async {
     AbstractInterfaceFactoryGenerator(),
   );
 
-  // */
   // json serializable class
   final jsonSerializableClass = await initializeLibraryReaderForDirectoryWithDirectory(
     path,

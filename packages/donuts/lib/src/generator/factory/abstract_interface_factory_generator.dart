@@ -25,7 +25,7 @@ class AbstractInterfaceFactoryGenerator extends GeneratorForAnnotation<Aggregate
       constructorElement,
       myPath,
       annotatedElement,
-      baseDirectory,
+      _,
     ) = await elementChecker(element, annotation, buildStep);
 
     final className = "${element.name}Factory";
