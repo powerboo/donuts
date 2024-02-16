@@ -6,9 +6,7 @@ import 'package:path/path.dart' as p;
 Future<
     (
       ConstructorElement constructorElement,
-      String myPath,
       ParameterElement annotatedElement,
-      String baseDirectory,
     )> elementChecker(
   Element element,
   ConstantReader annotation,
@@ -80,7 +78,6 @@ Future<
     );
   }
   final ParameterElement annotatedElement = annotatedElementList.first;
-  final String myPath = element.library.identifier;
 
   // parent directory is not aggregate_root
   final fullPath = element.library.source.fullName;
@@ -92,17 +89,9 @@ Future<
     );
   }
 
-  // myPath : package:example_pj/sample_model/child_model/aggregate_root/sample.dart
-  // baseDirectory : sample_model/child_model
-  final ignorePackage = myPath.substring("package:".length);
-  final fileName = "/aggregate_root/${p.basename(element.library.source.fullName)}";
-  final baseDirectory = ignorePackage.substring(0, ignorePackage.length - fileName.length);
-
   return (
     constructorElement,
-    myPath,
     annotatedElement,
-    baseDirectory,
   );
 }
 

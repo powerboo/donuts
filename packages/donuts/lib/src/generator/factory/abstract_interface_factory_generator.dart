@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
+import 'package:donuts/src/generator/common/names.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
@@ -23,23 +24,21 @@ class AbstractInterfaceFactoryGenerator extends GeneratorForAnnotation<Aggregate
   ) async {
     final (
       constructorElement,
-      myPath,
       annotatedElement,
-      _,
     ) = await elementChecker(element, annotation, buildStep);
 
-    final className = "${element.name}Factory";
+    final names = Names(element);
 
     final abstractInterfaceFactory = Class(
       (p0) {
         // class name
         p0.abstract = true;
         p0.modifier = ClassModifier.interface;
-        p0.name = className;
+        p0.name = names.abstractInterfaceFactoryName;
 
         // body
         final create = Method((p0) {
-          p0.returns = refer('${element.name}', myPath);
+          p0.returns = refer(names.aggregateRootClassName, names.aggregateRootPath);
           p0.name = "create";
 
           // ignore annotated argument
@@ -74,7 +73,7 @@ class AbstractInterfaceFactoryGenerator extends GeneratorForAnnotation<Aggregate
           }
         });
         final restore = Method((p0) {
-          p0.returns = refer('${element.name}', myPath);
+          p0.returns = refer('${element.name}', names.aggregateRootPath);
           p0.name = "restore";
           for (final arg in constructorElement.children) {
             if (arg is! ParameterElement) {
@@ -113,7 +112,7 @@ class AbstractInterfaceFactoryGenerator extends GeneratorForAnnotation<Aggregate
       p0.body.add(abstractInterfaceFactory);
 
       p0.directives.add(
-        Directive.import(myPath),
+        Directive.import(names.aggregateRootPath),
       );
     }));
 
