@@ -1,13 +1,10 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:donuts/src/generator/common/names/aggregate_root_name.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:path/path.dart' as p;
 
-Future<
-    (
-      ConstructorElement constructorElement,
-      ParameterElement annotatedElement,
-    )> elementChecker(
+Future<AggregateRootName> elementChecker(
   Element element,
   ConstantReader annotation,
   BuildStep buildStep,
@@ -48,22 +45,24 @@ Future<
 
   // get annotated argument
   final List<ParameterElement> annotatedElementList = [];
+  ElementAnnotation? annotation;
   // final List<ParameterElement> normalArgumentList = [];
   for (final argument in constructorElement.children) {
     if (argument is! ParameterElement) {
       continue;
     }
 
-    for (final annotation in argument.metadata) {
-      if ('KeyArgument' == annotation.element?.displayName) {
+    for (final a in argument.metadata) {
+      if ('KeyArgument' == a.element?.displayName) {
         annotatedElementList.add(argument);
+        annotation = a;
         break;
       }
     }
   }
 
   // key field does not exists.
-  if (annotatedElementList.isEmpty) {
+  if (annotatedElementList.isEmpty || annotation == null) {
     throw InvalidGenerationSourceError(
       "[${element.displayName}] annotated field does not exists.",
       element: element,
@@ -88,10 +87,11 @@ Future<
       element: element,
     );
   }
-
-  return (
-    constructorElement,
-    annotatedElement,
+  return AggregateRootName(
+    element: element,
+    keyArgumentElement: annotatedElement,
+    constructorElement: constructorElement,
+    annotation: annotation,
   );
 }
 

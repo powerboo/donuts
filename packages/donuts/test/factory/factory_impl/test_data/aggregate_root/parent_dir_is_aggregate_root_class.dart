@@ -3,7 +3,7 @@ import 'package:source_gen_test/source_gen_test.dart';
 
 @ShouldGenerate('''
 import 'package:__test__/aggregate_root/parent_dir_is_aggregate_root_class.dart';
-import 'package:__test__/donuts/factory/abstract_interface_parent_dir_is_aggregate_root_class.dart';
+import 'package:__test__/donuts/factory/parent_dir_is_aggregate_root_class_factory.dart';
 import 'package:uuid/uuid.dart';
 
 class ParentDirIsAggregateRootClassFactoryImpl
@@ -15,10 +15,10 @@ class ParentDirIsAggregateRootClassFactoryImpl
     String? nullableValue, {
     required String name,
   }) {
-    final key = uuid.v7();
+    final id = uuid.v7();
 
     return ParentDirIsAggregateRootClass(value, nullableValue, {
-      key: key,
+      key: id,
       name: name,
     });
   }
