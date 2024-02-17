@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:donuts/src/generator/common/names/abstract_interface_api_name.dart';
-import 'package:donuts/src/generator/common/names/abstract_interface_repository_names.dart';
+import 'package:donuts/src/generator/common/names/abstract_interface_repository_name.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
@@ -26,7 +25,7 @@ class AbstractInterfaceApiGenerator extends GeneratorForAnnotation<AggregateRoot
   ) async {
     final aggregateRootName = await elementChecker(element, annotation, buildStep);
 
-    final repositoryNames = AbstractInterfaceRepositoryNames(
+    final repositoryNames = AbstractInterfaceRepositoryName(
       aggregateRootName: aggregateRootName,
     );
 

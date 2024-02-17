@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
-import 'package:donuts/src/generator/common/names/abstract_interface_repository_names.dart';
+import 'package:donuts/src/generator/common/names/abstract_interface_repository_name.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
@@ -24,7 +24,7 @@ class AbstractInterfaceRepositoryGenerator extends GeneratorForAnnotation<Aggreg
   ) async {
     final aggregateRootName = await elementChecker(element, annotation, buildStep);
 
-    final abstractInterfaceRepository = AbstractInterfaceRepositoryNames(
+    final abstractInterfaceRepository = AbstractInterfaceRepositoryName(
       aggregateRootName: aggregateRootName,
     ).toClassElement();
 

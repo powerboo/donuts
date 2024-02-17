@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:donuts/src/generator/common/names/abstract_interface_factory_names.dart';
+import 'package:donuts/src/generator/common/names/abstract_interface_factory_name.dart';
 import 'package:donuts/src/generator/common/names/aggregate_root_name.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:path/path.dart' as p;
@@ -10,13 +10,13 @@ import 'package:source_gen/source_gen.dart';
 
 class FactoryImplName {
   final AggregateRootName _aggregateRootName;
-  final AbstractInterfaceFactoryNames _abstractInterfaceFactoryNames;
+  final AbstractInterfaceFactoryName _abstractInterfaceFactoryName;
 
   FactoryImplName({
-    required AbstractInterfaceFactoryNames abstractInterfaceFactoryNames,
+    required AbstractInterfaceFactoryName abstractInterfaceFactoryName,
     required AggregateRootName aggregateRootName,
   })  : _aggregateRootName = aggregateRootName,
-        _abstractInterfaceFactoryNames = abstractInterfaceFactoryNames;
+        _abstractInterfaceFactoryName = abstractInterfaceFactoryName;
 
   String get myClassName {
     return "${_aggregateRootName.element.displayName}FactoryImpl";
@@ -37,8 +37,8 @@ class FactoryImplName {
       p0.name = myClassName;
       p0.implements = ListBuilder<Reference>([
         refer(
-          _abstractInterfaceFactoryNames.myClassName,
-          _abstractInterfaceFactoryNames.myPath,
+          _abstractInterfaceFactoryName.myClassName,
+          _abstractInterfaceFactoryName.myPath,
         ),
       ]);
 

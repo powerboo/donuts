@@ -4,10 +4,10 @@ import 'package:donuts/src/generator/common/names/aggregate_root_name.dart';
 import 'package:path/path.dart' as p;
 import 'package:donuts/src/generator/common/element_checker.dart';
 
-class AbstractInterfaceRepositoryNames {
+class AbstractInterfaceRepositoryName {
   final AggregateRootName _aggregateRootName;
 
-  AbstractInterfaceRepositoryNames({
+  AbstractInterfaceRepositoryName({
     required AggregateRootName aggregateRootName,
   }) : _aggregateRootName = aggregateRootName;
 
