@@ -32,7 +32,7 @@ class RepositoryImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
     );
 
     final exception = ExceptionName(
-      element: element,
+      exceptionBaseName: repositoryName.myClassName,
     ).toClassElement();
 
     final repositoryImpl = RepositoryImplName(

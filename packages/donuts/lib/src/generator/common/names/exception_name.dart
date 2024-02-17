@@ -1,15 +1,14 @@
-import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
 
 class ExceptionName {
-  final Element _element;
+  final String exceptionBaseName;
 
   ExceptionName({
-    required Element element,
-  }) : _element = element;
+    required this.exceptionBaseName,
+  });
 
   String get myClassName {
-    return "${_element.displayName}Exception";
+    return "${exceptionBaseName}Exception";
   }
 
   Class toClassElement() {
