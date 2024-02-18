@@ -35,7 +35,7 @@ class InMemoryCommonClassRepositoryImpl implements CommonClassRepository {
 
 class CommonClassRepositoryException implements Exception {
   CommonClassRepositoryException(this.message)
-      : this.message = "[CommonClassRepositoryException] \$message";
+      : this.message = "[CommonClassRepositoryException]\$message";
 
   final String message;
 

@@ -20,7 +20,7 @@ class ExceptionName {
           p2.name = 'message';
           p2.toThis = true;
         }));
-        p1.initializers.add(Code('this.message = "[${myClassName}] \$message"'));
+        p1.initializers.add(Code('this.message = "[${myClassName}]\$message"'));
       }));
       p0.fields.add(Field((p1) {
         p1.name = "message";

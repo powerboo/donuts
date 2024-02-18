@@ -79,7 +79,7 @@ class CommonClassRepositoryImpl implements CommonClassRepository {
 
 class CommonClassException implements Exception {
   CommonClassException(this.message)
-      : this.message = "[CommonClassException] \$message";
+      : this.message = "[CommonClassException]\$message";
 
   final String message;
 

@@ -4,7 +4,7 @@ import 'package:source_gen/source_gen.dart';
 import 'package:path/path.dart' as p;
 
 class AggregateRootName {
-  final Element element;
+  final ClassElement element;
   late final LibraryElement _libraryElement;
   final ParameterElement keyArgumentElement;
   final ConstructorElement constructorElement;
@@ -15,16 +15,7 @@ class AggregateRootName {
     required this.keyArgumentElement,
     required this.constructorElement,
     required this.annotation,
-  }) {
-    final lib = element.library;
-    if (lib == null) {
-      throw InvalidGenerationSourceError(
-        "[AggregateRootName] library is null.",
-        element: element,
-      );
-    }
-    _libraryElement = lib;
-  }
+  }) : _libraryElement = element.library;
 
   String get packageName {
     if (_libraryElement.source.uri.pathSegments.isEmpty) {

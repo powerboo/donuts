@@ -15,6 +15,10 @@ class AbstractInterfaceFactoryName {
     return "${_aggregateRootName.element.displayName}Factory";
   }
 
+  String get myInstanceName {
+    return "${myClassName[0].toLowerCase()}${myClassName.substring(1)}";
+  }
+
   String get myPath {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/factory/",

@@ -23,6 +23,10 @@ class AbstractInterfaceRepositoryName {
     );
   }
 
+  String get myInstanceName {
+    return "${myClassName[0].toLowerCase()}${myClassName.substring(1)}";
+  }
+
   Class toClassElement() {
     return Class((p0) {
       p0.name = myClassName;
