@@ -1,9 +1,9 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:donuts/src/generator/common/names/abstract_interface_factory_name.dart';
-import 'package:donuts/src/generator/common/names/abstract_interface_repository_name.dart';
-import 'package:donuts/src/generator/common/names/aggregate_root_name.dart';
-import 'package:donuts/src/generator/common/names/exception_name.dart';
+import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
+import 'package:donuts/src/generator/common/names/repository/abstract_interface_repository_name.dart';
+import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
+import 'package:donuts/src/generator/common/names/common/exception_name.dart';
 import 'package:path/path.dart' as p;
 import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:source_gen/source_gen.dart';
@@ -58,6 +58,13 @@ class ApplicationServiceImplName {
           );
         }));
 
+        ct.optionalParameters.add(Parameter((p1) {
+          p1.name = "ref";
+          p1.named = true;
+          p1.required = true;
+          p1.toThis = true;
+        }));
+
         ct.initializers.addAll([
           Code(
               "_${_abstractInterfaceFactoryName.myInstanceName} = ${_abstractInterfaceFactoryName.myInstanceName}"),
@@ -84,12 +91,22 @@ class ApplicationServiceImplName {
         p0.modifier = FieldModifier.final$;
       });
 
+      final refObject = Field((p0) {
+        p0.name = "ref";
+        p0.type = refer(
+          'AsyncNotifierProviderRef<dynamic>',
+          'package:flutter_riverpod/flutter_riverpod.dart',
+        );
+        p0.modifier = FieldModifier.final$;
+      });
+
       p0.name = myClassName;
       p0.abstract = false;
 
       p0.fields.addAll([
         factory,
         repository,
+        refObject,
       ]);
 
       final create = Method((p0) {

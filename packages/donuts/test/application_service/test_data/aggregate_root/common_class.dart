@@ -3,6 +3,7 @@ import 'package:source_gen_test/source_gen_test.dart';
 
 @ShouldGenerate('''
 import 'package:donuts_annotation/error_message.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:__test__/aggregate_root/common_class.dart';
 import 'package:__test__/donuts/factory/common_class_factory.dart';
 import 'package:__test__/donuts/repository/common_class_repository.dart';
@@ -11,12 +12,15 @@ class CommonClassApplicationServiceImpl {
   CommonClassApplicationServiceImpl({
     required CommonClassFactory commonClassFactory,
     required CommonClassRepository commonClassRepository,
+    required this.ref,
   })  : _commonClassFactory = commonClassFactory,
         _commonClassRepository = commonClassRepository;
 
   final CommonClassFactory _commonClassFactory;
 
   final CommonClassRepository _commonClassRepository;
+
+  final AsyncNotifierProviderRef<dynamic> ref;
 
   Future<(CommonClass?, ErrorMessage?)> create() async {
     try {

@@ -1,22 +1,22 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:donuts/src/generator/common/names/abstract_interface_repository_name.dart';
-import 'package:donuts/src/generator/common/names/aggregate_root_name.dart';
+import 'package:donuts/src/generator/common/names/repository/abstract_interface_repository_name.dart';
+import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
 import 'package:path/path.dart' as p;
 import 'package:donuts/src/generator/common/element_checker.dart';
 
-class RepositoryImplName {
+class InMemoryRepositoryImplName {
   final AggregateRootName _aggregateRootName;
   final AbstractInterfaceRepositoryName _abstractInterfaceRepositoryName;
 
-  RepositoryImplName({
+  InMemoryRepositoryImplName({
     required AggregateRootName aggregateRootName,
     required AbstractInterfaceRepositoryName abstractInterfaceRepositoryName,
   })  : _aggregateRootName = aggregateRootName,
         _abstractInterfaceRepositoryName = abstractInterfaceRepositoryName;
 
   String get myClassName {
-    return "${_aggregateRootName.element.displayName}RepositoryImpl";
+    return "InMemory${_aggregateRootName.element.displayName}RepositoryImpl";
   }
 
   String get myPath {
@@ -37,7 +37,14 @@ class RepositoryImplName {
           _abstractInterfaceRepositoryName.myPath,
         ),
       ]);
-
+      p0.fields = ListBuilder([
+        Field((p1) {
+          p1.name = "store";
+          p1.modifier = FieldModifier.final$;
+          p1.type = refer("List<${_aggregateRootName.myClassName}>");
+          p1.assignment = Code("[]");
+        }),
+      ]);
       final find = Method((p0) {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<${_aggregateRootName.myClassName}?>');
@@ -49,19 +56,7 @@ class RepositoryImplName {
           p1.required = true;
         }));
         p0.body = Code('''
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/common-class/\${key}",
-      ),
-      headers: {},
-    );
-    
-    if(response.statusCode != 200){
-      throw CommonClassException("network error");
-    }
-
-    return CommonClass.fromJson(response.body);
+    return store.where((s)=>s.${_aggregateRootName.keyInstanceName} == ${_aggregateRootName.keyInstanceName}).firstOrNull;
 ''');
       });
 
@@ -84,23 +79,7 @@ class RepositoryImplName {
           p1.required = false;
         }));
         p0.body = Code('''
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/common-class?cursor=\${cursor}&length=\${length}",
-      ),
-      headers: {},
-    );
-    
-    if(response.statusCode != 200){
-      throw CommonClassException("network error");
-    }
-
-    final List<CommonClass> data = [];
-    for(r in response.body){
-      data.add(CommonClass.fromJson(r));
-    }
-    return data;
+    return store.skip(cursor).take(length).toList();
 ''');
       });
 
@@ -115,17 +94,11 @@ class RepositoryImplName {
           p1.required = true;
         }));
         p0.body = Code('''
-    final response = await http.post(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/common-class",
-      ),
-      body: jsonEncode(commonClass.toJson()),
-      headers: {},
-    );
-    
-    if (response.statusCode != 200) {
-      throw CommonClassException("network error");
+    if(await find(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.myInstanceName}.${_aggregateRootName.keyInstanceName}) == null){
+      store = [...store, ${_aggregateRootName.myInstanceName}];
+    } else {
+      final deleted = store.where((s) => s.${_aggregateRootName.keyInstanceName} != ${_aggregateRootName.myInstanceName}.${_aggregateRootName.keyInstanceName}).toList();
+      store = [...deleted, ${_aggregateRootName.myInstanceName}];
     }
 ''');
       });
@@ -141,19 +114,10 @@ class RepositoryImplName {
           p1.required = true;
         }));
         p0.body = Code('''
-    final response = await http.delete(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/common-class/\${key}",
-      ),
-      headers: {},
-    );
-
-    if(response.statusCode != 200){
-      throw CommonClassException("network error");
-    }
+    store = store.where((s) => s.${_aggregateRootName.keyInstanceName} != ${_aggregateRootName.myInstanceName}.${_aggregateRootName.keyInstanceName}).toList();
 ''');
       });
+
       p0.methods = ListBuilder([
         find,
         all,
