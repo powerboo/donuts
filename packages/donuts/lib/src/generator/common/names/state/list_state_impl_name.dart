@@ -1,24 +1,14 @@
 import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
-import 'package:analyzer/dart/element/element.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
-import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
-import 'package:donuts/src/generator/common/names/application_service/application_service_impl_name.dart';
-import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:path/path.dart' as p;
 import 'package:donuts/src/generator/common/element_checker.dart';
-import 'package:source_gen/source_gen.dart';
 
 class ListStateImplName {
   final AggregateRootName _aggregateRootName;
-  final ApplicationServiceImplName _applicationServiceImplName;
 
   ListStateImplName({
     required AggregateRootName aggregateRootName,
-    required ApplicationServiceImplName applicationServiceImplName,
-  })  : _aggregateRootName = aggregateRootName,
-        _applicationServiceImplName = applicationServiceImplName;
+  }) : _aggregateRootName = aggregateRootName;
 
   String get myClassName {
     return "${_aggregateRootName.element.displayName}ListStateImpl";
@@ -57,10 +47,12 @@ class ListStateImplName {
         m.body = null;
       });
 
+      /*
       final find = Method((m) {});
       final save = Method((m) {});
       final delete = Method((m) {});
       final all = Method((m) {});
+      // */
 
       p0.methods.addAll([
         build,
