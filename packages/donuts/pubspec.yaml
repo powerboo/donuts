@@ -7,21 +7,21 @@ environment:
   sdk: ">=3.2.4 <4.0.0"
 
 dependencies:
-  donuts_annotation: ^0.0.2
+  donuts_annotation: ^0.0.3
+  path: ^1.9.0
   build: ^2.3.1
   analyzer: ^5.7.1
   source_gen: ^1.2.7
   code_builder: ^4.10.0
-  freezed: ^2.4.7
   json_serializable: ^6.7.1
-  source_gen_test: ^1.0.6
   dart_style: ^2.3.2
   build_config: ^1.1.1
   built_collection: ^5.1.1
   freezed_annotation: ^2.4.1
-  path: ^1.9.0
 
 dev_dependencies:
+  freezed: ^2.4.7
+  source_gen_test: ^1.0.6
   build_runner: ^2.3.3
   test: ^1.21.0
   build_test: ^2.2.2

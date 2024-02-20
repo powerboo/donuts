@@ -6,6 +6,7 @@ import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:donuts/src/generator/common/names/repository/abstract_interface_repository_name.dart';
 import 'package:donuts/src/generator/common/names/repository/in_memory_repository_impl_name.dart';
 import 'package:donuts/src/generator/common/names/repository/repository_impl_name.dart';
+import 'package:donuts/src/generator/common/names/repository/repository_provider_name.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
@@ -52,19 +53,13 @@ class RepositoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> 
       abstractInterfaceRepositoryName: repositoryName,
     );
 
-    final provider = Field((p0) {
-      p0.name = "${repositoryName.myInstanceName}Provider";
-      p0.modifier = FieldModifier.final$;
-      p0.assignment = Code('''
-Provider<${repositoryName.myClassName}>((ref) {
-  const bool inMemory = ${inMemory.toString()};
-  if(inMemory){
-    return ${inMemoryRepositoryImpl.myClassName}(store: []);
-  }
-  return ${repositoryImplName.myClassName}();
-})
-''');
-    });
+    final provider = RepositoryProviderName(
+      aggregateRootName: aggregateRootName,
+      repositoryName: repositoryName,
+      repositoryImplName: repositoryImplName,
+      inMemoryRepositoryImpl: inMemoryRepositoryImpl,
+      inMemory: inMemory,
+    ).toFieldElement();
 
     final lib = Library(((p0) {
       p0.body = ListBuilder<Spec>([

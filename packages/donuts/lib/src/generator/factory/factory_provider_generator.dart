@@ -7,6 +7,7 @@ import 'package:dart_style/dart_style.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
 import 'package:donuts/src/generator/common/names/factory/factory_impl_name.dart';
+import 'package:donuts/src/generator/common/names/factory/factory_provider_name.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -34,15 +35,11 @@ class FactoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> {
       abstractInterfaceFactoryName: factoryName,
     );
 
-    final provider = Field((p0) {
-      p0.name = "${factoryName.myInstanceName}Provider";
-      p0.modifier = FieldModifier.final$;
-      p0.assignment = Code('''
-Provider<${factoryName.myClassName}>((ref) {
-  return ${factoryNameImpl.myClassName}();
-})
-''');
-    });
+    final provider = FactoryProviderName(
+      aggregateRootName: aggregateRootName,
+      factoryName: factoryName,
+      factoryNameImpl: factoryNameImpl,
+    ).toFieldElement();
 
     final lib = Library(((p0) {
       p0.body = ListBuilder<Spec>([

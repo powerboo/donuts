@@ -2,11 +2,7 @@ import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 
 @ShouldGenerate('''
-import 'package:donuts_annotation/error_message.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:__test__/aggregate_root/common_class.dart';
-import 'package:__test__/donuts/factory/common_class_factory.dart';
-import 'package:__test__/donuts/repository/common_class_repository.dart';
 
 class CommonClassApplicationServiceImpl {
   CommonClassApplicationServiceImpl({
@@ -27,8 +23,8 @@ class CommonClassApplicationServiceImpl {
       final created = _commonClassFactory.create();
       await _commonClassRepository.save(commonClass: created);
       return (created, null);
-    } catch (e) {
-      return (null, ErrorMessage(e.toString()));
+    } catch (e, stacktrace) {
+      return (null, Error(e, stacktrace));
     }
   }
 
@@ -36,8 +32,8 @@ class CommonClassApplicationServiceImpl {
     try {
       final target = await _commonClassRepository.find(key: key);
       return (target, null);
-    } catch (e) {
-      return (null, ErrorMessage(e.toString()));
+    } catch (e, stacktrace) {
+      return (null, Error(e, stacktrace));
     }
   }
 
@@ -45,8 +41,8 @@ class CommonClassApplicationServiceImpl {
     try {
       await _commonClassRepository.save(commonClass: commonClass);
       return (null, null);
-    } catch (e) {
-      return (null, ErrorMessage(e.toString()));
+    } catch (e, stacktrace) {
+      return (null, Error(e, stacktrace));
     }
   }
 
@@ -54,8 +50,8 @@ class CommonClassApplicationServiceImpl {
     try {
       await _commonClassRepository.delete(key: key);
       return (null, null);
-    } catch (e) {
-      return (null, ErrorMessage(e.toString()));
+    } catch (e, stacktrace) {
+      return (null, Error(e, stacktrace));
     }
   }
 
@@ -67,8 +63,8 @@ class CommonClassApplicationServiceImpl {
       final target =
           await _commonClassRepository.all(cursor: cursor, length: length);
       return (target, null);
-    } catch (e) {
-      return (null, ErrorMessage(e.toString()));
+    } catch (e, stacktrace) {
+      return (null, Error(e, stacktrace));
     }
   }
 
@@ -84,8 +80,8 @@ class CommonClassApplicationServiceImpl {
 
       await _commonClassRepository.save(commonClass: changed);
       return (changed, null);
-    } catch (e) {
-      return (null, ErrorMessage(e.toString()));
+    } catch (e, stacktrace) {
+      return (null, Error(e, stacktrace));
     }
   }
 
@@ -107,8 +103,8 @@ class CommonClassApplicationServiceImpl {
 
       await _commonClassRepository.save(commonClass: changed);
       return (changed, null);
-    } catch (e) {
-      return (null, ErrorMessage(e.toString()));
+    } catch (e, stacktrace) {
+      return (null, Error(e, stacktrace));
     }
   }
 }

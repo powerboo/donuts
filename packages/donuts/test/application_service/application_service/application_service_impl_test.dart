@@ -4,7 +4,7 @@ import 'package:test/scaffolding.dart';
 import 'package:test/test.dart';
 import 'package:path/path.dart' as p;
 
-import '../common/test_function.dart';
+import '../../common/test_function.dart';
 
 void main() async {
   initializeBuildLogTracking();
@@ -13,7 +13,7 @@ void main() async {
     clearBuildLog();
   });
 
-  final path = p.join('test', 'application_service', 'test_data');
+  final path = p.join('test', 'application_service', 'application_service', 'test_data');
 
   // common class
   final commonClass = await initializeLibraryReaderForDirectoryWithDirectory(

@@ -1,3 +1,4 @@
+import 'package:donuts/src/generator/common/names/application_service/application_service_provider_name.dart';
 import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:path/path.dart' as p;
@@ -5,10 +6,13 @@ import 'package:donuts/src/generator/common/element_checker.dart';
 
 class ListStateImplName {
   final AggregateRootName _aggregateRootName;
+  final ApplicationServiceProviderName _applicationServiceProviderName;
 
   ListStateImplName({
     required AggregateRootName aggregateRootName,
-  }) : _aggregateRootName = aggregateRootName;
+    required ApplicationServiceProviderName applicationServiceProviderName,
+  })  : _aggregateRootName = aggregateRootName,
+        _applicationServiceProviderName = applicationServiceProviderName;
 
   String get myClassName {
     return "${_aggregateRootName.element.displayName}ListStateImpl";
@@ -31,6 +35,12 @@ class ListStateImplName {
       p0.name = myClassName;
       p0.extend = refer("AsyncNotifier<List<${_aggregateRootName.myClassName}>>");
 
+      p0.fields.add(Field((f) {
+        f.name = 'service';
+        f.modifier = FieldModifier.final$;
+        f.assignment = Code("ref.watch(${_applicationServiceProviderName.myFieldName})");
+      }));
+
       final build = Method((m) {
         m.annotations.add(
           CodeExpression(Code('override')),
@@ -42,9 +52,22 @@ class ListStateImplName {
       });
 
       final create = Method((m) {
-        m.returns = refer("Future<${_aggregateRootName.myClassName}>");
+        m.returns = refer("Future<void>");
+        m.name = "create";
         m.modifier = MethodModifier.async;
-        m.body = null;
+        m.body = Code('''
+state = AsyncValue.load();
+final (${_aggregateRootName.myInstanceName}, err) = await service.create();
+if (err != null) {
+  state = AsyncValue.error(err.error, err.stackTrace);
+  return;
+}
+if(${_aggregateRootName.myInstanceName} == null){
+  state = AsyncValue.error("[${myClassName}Error] ${_aggregateRootName.myInstanceName} is null.", StackTrace.current);
+  return;
+}
+state = ${_aggregateRootName.myInstanceName};
+''');
       });
 
       /*

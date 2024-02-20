@@ -2,20 +2,36 @@ import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 
 @ShouldGenerate('''
-import 'package:__test__/donuts/application_service/common_class_application_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:__test__/aggregate_root/common_class.dart';
+import 'package:__test__/donuts/application_service/common_class_application_service_provider.dart';
 
 final commonClassListStateImplProvider =
-    AsyncNotifierProvider<CommonClassListStateImpl, List<CommonClass>>(CommonClassListStateImpl.new);
+    AsyncNotifierProvider<CommonClassListStateImpl, List<CommonClass>>(
+        CommonClassListStateImpl.new);
 
 class CommonClassListStateImpl extends AsyncNotifier<List<CommonClass>> {
+  final service = ref.watch(commonClassApplicationServiceProvider);
+
   @override
   Future<List<CommonClass>> build() async {
     return [];
   }
 
-  Future<CommonClass> create() async {
-    return ref.read();
+  Future<void> create() async {
+    state = AsyncValue.load();
+    final (commonClass, err) = await service.create();
+    if (err != null) {
+      state = AsyncValue.error(err.error, err.stackTrace);
+      return;
+    }
+    if (commonClass == null) {
+      state = AsyncValue.error(
+          "[CommonClassListStateImplError] commonClass is null.",
+          StackTrace.current);
+      return;
+    }
+    state = commonClass;
   }
 }''')
 
@@ -63,6 +79,10 @@ class CommonClass {
     String val, {
     required int number,
   }) {
+    try {} catch (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+    }
     throw ();
   }
 }

@@ -1,4 +1,4 @@
-import 'package:donuts/src/generator/state/list_state_generator.dart';
+import 'package:donuts/src/generator/application_service/application_service_provider_generator.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 import 'package:test/scaffolding.dart';
 import 'package:test/test.dart';
@@ -13,7 +13,7 @@ void main() async {
     clearBuildLog();
   });
 
-  final path = p.join('test', 'state', 'list_state', 'test_data');
+  final path = p.join('test', 'application_service', 'application_service_provider', 'test_data');
 
   // common class
   final commonClass = await initializeLibraryReaderForDirectoryWithDirectory(
@@ -23,6 +23,6 @@ void main() async {
 
   testAnnotatedElements(
     commonClass,
-    ListStateGenerator({'in_memory': false}),
+    ApplicationServiceProviderGenerator({'in_memory': false}),
   );
 }

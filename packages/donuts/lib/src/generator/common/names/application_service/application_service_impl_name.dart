@@ -126,8 +126,8 @@ try{
   final created = _${_abstractInterfaceFactoryName.myInstanceName}.create();
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: created);
   return (created, null);
-} catch(e){
-  return (null, ErrorMessage(e.toString()));
+} catch(e, stacktrace){
+  return (null, Error(e, stacktrace));
 }
 ''');
       });
@@ -149,8 +149,8 @@ try{
 try {
   final target = await _${_abstractInterfaceRepositoryName.myInstanceName}.find(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
   return (target, null);
-} catch (e) {
-  return (null, ErrorMessage(e.toString()));
+} catch (e, stacktrace) {
+  return (null, Error(e, stacktrace));
 }
 ''');
       });
@@ -169,8 +169,8 @@ try {
 try {
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: ${_aggregateRootName.myInstanceName});
   return (null, null);
-} catch (e) {
-  return (null, ErrorMessage(e.toString()));
+} catch (e, stacktrace) {
+  return (null, Error(e, stacktrace));
 }
 ''');
       });
@@ -189,8 +189,8 @@ try {
 try {
   await _${_abstractInterfaceRepositoryName.myInstanceName}.delete(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
   return (null, null);
-} catch (e) {
-  return (null, ErrorMessage(e.toString()));
+} catch (e, stacktrace) {
+  return (null, Error(e, stacktrace));
 }
 ''');
       });
@@ -217,8 +217,8 @@ try {
 try {
   final target = await _${_abstractInterfaceRepositoryName.myInstanceName}.all(cursor: cursor, length: length);
   return (target, null);
-} catch (e) {
-  return (null, ErrorMessage(e.toString()));
+} catch (e, stacktrace) {
+  return (null, Error(e, stacktrace));
 }
 ''');
       });
@@ -306,8 +306,8 @@ try {
 
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: changed);
   return (changed, null);
-} catch (e) {
-  return (null, ErrorMessage(e.toString()));
+} catch (e, stacktrace) {
+  return (null, Error(e, stacktrace));
 }
 ''');
           } else {
@@ -324,8 +324,8 @@ try {
 
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: changed);
   return (changed, null);
-} catch (e) {
-  return (null, ErrorMessage(e.toString()));
+} catch (e, stacktrace) {
+  return (null, Error(e, stacktrace));
 }
 ''');
           }
