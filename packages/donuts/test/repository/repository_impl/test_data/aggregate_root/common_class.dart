@@ -77,9 +77,9 @@ class CommonClassRepositoryImpl implements CommonClassRepository {
   }
 }
 
-class CommonClassException implements Exception {
-  CommonClassException(this.message)
-      : this.message = "[CommonClassException]\$message";
+class CommonClassRepositoryException implements Exception {
+  CommonClassRepositoryException(this.message)
+      : this.message = "[CommonClassRepositoryException]\$message";
 
   final String message;
 

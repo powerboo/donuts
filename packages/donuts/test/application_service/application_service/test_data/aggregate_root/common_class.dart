@@ -2,7 +2,11 @@ import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 
 @ShouldGenerate('''
+import 'package:donuts_annotation/error.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:__test__/aggregate_root/common_class.dart';
+import 'package:__test__/donuts/factory/common_class_factory.dart';
+import 'package:__test__/donuts/repository/common_class_repository.dart';
 
 class CommonClassApplicationServiceImpl {
   CommonClassApplicationServiceImpl({

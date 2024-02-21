@@ -54,7 +54,7 @@ class ApplicationServiceImplGenerator extends GeneratorForAnnotation<AggregateRo
       ]);
 
       p0.directives.addAll([
-        Directive.import("package:donuts_annotation/error_message.dart"),
+        Directive.import("package:donuts_annotation/error.dart"),
         Directive.import('package:flutter_riverpod/flutter_riverpod.dart'),
         Directive.import(aggregateRootName.myPath),
         Directive.import(factoryName.myPath),
