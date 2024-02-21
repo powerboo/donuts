@@ -11,11 +11,38 @@ final commonClassListStateImplProvider =
         CommonClassListStateImpl.new);
 
 class CommonClassListStateImpl extends AsyncNotifier<List<CommonClass>> {
-  final service = ref.watch(commonClassApplicationServiceProvider);
+  final _service = ref.watch(commonClassApplicationServiceProvider);
+
+  Future<void> _fetchAll() async {
+    final (list, err) = await _service.all();
+    if (err != null) {
+      state = AsyncValue.error(err.error, err.stackTrace);
+      return;
+    }
+    if (list == null) {
+      state = AsyncValue.error(
+          "[CommonClassListStateImplError] commonClass is null.",
+          StackTrace.current);
+      return;
+    }
+    state = AsyncValue.data(list);
+  }
 
   @override
   Future<List<CommonClass>> build() async {
-    return [];
+    state = AsyncValue.load();
+    final (list, err) = _service.all();
+    if (err != null) {
+      state = AsyncValue.error(err.error, err.stackTrace);
+      return [];
+    }
+    if (list == null) {
+      state = AsyncValue.error(
+          "[CommonClassListStateImplError] commonClass is null.",
+          StackTrace.current);
+      return [];
+    }
+    return list;
   }
 
   Future<void> create() async {
@@ -31,25 +58,37 @@ class CommonClassListStateImpl extends AsyncNotifier<List<CommonClass>> {
           StackTrace.current);
       return;
     }
-    state = commonClass;
+    await _fetchAll();
+  }
+
+  Future<CommonClass?> find() async {
+    state = AsyncValue.load();
+    final (commonClass, err) = await service.find(key: key);
+    if (err != null) {
+      state = AsyncValue.error(err.error, err.stackTrace);
+      return;
+    }
+    return commonClass;
+  }
+
+  Future<void> delete() async {
+    state = AsyncValue.load();
+    final (_, err) = await service.delete(key: key);
+    if (err != null) {
+      state = AsyncValue.error(err.error, err.stackTrace);
+      return;
+    }
+    await _fetchAll();
+  }
+
+  Future<void> refresh() async {
+    state = AsyncValue.load();
+    await _fetchAll();
   }
 }''')
 
 /*
-  Future<(CommonClass?, ErrorMessage?)> find({required String key}) async {
-  }
-
-  Future<(void, ErrorMessage?)> save({required CommonClass commonClass}) async {
-  }
-
-  Future<(void, ErrorMessage?)> delete({required String key}) async {
-  }
-
-  Future<(List<CommonClass>?, ErrorMessage?)> all({
-    int cursor = 0,
-    int length = 100,
-  }) async {
-  }
+  Future<void> delete({required String key}) async {
 
   Future<CommonClass> method1() async {
   }

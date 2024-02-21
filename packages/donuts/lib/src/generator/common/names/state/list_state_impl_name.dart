@@ -36,10 +36,30 @@ class ListStateImplName {
       p0.extend = refer("AsyncNotifier<List<${_aggregateRootName.myClassName}>>");
 
       p0.fields.add(Field((f) {
-        f.name = 'service';
+        f.name = '_service';
         f.modifier = FieldModifier.final$;
         f.assignment = Code("ref.watch(${_applicationServiceProviderName.myFieldName})");
       }));
+
+      final fetchAll = Method((m) {
+        m.name = '_fetchAll';
+        m.modifier = MethodModifier.async;
+        m.returns = refer("Future<void>");
+        m.body = Code('''
+final (list, err) = await _service.all();
+if (err != null) {
+  state = AsyncValue.error(err.error, err.stackTrace);
+  return;
+}
+if (list == null) {
+  state = AsyncValue.error(
+      "[CommonClassListStateImplError] commonClass is null.",
+      StackTrace.current);
+  return;
+}
+state = AsyncValue.data(list);
+''');
+      });
 
       final build = Method((m) {
         m.annotations.add(
@@ -48,7 +68,21 @@ class ListStateImplName {
         m.returns = refer("Future<List<${_aggregateRootName.myClassName}>>");
         m.name = "build";
         m.modifier = MethodModifier.async;
-        m.body = Code("return [];");
+        m.body = Code('''
+state = AsyncValue.load();
+final (list, err) = _service.all();
+if (err != null) {
+  state = AsyncValue.error(err.error, err.stackTrace);
+  return [];
+}
+if(list == null){
+  state = AsyncValue.error(
+      "[CommonClassListStateImplError] commonClass is null.",
+      StackTrace.current);
+  return [];
+}
+return list;
+''');
       });
 
       final create = Method((m) {
@@ -66,26 +100,56 @@ if(${_aggregateRootName.myInstanceName} == null){
   state = AsyncValue.error("[${myClassName}Error] ${_aggregateRootName.myInstanceName} is null.", StackTrace.current);
   return;
 }
-state = ${_aggregateRootName.myInstanceName};
+await _fetchAll();
+''');
+      });
+      final delete = Method((m) {
+        m.returns = refer("Future<void>");
+        m.name = "delete";
+        m.modifier = MethodModifier.async;
+
+        m.body = Code('''
+state = AsyncValue.load();
+final (_, err) = await service.delete(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
+if (err != null) {
+  state = AsyncValue.error(err.error, err.stackTrace);
+  return;
+}
+await _fetchAll();
 ''');
       });
 
-      /*
-      final find = Method((m) {});
-      final save = Method((m) {});
-      final delete = Method((m) {});
-      final all = Method((m) {});
-      // */
+      final find = Method((m) {
+        m.returns = refer("Future<CommonClass?>");
+        m.name = "find";
+        m.modifier = MethodModifier.async;
+        m.body = Code('''
+state = AsyncValue.load();
+final (commonClass, err) = await service.find(key: key);
+if (err != null) {
+  state = AsyncValue.error(err.error, err.stackTrace);
+  return;
+}
+return commonClass;
+''');
+      });
+      final refresh = Method((m) {
+        m.returns = refer("Future<void>");
+        m.name = "refresh";
+        m.modifier = MethodModifier.async;
+        m.body = Code('''
+state = AsyncValue.load();
+await _fetchAll();
+''');
+      });
 
       p0.methods.addAll([
+        fetchAll,
         build,
         create,
-        /*
         find,
-        save,
         delete,
-        all,
-        // */
+        refresh,
       ]);
     });
   }

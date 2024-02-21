@@ -32,24 +32,6 @@ class CommonClassApplicationServiceImpl {
     }
   }
 
-  Future<(CommonClass?, ErrorMessage?)> find({required String key}) async {
-    try {
-      final target = await _commonClassRepository.find(key: key);
-      return (target, null);
-    } catch (e, stacktrace) {
-      return (null, Error(e, stacktrace));
-    }
-  }
-
-  Future<(void, ErrorMessage?)> save({required CommonClass commonClass}) async {
-    try {
-      await _commonClassRepository.save(commonClass: commonClass);
-      return (null, null);
-    } catch (e, stacktrace) {
-      return (null, Error(e, stacktrace));
-    }
-  }
-
   Future<(void, ErrorMessage?)> delete({required String key}) async {
     try {
       await _commonClassRepository.delete(key: key);
