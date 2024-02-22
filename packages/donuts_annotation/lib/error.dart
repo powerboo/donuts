@@ -1,5 +1,5 @@
-class Error {
+class DonutsError {
   final Object error;
   final StackTrace stackTrace;
-  Error(this.error, this.stackTrace);
+  DonutsError(this.error, this.stackTrace);
 }
