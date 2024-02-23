@@ -1,12 +1,16 @@
 [English](https://github.com/powerboo/donuts/blob/main/packages/donuts/README.md) | [日本語](https://github.com/powerboo/donuts/blob/main/resources/ja_JP/README.md)
 
-Focus domain modeling and UI.
+<p align="center">
+  <img src="https://github.com/powerboo/donuts/blob/main/resources/icon/donuts.webp" width="200">
+</p>
 
-# モチベーション
+Focus domain modeling and UI.
 
 - ドメイン駆動設計におけるレイヤードアーキテクチャボイラープレートを生成できます
 - entity を書いたら repository,factory,application_service を生成します
 - 生成したコードは自身のプロジェクトに合わせて拡張できるようにする予定です
+
+# モチベーション
 
 - ドメイン駆動設計のいいところと悪いところ(面倒なところ)
 - いいところ
