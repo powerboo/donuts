@@ -1,4 +1,4 @@
-[English](https://github.com/powerboo/donuts/blob/main/README.md) | [日本語](https://github.com/powerboo/donuts/blob/main/resources/ja_JP/README.md)
+[English](https://github.com/powerboo/donuts/blob/main/packages/donuts/README.md) | [日本語](https://github.com/powerboo/donuts/blob/main/resources/ja_JP/README.md)
 
 Focus domain modeling and UI.
 
@@ -8,7 +8,7 @@ Focus domain modeling and UI.
 
 # Motivation
 
-- Domain-Driven Design is a Good. But Domain-driven design is good point and boring stuff point.
+- Domain-Driven Design is a Good Practice. But Domain-driven design has good point and boring stuff point.
 
 - **Good Point**
   - Can be written directly from domain knowledge that is important to the business

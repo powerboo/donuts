@@ -1,4 +1,4 @@
-[English](https://github.com/powerboo/donuts/blob/main/README.md) | [日本語](https://github.com/powerboo/donuts/blob/main/resources/ja_JP/README.md)
+[English](https://github.com/powerboo/donuts/blob/main/packages/donuts/README.md) | [日本語](https://github.com/powerboo/donuts/blob/main/resources/ja_JP/README.md)
 
 Focus domain modeling and UI.
 
