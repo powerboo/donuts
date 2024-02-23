@@ -1,7 +1,7 @@
 [English](https://github.com/powerboo/donuts/blob/main/packages/donuts/README.md) | [日本語](https://github.com/powerboo/donuts/blob/main/resources/ja_JP/README.md)
 
 <p align="center">
-  <img src="https://github.com/powerboo/donuts/blob/main/resources/icon/donuts.webp" width="200">
+  <img src="https://github.com/powerboo/donuts/blob/main/resources/icon/donuts.png" width="200">
 </p>
 
 Focus domain modeling and UI.
