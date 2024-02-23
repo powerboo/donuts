@@ -1,41 +1,63 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+[English](https://github.com/powerboo/donuts/blob/main/README.md) | [日本語](https://github.com/powerboo/donuts/blob/main/resources/ja_JP/README.md)
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+Focus domain modeling and UI.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+- You can generate a layered architecture boilerplate for domain-driven design
+- Once you have written the entity, you can generate the repository, factory, and application_service.
+- The generated code will be extensible to suit your project(now develop)
 
-## Features
+# Motivation
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Domain-Driven Design is a Good. But Domain-driven design is good point and boring stuff point.
 
-## Getting started
+- **Good Point**
+  - Can be written directly from domain knowledge that is important to the business
+  - Code is easier to maintain etc.
+- **Boring stuff Point**
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+  - Many boiler plates
+    - ex.
+      - repository
+      - factory
+      - application_service
 
-## Usage
+- Entity operate by factory, repository, application_service.
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+### Code Example
+
+define
 
 ```dart
-const like = 'sample';
+// aggregate_root
 ```
 
-## Additional information
+generated code
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+// factory
 
--->
+// factory_impl
 
-focus ui. focus domain modeling.
+// repository
+
+// repository_impl
+
+// in_memory_repository_impl
+
+// application_service
+
+// list_state
+
+// single_state
+
+// list view
+
+// detail view
+
+// create modal
+```
+
+# Roadmap
+
+- Extension generated class
+- generate interface for [method_to_swagger_yaml](https://pub.dev/packages/method_to_swagger_yaml)
