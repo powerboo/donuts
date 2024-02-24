@@ -13,7 +13,6 @@ import 'package:donuts/src/generator/common/names/repository/abstract_interface_
 import 'package:donuts/src/generator/common/names/repository/in_memory_repository_impl_name.dart';
 import 'package:donuts/src/generator/common/names/repository/repository_impl_name.dart';
 import 'package:donuts/src/generator/common/names/repository/repository_provider_name.dart';
-import 'package:donuts/src/generator/common/names/state/list_state_impl_name.dart';
 import 'package:donuts/src/generator/common/names/state/single_state_impl_name.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:code_builder/code_builder.dart';

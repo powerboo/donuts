@@ -3,9 +3,9 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
-import 'package:dart_style/dart_style.dart';
+// import 'package:dart_style/dart_style.dart';
 
-final _formatter = DartFormatter();
+// final _formatter = DartFormatter();
 
 class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
   @override

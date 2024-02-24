@@ -1,6 +1,6 @@
 name: donuts
 description: "donuts.focus ui. focus domain modeling."
-version: 0.0.2
+version: 0.0.3
 repository: https://github.com/powerboo/donuts.git
 
 environment:
