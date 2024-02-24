@@ -1,3 +1,7 @@
+## 0.0.4
+
+mod readme
+
 ## 0.0.3
 
 add readme
