@@ -1,21 +1,21 @@
 name: donuts
 description: "donuts.focus ui. focus domain modeling."
-version: 0.0.4
+version: 0.0.5
 repository: https://github.com/powerboo/donuts.git
 
 environment:
   sdk: ">=3.2.4 <4.0.0"
 
 dependencies:
-  analyzer: ">=5.13.0 <7.0.0"
+  analyzer: ">=6.0.0 <7.0.0"
   build: ^2.4.1
   built_collection: ^5.1.1
   build_config: ^1.1.1
   dart_style: ^2.3.2
   donuts_annotation: ^0.0.3
   code_builder: ^4.10.0
-  freezed_annotation: ^2.4.1
-  path: ^1.9.0
+  freezed_annotation: ">=2.0.0 <3.0.0"
+  path: ">=1.8.1 <2.0.0"
   source_gen: ^1.2.7
 
 dev_dependencies:
