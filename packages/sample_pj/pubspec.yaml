@@ -9,16 +9,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  donuts_annotation:
-    path: ../donuts_annotation
+  donuts_annotation: ^0.0.3
+  flutter_riverpod: ^2.4.10
+  uuid: ^4.3.3
+  http: ^1.2.0
+  freezed: ^2.4.7
+  json_serializable: ^6.7.1
+dev_dependencies:
   donuts:
     path: ../donuts
 
-dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  build_runner: ^2.4.6
-  analyzer: ^5.13.0
+  analyzer: ^6.2.0
+  build_runner: ^2.4.8
 
 flutter:
