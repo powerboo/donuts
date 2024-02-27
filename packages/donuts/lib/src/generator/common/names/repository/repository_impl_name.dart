@@ -1,5 +1,6 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
+import 'package:donuts/src/generator/common/names/common/exception_name.dart';
 import 'package:donuts/src/generator/common/names/repository/abstract_interface_repository_name.dart';
 import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
 import 'package:path/path.dart' as p;
@@ -8,12 +9,15 @@ import 'package:donuts/src/generator/common/element_checker.dart';
 class RepositoryImplName {
   final AggregateRootName _aggregateRootName;
   final AbstractInterfaceRepositoryName _abstractInterfaceRepositoryName;
+  final ExceptionName _exceptionName;
 
   RepositoryImplName({
     required AggregateRootName aggregateRootName,
     required AbstractInterfaceRepositoryName abstractInterfaceRepositoryName,
+    required ExceptionName exceptionName,
   })  : _aggregateRootName = aggregateRootName,
-        _abstractInterfaceRepositoryName = abstractInterfaceRepositoryName;
+        _abstractInterfaceRepositoryName = abstractInterfaceRepositoryName,
+        _exceptionName = exceptionName;
 
   String get myClassName {
     return "${_aggregateRootName.element.displayName}RepositoryImpl";
@@ -23,7 +27,7 @@ class RepositoryImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/repository/",
       _aggregateRootName.baseDirectory,
-      "${myClassName.toSnakeCase()}.dart",
+      "${_aggregateRootName.myClassName.toSnakeCase()}.repository_impl.dart",
     );
   }
 
@@ -42,6 +46,9 @@ class RepositoryImplName {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<${_aggregateRootName.myClassName}?>');
         p0.name = 'find';
+        p0.annotations.add(
+          refer('override'),
+        );
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.keyInstanceName;
           p1.type = refer(_aggregateRootName.keyClassName);
@@ -58,10 +65,15 @@ class RepositoryImplName {
     );
     
     if(response.statusCode != 200){
-      throw CommonClassException("network error");
+      throw ${_exceptionName.myClassName}("network error");
+    }
+    
+    final body = response.body;
+    if(body is! Map<String, dynamic>){
+      throw ${_exceptionName.myClassName}("body is not Map<String, dynamic>");
     }
 
-    return CommonClass.fromJson(response.body);
+    return ${_aggregateRootName.myClassName}.fromJson(jsonDecode(body));
 ''');
       });
 
@@ -69,6 +81,10 @@ class RepositoryImplName {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<List<${_aggregateRootName.myClassName}>>');
         p0.name = 'all';
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = 'cursor';
           p1.type = refer('int');
@@ -93,14 +109,19 @@ class RepositoryImplName {
     );
     
     if(response.statusCode != 200){
-      throw CommonClassException("network error");
+      throw ${_exceptionName.myClassName}("network error");
     }
 
-    final List<CommonClass> data = [];
-    for(r in response.body){
-      data.add(CommonClass.fromJson(r));
+    final data = jsonDecode(response.body);
+    if (data is! List<Map<String, dynamic>>) {
+      throw ${_exceptionName.myClassName}("data is not List<Map<String, dynamic>>");
     }
-    return data;
+
+    final List<${_aggregateRootName.myClassName}> result = [];
+    for(final r in data){
+      result.add(${_aggregateRootName.myClassName}.fromJson(r));
+    }
+    return result;
 ''');
       });
 
@@ -108,6 +129,10 @@ class RepositoryImplName {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<void>');
         p0.name = 'save';
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.myInstanceName;
           p1.type = refer(_aggregateRootName.myClassName);
@@ -120,12 +145,12 @@ class RepositoryImplName {
         'https://www.google.com',
         "/v1/common-class",
       ),
-      body: jsonEncode(commonClass.toJson()),
+      body: jsonEncode(${_aggregateRootName.myInstanceName}.toJson()),
       headers: {},
     );
     
     if (response.statusCode != 200) {
-      throw CommonClassException("network error");
+      throw ${_exceptionName.myClassName}("network error");
     }
 ''');
       });
@@ -134,6 +159,10 @@ class RepositoryImplName {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<void>');
         p0.name = 'delete';
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.keyInstanceName;
           p1.type = refer(_aggregateRootName.keyClassName);
@@ -144,13 +173,13 @@ class RepositoryImplName {
     final response = await http.delete(
       Uri.https(
         'https://www.google.com',
-        "/v1/common-class/\${key}",
+        "/v1/${_aggregateRootName.myClassName.toKebabCase()}/\${key}",
       ),
       headers: {},
     );
 
     if(response.statusCode != 200){
-      throw CommonClassException("network error");
+      throw ${_exceptionName.myClassName}("network error");
     }
 ''');
       });

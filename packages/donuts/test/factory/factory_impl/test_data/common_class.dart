@@ -2,43 +2,42 @@ import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 
 @ShouldGenerate('''
-import 'package:__test__/aggregate_root/parent_dir_is_aggregate_root_class.dart';
-import 'package:__test__/donuts/factory/parent_dir_is_aggregate_root_class_factory.dart';
+import 'package:__test__/common_class.dart';
+import 'package:__test__/donuts/factory/common_class_factory.dart';
 import 'package:uuid/uuid.dart';
 
-class ParentDirIsAggregateRootClassFactoryImpl
-    implements ParentDirIsAggregateRootClassFactory {
+class CommonClassFactoryImpl implements CommonClassFactory {
   final Uuid uuid = Uuid();
 
-  ParentDirIsAggregateRootClass create(
+  CommonClass create(
     String value,
     String? nullableValue, {
     required String name,
   }) {
     final id = uuid.v7();
 
-    return ParentDirIsAggregateRootClass(value, nullableValue, {
+    return CommonClass(value, nullableValue, {
       key: id,
       name: name,
     });
   }
 
-  ParentDirIsAggregateRootClass restore(
+  CommonClass restore(
     String value,
     String? nullableValue, {
     required String key,
     required String name,
   }) {
-    return ParentDirIsAggregateRootClass(value, nullableValue, {
+    return CommonClass(value, nullableValue, {
       key: key,
       name: name,
     });
   }
 }''')
 @AggregateRoot()
-class ParentDirIsAggregateRootClass {
+class CommonClass {
   final String name;
-  const ParentDirIsAggregateRootClass(
+  const CommonClass(
     String value,
     String? nullableValue, {
     @KeyArgument() required String key,

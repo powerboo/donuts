@@ -81,7 +81,18 @@ class AggregateRootName {
   ///  }            //
   /// );
   /// ```
-  String initArgumentString(Map<String, String> arg) {
+  String initArgumentString({
+    Map<String, String> arg = const {},
+    bool ignoreKey = false,
+  }) {
+    final Map<String, String> augmentList = {};
+    if (arg.isEmpty) {
+      for (final augment in constructorElement.children) {
+        augmentList.addAll({augment.displayName: augment.displayName});
+      }
+    } else {
+      augmentList.addAll(arg);
+    }
     // sampleFunc(int a, String b);
     final List<ParameterElement> requiredParam = [];
 
@@ -91,6 +102,9 @@ class AggregateRootName {
     // Distribute arguments to the appropriate lists
     for (final param in constructorElement.children) {
       if (param is! ParameterElement) {
+        continue;
+      }
+      if (ignoreKey && param.metadata.any((annotation) => annotation.element?.displayName == 'KeyArgument')) {
         continue;
       }
       if (param.isNamed) {
@@ -104,15 +118,13 @@ class AggregateRootName {
     for (final p in requiredParam) {
       buffer.write("${p.displayName},");
     }
-    buffer.write("{");
     for (final p in namedParam) {
-      if (!arg.containsKey(p.displayName)) {
+      if (!augmentList.containsKey(p.displayName)) {
         continue;
       }
-      final value = arg[p.displayName];
+      final value = augmentList[p.displayName];
       buffer.write("${p.displayName}:${value},");
     }
-    buffer.write("}");
     return buffer.toString();
   }
 

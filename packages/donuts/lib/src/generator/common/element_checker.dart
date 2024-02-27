@@ -2,7 +2,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:path/path.dart' as p;
 
 Future<AggregateRootName> elementChecker(
   Element element,
@@ -18,14 +17,6 @@ Future<AggregateRootName> elementChecker(
     );
   }
   classElement = element;
-
-  // aggregate root does not support abstract class
-  if (classElement.isAbstract) {
-    throw InvalidGenerationSourceError(
-      "[${element.displayName}] is abstract class.",
-      element: element,
-    );
-  }
 
   ConstructorElement? constructorElement = null;
   for (final constructor in classElement.constructors) {
@@ -78,15 +69,6 @@ Future<AggregateRootName> elementChecker(
   }
   final ParameterElement annotatedElement = annotatedElementList.first;
 
-  // parent directory is not aggregate_root
-  final fullPath = element.library.source.fullName;
-  final parentDir = p.basename(p.dirname(fullPath));
-  if (parentDir != "aggregate_root") {
-    throw InvalidGenerationSourceError(
-      "[${element.displayName}] parent directory is not aggregate_root.",
-      element: element,
-    );
-  }
   return AggregateRootName(
     element: element,
     keyArgumentElement: annotatedElement,

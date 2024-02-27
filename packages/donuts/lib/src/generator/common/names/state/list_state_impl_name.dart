@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/element/element.dart';
 import 'package:donuts/src/generator/common/names/application_service/application_service_provider_name.dart';
 import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
@@ -26,7 +27,7 @@ class ListStateImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/state/",
       _aggregateRootName.baseDirectory,
-      "${myClassName.toSnakeCase()}.dart",
+      "${_aggregateRootName.myClassName.toSnakeCase()}.list_state_impl.dart",
     );
   }
 
@@ -35,25 +36,20 @@ class ListStateImplName {
       p0.name = myClassName;
       p0.extend = refer("AsyncNotifier<List<${_aggregateRootName.myClassName}>>");
 
-      p0.fields.add(Field((f) {
-        f.name = '_service';
-        f.modifier = FieldModifier.final$;
-        f.assignment = Code("ref.watch(${_applicationServiceProviderName.myFieldName})");
-      }));
-
       final fetchAll = Method((m) {
         m.name = '_fetchAll';
         m.modifier = MethodModifier.async;
         m.returns = refer("Future<void>");
         m.body = Code('''
-final (list, err) = await _service.all();
+final service = ref.watch(${_applicationServiceProviderName.myFieldName});
+final (list, err) = await service.all();
 if (err != null) {
   state = AsyncValue.error(err.error, err.stackTrace);
   return;
 }
 if (list == null) {
   state = AsyncValue.error(
-      "[CommonClassListStateImplError] commonClass is null.",
+      "[${myClassName}Error] ${_aggregateRootName.myInstanceName} is null.",
       StackTrace.current);
   return;
 }
@@ -69,15 +65,17 @@ state = AsyncValue.data(list);
         m.name = "build";
         m.modifier = MethodModifier.async;
         m.body = Code('''
-state = AsyncValue.load();
-final (list, err) = _service.all();
+state = const AsyncValue.loading();
+
+final service = ref.watch(${_applicationServiceProviderName.myFieldName});
+final (list, err) = await service.all();
 if (err != null) {
   state = AsyncValue.error(err.error, err.stackTrace);
   return [];
 }
 if(list == null){
   state = AsyncValue.error(
-      "[CommonClassListStateImplError] commonClass is null.",
+      "[${myClassName}Error] ${_aggregateRootName.myInstanceName} is null.",
       StackTrace.current);
   return [];
 }
@@ -89,9 +87,36 @@ return list;
         m.returns = refer("Future<void>");
         m.name = "create";
         m.modifier = MethodModifier.async;
+        // Distribute arguments to the appropriate lists
+        for (final param in _aggregateRootName.constructorElement.children) {
+          if (param is! ParameterElement) {
+            continue;
+          }
+          if (param.metadata.any((annotation) => annotation.element?.displayName == 'KeyArgument')) {
+            continue;
+          }
+          if (param.isNamed) {
+            m.requiredParameters.add(Parameter((p0) {
+              p0.name = param.name;
+              p0.type = refer(param.type.getDisplayString(withNullability: true));
+              p0.required = false;
+              p0.named = false;
+            }));
+          } else {
+            m.optionalParameters.add(Parameter((p0) {
+              p0.name = param.name;
+              p0.type = refer(param.type.getDisplayString(withNullability: true));
+              p0.required = param.isRequiredNamed;
+              p0.named = param.isNamed;
+            }));
+          }
+        }
+
         m.body = Code('''
-state = AsyncValue.load();
-final (${_aggregateRootName.myInstanceName}, err) = await service.create();
+state = const AsyncValue.loading();
+
+final service = ref.watch(${_applicationServiceProviderName.myFieldName});
+final (${_aggregateRootName.myInstanceName}, err) = await service.create(${_aggregateRootName.initArgumentString(ignoreKey: true)});
 if (err != null) {
   state = AsyncValue.error(err.error, err.stackTrace);
   return;
@@ -107,12 +132,17 @@ await _fetchAll();
         m.returns = refer("Future<void>");
         m.name = "delete";
         m.modifier = MethodModifier.async;
+        m.optionalParameters.add(Parameter((p) {
+          p.name = _aggregateRootName.keyInstanceName;
+          p.type = refer(_aggregateRootName.keyClassName);
+          p.required = true;
+          p.named = true;
+        }));
 
         m.body = Code('''
-state = AsyncValue.load();
+final service = ref.watch(${_applicationServiceProviderName.myFieldName});
 final (_, err) = await service.delete(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
 if (err != null) {
-  state = AsyncValue.error(err.error, err.stackTrace);
   return;
 }
 await _fetchAll();
@@ -120,17 +150,22 @@ await _fetchAll();
       });
 
       final find = Method((m) {
-        m.returns = refer("Future<CommonClass?>");
+        m.returns = refer("Future<${_aggregateRootName.myClassName}?>");
         m.name = "find";
+        m.optionalParameters.add(Parameter((p) {
+          p.name = _aggregateRootName.keyInstanceName;
+          p.type = refer(_aggregateRootName.keyClassName);
+          p.required = true;
+          p.named = true;
+        }));
         m.modifier = MethodModifier.async;
         m.body = Code('''
-state = AsyncValue.load();
-final (commonClass, err) = await service.find(key: key);
+final service = ref.watch(${_applicationServiceProviderName.myFieldName});
+final (${_aggregateRootName.myInstanceName}, err) = await service.find(key: key);
 if (err != null) {
-  state = AsyncValue.error(err.error, err.stackTrace);
-  return;
+  return null;
 }
-return commonClass;
+return ${_aggregateRootName.myInstanceName};
 ''');
       });
       final refresh = Method((m) {
@@ -138,7 +173,7 @@ return commonClass;
         m.name = "refresh";
         m.modifier = MethodModifier.async;
         m.body = Code('''
-state = AsyncValue.load();
+state = const AsyncValue.loading();
 await _fetchAll();
 ''');
       });

@@ -19,7 +19,7 @@ class AbstractInterfaceRepositoryName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/repository/",
       _aggregateRootName.baseDirectory,
-      "${myClassName.toSnakeCase()}.dart",
+      "${_aggregateRootName.myClassName.toSnakeCase()}.abstract_interface_repository.dart",
     );
   }
 

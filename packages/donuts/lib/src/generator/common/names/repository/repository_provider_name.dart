@@ -33,7 +33,7 @@ class RepositoryProviderName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/repository/",
       _aggregateRootName.baseDirectory,
-      "${myFieldName.toSnakeCase()}.dart",
+      "${_aggregateRootName.myClassName.toSnakeCase()}.repository_provider.dart",
     );
   }
 
@@ -45,8 +45,10 @@ class RepositoryProviderName {
 Provider<${_repositoryName.myClassName}>((ref) {
   const bool inMemory = ${_inMemory.toString()};
   if(inMemory){
-    return ${_inMemoryRepositoryImpl.myClassName}(store: []);
+    // ignore: dead_code
+    return ${_inMemoryRepositoryImpl.myClassName}();
   }
+  // ignore: dead_code
   return ${_repositoryImplName.myClassName}();
 })
 ''');

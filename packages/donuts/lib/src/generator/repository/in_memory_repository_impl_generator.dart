@@ -47,8 +47,8 @@ class InMemoryRepositoryImplGenerator extends GeneratorForAnnotation<AggregateRo
       ]);
 
       p0.directives.addAll([
-        Directive.import(repositoryName.myPath),
         Directive.import(aggregateRootName.myPath),
+        Directive.import(repositoryName.myPath),
       ]);
     }));
 

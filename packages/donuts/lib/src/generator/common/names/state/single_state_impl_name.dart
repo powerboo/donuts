@@ -63,7 +63,7 @@ return null;
         m.name = "set";
         m.modifier = MethodModifier.async;
         m.body = Code('''
-state = AsyncValue.load();
+state = const AsyncValue.loading();
 final (target, err) = await _service.find(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
 if (err != null) {
   state = AsyncValue.error(err.error, err.stackTrace);
@@ -92,7 +92,7 @@ return target;
             m.docs.add(doc);
           }
           m.body = Code('''
-state = AsyncValue.load();
+state = const AsyncValue.loading();
 final ${_aggregateRootName.keyInstanceName} = _${_aggregateRootName.keyInstanceName};
 if (${_aggregateRootName.keyInstanceName} == null) {
   state = AsyncValue.error(

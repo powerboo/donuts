@@ -5,7 +5,7 @@ import 'package:source_gen_test/source_gen_test.dart';
 part 'json_serializable_class.g.dart';
 
 @ShouldGenerate('''
-import 'package:__test__/aggregate_root/json_serializable_class.dart';
+import 'package:__test__/json_serializable_class.dart';
 
 abstract interface class JsonSerializableClassFactory {
   JsonSerializableClass create(

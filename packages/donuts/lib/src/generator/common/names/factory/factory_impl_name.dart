@@ -26,7 +26,7 @@ class FactoryImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/factory/",
       _aggregateRootName.baseDirectory,
-      "${myClassName.toSnakeCase()}.dart",
+      "${_aggregateRootName.myClassName.toSnakeCase()}.factory_impl.dart",
     );
   }
 
@@ -49,7 +49,7 @@ class FactoryImplName {
               b.name = 'uuid';
               b.type = refer('Uuid', 'package:uuid/uuid.dart');
               b.modifier = FieldModifier.final$;
-              b.assignment = Code("Uuid()");
+              b.assignment = Code("const Uuid()");
             }),
           ]);
           break;
@@ -72,6 +72,9 @@ class FactoryImplName {
           _aggregateRootName.myPath,
         );
         p0.name = "create";
+        p0.annotations.add(
+          refer('override'),
+        );
 
         // ignore annotated argument
         final ignoreKeyArgumentList = _aggregateRootName.constructorElement.children
@@ -116,7 +119,7 @@ class FactoryImplName {
               final id = uuid.v7();
 
               return ${_aggregateRootName.myClassName}(
-                ${_aggregateRootName.initArgumentString(map)}
+                ${_aggregateRootName.initArgumentString(arg: map)}
               );
             ''');
             break;
@@ -135,6 +138,9 @@ class FactoryImplName {
       final restore = Method((p0) {
         p0.returns = refer(_aggregateRootName.myClassName, _aggregateRootName.myPath);
         p0.name = "restore";
+        p0.annotations.add(
+          refer('override'),
+        );
 
         Map<String, String> map = {};
 
@@ -168,7 +174,7 @@ class FactoryImplName {
         }
         p0.body = Code('''
               return ${_aggregateRootName.myClassName}(
-                ${_aggregateRootName.initArgumentString(map)}
+                ${_aggregateRootName.initArgumentString(arg: map)}
               );
             ''');
       });

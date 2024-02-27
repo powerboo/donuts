@@ -29,7 +29,7 @@
     },
     {
       "name": "sample_pj",
-      "cwd": "sample_pj",
+      "cwd": "packages/sample_pj",
       "request": "launch",
       "type": "dart",
       "program": ".dart_tool/build/entrypoint/build.dart",

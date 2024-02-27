@@ -26,7 +26,7 @@ class FactoryProviderName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/factory/",
       _aggregateRootName.baseDirectory,
-      "${myFieldName.toSnakeCase()}.dart",
+      "${_aggregateRootName.myClassName.toSnakeCase()}.factory_provider.dart",
     );
   }
 

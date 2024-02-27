@@ -30,7 +30,7 @@ class CommonClassListStateImpl extends AsyncNotifier<List<CommonClass>> {
 
   @override
   Future<List<CommonClass>> build() async {
-    state = AsyncValue.load();
+    state = const AsyncValue.loading();
     final (list, err) = _service.all();
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -46,7 +46,7 @@ class CommonClassListStateImpl extends AsyncNotifier<List<CommonClass>> {
   }
 
   Future<void> create() async {
-    state = AsyncValue.load();
+    state = const AsyncValue.loading();
     final (commonClass, err) = await service.create();
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -62,7 +62,7 @@ class CommonClassListStateImpl extends AsyncNotifier<List<CommonClass>> {
   }
 
   Future<CommonClass?> find() async {
-    state = AsyncValue.load();
+    state = const AsyncValue.loading();
     final (commonClass, err) = await service.find(key: key);
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -72,7 +72,7 @@ class CommonClassListStateImpl extends AsyncNotifier<List<CommonClass>> {
   }
 
   Future<void> delete() async {
-    state = AsyncValue.load();
+    state = const AsyncValue.loading();
     final (_, err) = await service.delete(key: key);
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -82,7 +82,7 @@ class CommonClassListStateImpl extends AsyncNotifier<List<CommonClass>> {
   }
 
   Future<void> refresh() async {
-    state = AsyncValue.load();
+    state = const AsyncValue.loading();
     await _fetchAll();
   }
 }''')

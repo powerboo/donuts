@@ -23,7 +23,7 @@ class InMemoryRepositoryImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/repository/",
       _aggregateRootName.baseDirectory,
-      "${myClassName.toSnakeCase()}.dart",
+      "${_aggregateRootName.myClassName.toSnakeCase()}.in_memory_repository_impl.dart",
     );
   }
 
@@ -40,7 +40,7 @@ class InMemoryRepositoryImplName {
       p0.fields = ListBuilder([
         Field((p1) {
           p1.name = "store";
-          p1.modifier = FieldModifier.final$;
+          // p1.modifier = FieldModifier.final$;
           p1.type = refer("List<${_aggregateRootName.myClassName}>");
           p1.assignment = Code("[]");
         }),
@@ -49,6 +49,10 @@ class InMemoryRepositoryImplName {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<${_aggregateRootName.myClassName}?>');
         p0.name = 'find';
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.keyInstanceName;
           p1.type = refer(_aggregateRootName.keyClassName);
@@ -64,6 +68,10 @@ class InMemoryRepositoryImplName {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<List<${_aggregateRootName.myClassName}>>');
         p0.name = 'all';
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = 'cursor';
           p1.type = refer('int');
@@ -87,6 +95,10 @@ class InMemoryRepositoryImplName {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<void>');
         p0.name = 'save';
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.myInstanceName;
           p1.type = refer(_aggregateRootName.myClassName);
@@ -107,6 +119,10 @@ class InMemoryRepositoryImplName {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<void>');
         p0.name = 'delete';
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.keyInstanceName;
           p1.type = refer(_aggregateRootName.keyClassName);
@@ -114,7 +130,7 @@ class InMemoryRepositoryImplName {
           p1.required = true;
         }));
         p0.body = Code('''
-    store = store.where((s) => s.${_aggregateRootName.keyInstanceName} != ${_aggregateRootName.myInstanceName}.${_aggregateRootName.keyInstanceName}).toList();
+    store = store.where((s) => s.${_aggregateRootName.keyInstanceName} != ${_aggregateRootName.keyInstanceName}).toList();
 ''');
       });
 

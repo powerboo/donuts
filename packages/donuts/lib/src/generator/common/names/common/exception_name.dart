@@ -18,9 +18,10 @@ class ExceptionName {
       p0.constructors.add(Constructor((p1) {
         p1.requiredParameters.add(Parameter((p2) {
           p2.name = 'message';
-          p2.toThis = true;
+          p2.type = refer('String');
         }));
-        p1.initializers.add(Code('this.message = "[${myClassName}]\$message"'));
+        p1.initializers.add(Code('message = "[${myClassName}]\$message"'));
+        p1.constant = true;
       }));
       p0.fields.add(Field((p1) {
         p1.name = "message";

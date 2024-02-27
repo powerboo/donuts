@@ -6,7 +6,7 @@ part 'freezed_class.freezed.dart';
 part 'freezed_class.g.dart';
 
 @ShouldGenerate('''
-import 'package:__test__/aggregate_root/freezed_class.dart';
+import 'package:__test__/freezed_class.dart';
 
 abstract interface class FreezedClassFactory {
   FreezedClass create(

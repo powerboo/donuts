@@ -21,7 +21,7 @@ class CommonClassSingleStateImpl extends AsyncNotifier<CommonClass?> {
   }
 
   Future<CommonClass?> set() async {
-    state = AsyncValue.load();
+    state = const AsyncValue.loading();
     final (target, err) = await _service.find(key: key);
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -38,7 +38,7 @@ class CommonClassSingleStateImpl extends AsyncNotifier<CommonClass?> {
   }
 
   Future<void> method1() async {
-    state = AsyncValue.load();
+    state = const AsyncValue.loading();
     final key = _key;
     if (key == null) {
       state = AsyncValue.error(
@@ -61,7 +61,7 @@ class CommonClassSingleStateImpl extends AsyncNotifier<CommonClass?> {
 
   /// doc method 2
   Future<void> method2() async {
-    state = AsyncValue.load();
+    state = const AsyncValue.loading();
     final key = _key;
     if (key == null) {
       state = AsyncValue.error(

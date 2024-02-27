@@ -58,9 +58,14 @@ class SingleStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
       aggregateRootName: aggregateRootName,
     );
 
+    final repositoryException = ExceptionName(
+      exceptionBaseName: "${aggregateRootName.element.displayName}RepositoryImpl",
+    );
+
     final repositoryImplName = RepositoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceRepositoryName: repositoryName,
+      exceptionName: repositoryException,
     );
 
     final inMemoryRepositoryImpl = InMemoryRepositoryImplName(

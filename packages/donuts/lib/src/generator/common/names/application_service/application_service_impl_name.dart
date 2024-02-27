@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/element/element.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
@@ -30,9 +31,9 @@ class ApplicationServiceImplName {
 
   String get myPath {
     return p.join(
-      "package:${_aggregateRootName.packageName}/donuts/repository/",
+      "package:${_aggregateRootName.packageName}/donuts/application_service/",
       _aggregateRootName.baseDirectory,
-      "${myClassName.toSnakeCase()}.dart",
+      "${_aggregateRootName.myClassName.toSnakeCase()}.application_service_impl.dart",
     );
   }
 
@@ -94,7 +95,7 @@ class ApplicationServiceImplName {
       final refObject = Field((p0) {
         p0.name = "ref";
         p0.type = refer(
-          'AsyncNotifierProviderRef<dynamic>',
+          'ProviderRef<dynamic>',
           'package:flutter_riverpod/flutter_riverpod.dart',
         );
         p0.modifier = FieldModifier.final$;
@@ -111,19 +112,37 @@ class ApplicationServiceImplName {
 
       final create = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(${_aggregateRootName.myClassName}?, ErrorMessage?)>');
+        p0.returns = refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
         p0.name = 'create';
-        /*
-        p0.optionalParameters.add(Parameter((p1) {
-          p1.name = _aggregateRootName.keyInstanceName;
-          p1.type = refer(_aggregateRootName.keyClassName);
-          p1.named = true;
-          p1.required = true;
-        }));
-        // */
+
+        for (final argument in _aggregateRootName.constructorElement.children) {
+          if (argument is! ParameterElement) {
+            continue;
+          }
+          if (argument.metadata.any((annotation) => annotation.element?.displayName == 'KeyArgument')) {
+            continue;
+          }
+
+          if (argument.isNamed) {
+            p0.optionalParameters.add(Parameter((p1) {
+              p1.name = argument.displayName;
+              p1.type = refer(argument.type.getDisplayString(withNullability: true));
+              p1.named = true;
+              p1.required = argument.isRequired;
+            }));
+          } else {
+            p0.requiredParameters.add(Parameter((p1) {
+              p1.name = argument.displayName;
+              p1.type = refer(argument.type.getDisplayString(withNullability: true));
+              p1.named = false;
+              p1.required = false;
+            }));
+          }
+        }
+
         p0.body = Code('''
 try{
-  final created = _${_abstractInterfaceFactoryName.myInstanceName}.create();
+  final created = _${_abstractInterfaceFactoryName.myInstanceName}.create(${_aggregateRootName.initArgumentString(ignoreKey: true)});
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: created);
   return (created, null);
 } catch(e, stacktrace){
@@ -134,7 +153,7 @@ try{
 
       final find = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(${_aggregateRootName.myClassName}?, ErrorMessage?)>');
+        p0.returns = refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
         p0.name = 'find';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.keyInstanceName;
@@ -157,7 +176,7 @@ try {
 
       final save = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(void, ErrorMessage?)>');
+        p0.returns = refer('Future<(void, Error?)>');
         p0.name = 'save';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.myInstanceName;
@@ -177,7 +196,7 @@ try {
 
       final delete = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(void, ErrorMessage?)>');
+        p0.returns = refer('Future<(void, Error?)>');
         p0.name = 'delete';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.keyInstanceName;
@@ -197,7 +216,7 @@ try {
 
       final all = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(List<${_aggregateRootName.myClassName}>?, ErrorMessage?)>');
+        p0.returns = refer('Future<(List<${_aggregateRootName.myClassName}>?, Error?)>');
         p0.name = 'all';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = 'cursor';
@@ -255,7 +274,7 @@ try {
           }
 
           // return
-          m.returns = refer('Future<(${_aggregateRootName.myClassName}?, ErrorMessage?)>');
+          m.returns = refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
           if (method.returnType.getDisplayString(withNullability: false) != _aggregateRootName.myClassName) {
             throw InvalidGenerationSourceError(
                 "The return type must be AggregateRoot. If returning something else, please annotate the AggregateRoot with @IgnoreTarget.");

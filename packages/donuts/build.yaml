@@ -1,11 +1,133 @@
 builders:
+  # ------------------------------------------------------------
+  # factory
+  # ------------------------------------------------------------
   donuts|abstractInterfaceFactoryBuilder:
     defaults:
       options:
         build_extensions:
-          "^lib/{{dir}}/{{file}}.dart": "lib/donuts/factory/{{dir}}/{{file}}.abstract_interface_factory.dart"
-    import: "package:donuts/builder.dart"
+          "^lib/{{file}}.dart": "lib/donuts/factory/{{file}}.abstract_interface_factory.dart"
+    import: "package:donuts/donuts.dart"
     builder_factories: ["abstractInterfaceFactoryBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  donuts|factoryImplBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/factory/{{file}}.factory_impl.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["factoryImplBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  donuts|factoryProviderBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/factory/{{file}}.factory_provider.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["factoryProviderBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  # ------------------------------------------------------------
+  # repository
+  # ------------------------------------------------------------
+  donuts|abstractInterfaceRepositoryBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/repository/{{file}}.abstract_interface_repository.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["abstractInterfaceRepositoryBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  donuts|repositoryImplBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/repository/{{file}}.repository_impl.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["repositoryImplBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  donuts|inMemoryRepositoryImplBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/repository/{{file}}.in_memory_repository_impl.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["inMemoryRepositoryImplBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  donuts|repositoryProviderBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/repository/{{file}}.repository_provider.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["repositoryProviderBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  # ------------------------------------------------------------
+  # application service
+  # ------------------------------------------------------------
+  donuts|applicationServiceImplBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/application_service/{{file}}.application_service_impl.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["applicationServiceImplBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  donuts|applicationServiceProviderBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/application_service/{{file}}.application_service_provider.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["applicationServiceProviderBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  # ------------------------------------------------------------
+  # state
+  # ------------------------------------------------------------
+  donuts|listStateBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/state/{{file}}.list_state_impl.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["listStateBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  donuts|singleStateBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/state/{{file}}.single_state_impl.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["singleStateBuilder"]
     build_extensions: {}
     auto_apply: dependents
     build_to: source

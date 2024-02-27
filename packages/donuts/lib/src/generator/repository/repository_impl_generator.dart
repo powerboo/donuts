@@ -33,17 +33,18 @@ class RepositoryImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
 
     final exception = ExceptionName(
       exceptionBaseName: repositoryName.myClassName,
-    ).toClassElement();
+    );
 
     final repositoryImpl = RepositoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceRepositoryName: repositoryName,
+      exceptionName: exception,
     ).toClassElement();
 
     final lib = Library(((p0) {
       p0.body = ListBuilder<Spec>([
         repositoryImpl,
-        exception,
+        exception.toClassElement(),
       ]);
 
       p0.directives.addAll([

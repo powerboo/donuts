@@ -3,6 +3,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
+import 'package:donuts/src/generator/common/names/common/exception_name.dart';
 import 'package:donuts/src/generator/common/names/repository/abstract_interface_repository_name.dart';
 import 'package:donuts/src/generator/common/names/repository/in_memory_repository_impl_name.dart';
 import 'package:donuts/src/generator/common/names/repository/repository_impl_name.dart';
@@ -43,9 +44,14 @@ class RepositoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> 
       aggregateRootName: aggregateRootName,
     );
 
+    final exception = ExceptionName(
+      exceptionBaseName: repositoryName.myClassName,
+    );
+
     final repositoryImplName = RepositoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceRepositoryName: repositoryName,
+      exceptionName: exception,
     );
 
     final inMemoryRepositoryImpl = InMemoryRepositoryImplName(
@@ -70,6 +76,7 @@ class RepositoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> 
         Directive.import('package:flutter_riverpod/flutter_riverpod.dart'),
         Directive.import(repositoryName.myPath),
         Directive.import(repositoryImplName.myPath),
+        Directive.import(inMemoryRepositoryImpl.myPath),
       ]);
     }));
 

@@ -55,6 +55,10 @@ class ApplicationServiceProviderGenerator extends GeneratorForAnnotation<Aggrega
       abstractInterfaceFactoryName: factoryName,
     );
 
+    final repositoryException = ExceptionName(
+      exceptionBaseName: "${aggregateRootName.element.displayName}RepositoryImpl",
+    );
+
     final repositoryName = AbstractInterfaceRepositoryName(
       aggregateRootName: aggregateRootName,
     );
@@ -62,6 +66,7 @@ class ApplicationServiceProviderGenerator extends GeneratorForAnnotation<Aggrega
     final repositoryImplName = RepositoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceRepositoryName: repositoryName,
+      exceptionName: repositoryException,
     );
 
     final inMemoryRepositoryImpl = InMemoryRepositoryImplName(

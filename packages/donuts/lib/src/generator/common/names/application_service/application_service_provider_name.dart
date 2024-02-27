@@ -38,7 +38,7 @@ class ApplicationServiceProviderName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/application_service/",
       _aggregateRootName.baseDirectory,
-      "${myFieldName.toSnakeCase()}.dart",
+      "${_aggregateRootName.myClassName.toSnakeCase()}.application_service_provider.dart",
     );
   }
 
@@ -51,6 +51,7 @@ Provider<${_applicationServiceImplName.myClassName}>((ref) {
   return ${_applicationServiceImplName.myClassName}(
     ${_abstractInterfaceFactoryName.myInstanceName} : ref.watch(${_factoryProvider.myFieldName}),
     ${_abstractInterfaceRepositoryName.myInstanceName} : ref.watch(${_repositoryProvider.myFieldName}),
+    ref : ref,
   );
 })
 ''');
