@@ -36,12 +36,6 @@ class SingleStateImplName {
       p0.extend = refer("AsyncNotifier<${_aggregateRootName.myClassName}?>");
 
       p0.fields.add(Field((f) {
-        f.name = '_service';
-        f.modifier = FieldModifier.final$;
-        f.assignment = Code("ref.watch(${_applicationServiceProviderName.myFieldName})");
-      }));
-
-      p0.fields.add(Field((f) {
         f.name = "_${_aggregateRootName.keyInstanceName}";
         f.type = refer("${_aggregateRootName.keyClassName}?");
       }));
@@ -62,16 +56,24 @@ return null;
         m.returns = refer("Future<${_aggregateRootName.myClassName}?>");
         m.name = "set";
         m.modifier = MethodModifier.async;
+        m.optionalParameters.add(Parameter((p0) {
+          p0.name = _aggregateRootName.keyInstanceName;
+          p0.type =
+              refer("${_aggregateRootName.keyArgumentElement.type.getDisplayString(withNullability: false)}");
+          p0.required = true;
+          p0.named = true;
+        }));
         m.body = Code('''
 state = const AsyncValue.loading();
-final (target, err) = await _service.find(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
+final service = ref.watch(${_applicationServiceProviderName.myFieldName});
+final (target, err) = await service.find(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
 if (err != null) {
   state = AsyncValue.error(err.error, err.stackTrace);
   return null;
 }
 if (target == null) {
   _${_aggregateRootName.keyInstanceName} = null;
-  state = null;
+  state = const AsyncValue.data(null);
   return null;
 }
 _${_aggregateRootName.keyInstanceName} = ${_aggregateRootName.keyInstanceName};
@@ -100,18 +102,19 @@ if (${_aggregateRootName.keyInstanceName} == null) {
       StackTrace.current);
   return;
 }
-final (changed, err) = await _service.${methodName}(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
+final service = ref.watch(${_applicationServiceProviderName.myFieldName});
+final (changed, err) = await service.${methodName}(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
 if (err != null) {
   state = AsyncValue.error(err.error, err.stackTrace);
   return;
 }
 if (changed == null) {
   state = AsyncValue.error(
-      "[${myClassName}Error] Failed to execute [${methodName}]. ${_aggregateRootName.keyInstanceName}[\${${_aggregateRootName.keyInstanceName}}]",
+      "[${myClassName}Error] Failed to execute [${methodName}]. ${_aggregateRootName.keyInstanceName}[\$${_aggregateRootName.keyInstanceName}]",
       StackTrace.current);
   return;
 }
-state = changed;
+state = AsyncValue.data(changed);
 ''');
         }));
       }

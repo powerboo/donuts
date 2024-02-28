@@ -10,7 +10,8 @@ import 'package:dart_style/dart_style.dart';
 
 final _formatter = DartFormatter();
 
-class AbstractInterfaceFactoryGenerator extends GeneratorForAnnotation<AggregateRoot> {
+class AbstractInterfaceFactoryGenerator
+    extends GeneratorForAnnotation<AggregateRoot> {
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) {
     return super.generate(library, buildStep);
@@ -22,7 +23,8 @@ class AbstractInterfaceFactoryGenerator extends GeneratorForAnnotation<Aggregate
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    final aggregateRootName = await elementChecker(element, annotation, buildStep);
+    final aggregateRootName =
+        await elementChecker(element, annotation, buildStep);
 
     final abstractInterfaceFactory = AbstractInterfaceFactoryName(
       aggregateRootName: aggregateRootName,

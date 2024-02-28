@@ -34,7 +34,8 @@ class ListStateImplName {
   Class toClassElement() {
     return Class((p0) {
       p0.name = myClassName;
-      p0.extend = refer("AsyncNotifier<List<${_aggregateRootName.myClassName}>>");
+      p0.extend =
+          refer("AsyncNotifier<List<${_aggregateRootName.myClassName}>>");
 
       final fetchAll = Method((m) {
         m.name = '_fetchAll';
@@ -92,20 +93,23 @@ return list;
           if (param is! ParameterElement) {
             continue;
           }
-          if (param.metadata.any((annotation) => annotation.element?.displayName == 'KeyArgument')) {
+          if (param.metadata.any((annotation) =>
+              annotation.element?.displayName == 'KeyArgument')) {
             continue;
           }
           if (param.isNamed) {
             m.requiredParameters.add(Parameter((p0) {
               p0.name = param.name;
-              p0.type = refer(param.type.getDisplayString(withNullability: true));
+              p0.type =
+                  refer(param.type.getDisplayString(withNullability: true));
               p0.required = false;
               p0.named = false;
             }));
           } else {
             m.optionalParameters.add(Parameter((p0) {
               p0.name = param.name;
-              p0.type = refer(param.type.getDisplayString(withNullability: true));
+              p0.type =
+                  refer(param.type.getDisplayString(withNullability: true));
               p0.required = param.isRequiredNamed;
               p0.named = param.isNamed;
             }));

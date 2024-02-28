@@ -25,7 +25,7 @@ Focus domain modeling and UI.
       - factory
       - application_service
 
-- Entity operate by factory, repository, application_service.
+- The factory, repository, and application_service operate Entity. Then, if Entity can be defined, they can be generated.
 
 ### Code Example
 

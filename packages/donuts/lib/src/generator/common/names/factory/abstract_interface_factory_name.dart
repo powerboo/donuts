@@ -44,8 +44,10 @@ class AbstractInterfaceFactoryName {
           p0.name = "create";
 
           // ignore annotated argument
-          final ignoreKeyArgumentList = _aggregateRootName.constructorElement.children
-              .where((e) => e.name != _aggregateRootName.keyArgumentElement.name)
+          final ignoreKeyArgumentList = _aggregateRootName
+              .constructorElement.children
+              .where(
+                  (e) => e.name != _aggregateRootName.keyArgumentElement.name)
               .toList();
 
           for (final arg in ignoreKeyArgumentList) {
