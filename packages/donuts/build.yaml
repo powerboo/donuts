@@ -1,3 +1,105 @@
+targets:
+  $default:
+    builders:
+      # ------------------------------------------------------------
+      # factory
+      # ------------------------------------------------------------
+      donuts|abstractInterfaceFactoryBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      donuts|factoryImplBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/factory/src/test_data/{{file}}.factory_impl.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      donuts|factoryProviderBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/factory/src/test_data/{{file}}.factory_provider.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      # ------------------------------------------------------------
+      # repository
+      # ------------------------------------------------------------
+      donuts|abstractInterfaceRepositoryBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/repository/src/test_data/{{file}}.abstract_interface_repository.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      donuts|repositoryImplBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/repository/src/test_data/{{file}}.repository_impl.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      donuts|inMemoryRepositoryImplBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/repository/src/test_data/{{file}}.in_memory_repository_impl.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      donuts|repositoryProviderBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/repository/src/test_data/{{file}}.repository_provider.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      # ------------------------------------------------------------
+      # application service
+      # ------------------------------------------------------------
+      donuts|applicationServiceImplBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/application_service/src/test_data/{{file}}.application_service_impl.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      donuts|applicationServiceProviderBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/application_service/src/test_data/{{file}}.application_service_provider.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      # ------------------------------------------------------------
+      # state
+      # ------------------------------------------------------------
+      donuts|listStateBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/state/src/test_data/{{file}}.list_state_impl.dart"
+      donuts|singleStateBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/state/src/test_data/{{file}}.single_state_impl.dart"
+
 builders:
   # ------------------------------------------------------------
   # factory

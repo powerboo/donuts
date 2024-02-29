@@ -21,7 +21,8 @@ import 'package:code_builder/code_builder.dart';
 
 final _formatter = DartFormatter();
 
-class ApplicationServiceProviderGenerator extends GeneratorForAnnotation<AggregateRoot> {
+class ApplicationServiceProviderGenerator
+    extends GeneratorForAnnotation<AggregateRoot> {
   final Map<String, dynamic> config;
   ApplicationServiceProviderGenerator(this.config);
 
@@ -45,7 +46,8 @@ class ApplicationServiceProviderGenerator extends GeneratorForAnnotation<Aggrega
     }
     inMemory = config["in_memory"] as bool;
 
-    final aggregateRootName = await elementChecker(element, annotation, buildStep);
+    final aggregateRootName =
+        await elementChecker(element, annotation, buildStep);
 
     final factoryName = AbstractInterfaceFactoryName(
       aggregateRootName: aggregateRootName,
@@ -56,7 +58,8 @@ class ApplicationServiceProviderGenerator extends GeneratorForAnnotation<Aggrega
     );
 
     final repositoryException = ExceptionName(
-      exceptionBaseName: "${aggregateRootName.element.displayName}RepositoryImpl",
+      exceptionBaseName:
+          "${aggregateRootName.element.displayName}RepositoryImpl",
     );
 
     final repositoryName = AbstractInterfaceRepositoryName(
@@ -75,7 +78,8 @@ class ApplicationServiceProviderGenerator extends GeneratorForAnnotation<Aggrega
     );
 
     final exception = ExceptionName(
-      exceptionBaseName: "${aggregateRootName.element.displayName}ApplicationServiceImpl",
+      exceptionBaseName:
+          "${aggregateRootName.element.displayName}ApplicationServiceImpl",
     );
 
     final applicationServiceImplName = ApplicationServiceImplName(
@@ -114,7 +118,7 @@ class ApplicationServiceProviderGenerator extends GeneratorForAnnotation<Aggrega
       ]);
 
       p0.directives.addAll([
-        Directive.import('package:flutter_riverpod/flutter_riverpod.dart'),
+        Directive.import('package:riverpod/riverpod.dart'),
         Directive.import(factoryProvider.myPath),
         Directive.import(repositoryProvider.myPath),
         Directive.import(applicationServiceImplName.myPath),

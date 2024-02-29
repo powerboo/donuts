@@ -25,7 +25,8 @@ class FactoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    final aggregateRootName = await elementChecker(element, annotation, buildStep);
+    final aggregateRootName =
+        await elementChecker(element, annotation, buildStep);
 
     final factoryName = AbstractInterfaceFactoryName(
       aggregateRootName: aggregateRootName,
@@ -47,7 +48,7 @@ class FactoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> {
       ]);
 
       p0.directives.addAll([
-        Directive.import('package:flutter_riverpod/flutter_riverpod.dart'),
+        Directive.import('package:riverpod/riverpod.dart'),
         Directive.import(factoryName.myPath),
         Directive.import(factoryNameImpl.myPath),
       ]);

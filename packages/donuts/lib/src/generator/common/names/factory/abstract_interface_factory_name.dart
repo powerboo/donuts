@@ -42,7 +42,6 @@ class AbstractInterfaceFactoryName {
             _aggregateRootName.myPath,
           );
           p0.name = "create";
-
           // ignore annotated argument
           final ignoreKeyArgumentList = _aggregateRootName
               .constructorElement.children

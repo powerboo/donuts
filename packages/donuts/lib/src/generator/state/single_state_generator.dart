@@ -44,7 +44,8 @@ class SingleStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
     }
     inMemory = config["in_memory"] as bool;
 
-    final aggregateRootName = await elementChecker(element, annotation, buildStep);
+    final aggregateRootName =
+        await elementChecker(element, annotation, buildStep);
 
     final factoryName = AbstractInterfaceFactoryName(
       aggregateRootName: aggregateRootName,
@@ -59,7 +60,8 @@ class SingleStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
     );
 
     final repositoryException = ExceptionName(
-      exceptionBaseName: "${aggregateRootName.element.displayName}RepositoryImpl",
+      exceptionBaseName:
+          "${aggregateRootName.element.displayName}RepositoryImpl",
     );
 
     final repositoryImplName = RepositoryImplName(
@@ -74,7 +76,8 @@ class SingleStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
     );
 
     final exception = ExceptionName(
-      exceptionBaseName: "${aggregateRootName.element.displayName}ApplicationServiceImpl",
+      exceptionBaseName:
+          "${aggregateRootName.element.displayName}ApplicationServiceImpl",
     );
 
     final applicationServiceImplName = ApplicationServiceImplName(
@@ -127,7 +130,7 @@ AsyncNotifierProvider<${singleStateImpl.myClassName}, ${aggregateRootName.myClas
       ]);
 
       p0.directives.addAll([
-        Directive.import("package:flutter_riverpod/flutter_riverpod.dart"),
+        Directive.import("package:riverpod/riverpod.dart"),
         Directive.import(aggregateRootName.myPath),
         Directive.import(applicationServiceProvider.myPath),
       ]);

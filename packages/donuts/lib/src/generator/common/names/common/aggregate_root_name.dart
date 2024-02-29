@@ -104,7 +104,9 @@ class AggregateRootName {
       if (param is! ParameterElement) {
         continue;
       }
-      if (ignoreKey && param.metadata.any((annotation) => annotation.element?.displayName == 'KeyArgument')) {
+      if (ignoreKey &&
+          param.metadata.any((annotation) =>
+              annotation.element?.displayName == 'KeyArgument')) {
         continue;
       }
       if (param.isNamed) {
@@ -139,7 +141,7 @@ class AggregateRootName {
     final pathSegments = _libraryElement.source.uri.pathSegments;
     final filteredSegments = pathSegments
         .skip(1)
-        .where((segment) => segment != pathSegments.last && segment != "aggregate_root")
+        .where((segment) => segment != pathSegments.last)
         .toList();
     return p.joinAll(filteredSegments);
   }

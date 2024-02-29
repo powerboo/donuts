@@ -17,6 +17,7 @@ dependencies:
   freezed_annotation: ">=2.0.0 <3.0.0"
   path: ">=1.8.1 <2.0.0"
   source_gen: ^1.2.7
+  uuid: ^4.3.3
 
 dev_dependencies:
   build_runner: ^2.3.3
@@ -25,3 +26,5 @@ dev_dependencies:
   freezed: ^2.4.7
   source_gen_test: ^1.0.6
   test: ^1.21.0
+  riverpod: ^2.5.0
+  # expect_error: ^1.0.4

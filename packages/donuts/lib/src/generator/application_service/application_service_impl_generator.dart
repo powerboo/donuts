@@ -14,7 +14,8 @@ import 'package:dart_style/dart_style.dart';
 
 final _formatter = DartFormatter();
 
-class ApplicationServiceImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
+class ApplicationServiceImplGenerator
+    extends GeneratorForAnnotation<AggregateRoot> {
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) {
     return super.generate(library, buildStep);
@@ -26,7 +27,8 @@ class ApplicationServiceImplGenerator extends GeneratorForAnnotation<AggregateRo
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    final aggregateRootName = await elementChecker(element, annotation, buildStep);
+    final aggregateRootName =
+        await elementChecker(element, annotation, buildStep);
 
     final repositoryName = AbstractInterfaceRepositoryName(
       aggregateRootName: aggregateRootName,
@@ -37,7 +39,8 @@ class ApplicationServiceImplGenerator extends GeneratorForAnnotation<AggregateRo
     );
 
     final exception = ExceptionName(
-      exceptionBaseName: "${aggregateRootName.element.displayName}ApplicationServiceImpl",
+      exceptionBaseName:
+          "${aggregateRootName.element.displayName}ApplicationServiceImpl",
     );
 
     final applicationServiceImpl = ApplicationServiceImplName(
@@ -55,7 +58,7 @@ class ApplicationServiceImplGenerator extends GeneratorForAnnotation<AggregateRo
 
       p0.directives.addAll([
         Directive.import("package:donuts_annotation/error.dart"),
-        Directive.import('package:flutter_riverpod/flutter_riverpod.dart'),
+        Directive.import('package:riverpod/riverpod.dart'),
         Directive.import(aggregateRootName.myPath),
         Directive.import(factoryName.myPath),
         Directive.import(repositoryName.myPath),

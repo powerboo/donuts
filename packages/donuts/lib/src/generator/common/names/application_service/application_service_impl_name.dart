@@ -96,7 +96,7 @@ class ApplicationServiceImplName {
         p0.name = "ref";
         p0.type = refer(
           'ProviderRef<dynamic>',
-          'package:flutter_riverpod/flutter_riverpod.dart',
+          'package:riverpod/riverpod.dart',
         );
         p0.modifier = FieldModifier.final$;
       });
@@ -112,28 +112,32 @@ class ApplicationServiceImplName {
 
       final create = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
+        p0.returns =
+            refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
         p0.name = 'create';
 
         for (final argument in _aggregateRootName.constructorElement.children) {
           if (argument is! ParameterElement) {
             continue;
           }
-          if (argument.metadata.any((annotation) => annotation.element?.displayName == 'KeyArgument')) {
+          if (argument.metadata.any((annotation) =>
+              annotation.element?.displayName == 'KeyArgument')) {
             continue;
           }
 
           if (argument.isNamed) {
             p0.optionalParameters.add(Parameter((p1) {
               p1.name = argument.displayName;
-              p1.type = refer(argument.type.getDisplayString(withNullability: true));
+              p1.type =
+                  refer(argument.type.getDisplayString(withNullability: true));
               p1.named = true;
               p1.required = argument.isRequired;
             }));
           } else {
             p0.requiredParameters.add(Parameter((p1) {
               p1.name = argument.displayName;
-              p1.type = refer(argument.type.getDisplayString(withNullability: true));
+              p1.type =
+                  refer(argument.type.getDisplayString(withNullability: true));
               p1.named = false;
               p1.required = false;
             }));
@@ -153,7 +157,8 @@ try{
 
       final find = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
+        p0.returns =
+            refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
         p0.name = 'find';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.keyInstanceName;
@@ -216,7 +221,8 @@ try {
 
       final all = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(List<${_aggregateRootName.myClassName}>?, Error?)>');
+        p0.returns =
+            refer('Future<(List<${_aggregateRootName.myClassName}>?, Error?)>');
         p0.name = 'all';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = 'cursor';
@@ -274,8 +280,10 @@ try {
           }
 
           // return
-          m.returns = refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
-          if (method.returnType.getDisplayString(withNullability: false) != _aggregateRootName.myClassName) {
+          m.returns =
+              refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
+          if (method.returnType.getDisplayString(withNullability: false) !=
+              _aggregateRootName.myClassName) {
             throw InvalidGenerationSourceError(
                 "The return type must be AggregateRoot. If returning something else, please annotate the AggregateRoot with @IgnoreTarget.");
           }
@@ -297,14 +305,16 @@ try {
           for (final parameter in method.parameters) {
             if (parameter.isPositional) {
               m.requiredParameters.add(Parameter((p) {
-                p.type = refer(parameter.type.getDisplayString(withNullability: true));
+                p.type = refer(
+                    parameter.type.getDisplayString(withNullability: true));
                 p.name = parameter.name;
                 p.named = false;
                 p.required = false;
               }));
             } else {
               m.optionalParameters.add(Parameter((p) {
-                p.type = refer(parameter.type.getDisplayString(withNullability: true));
+                p.type = refer(
+                    parameter.type.getDisplayString(withNullability: true));
                 p.name = parameter.name;
                 p.named = true;
                 p.required = parameter.isRequired;

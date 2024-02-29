@@ -15,7 +15,8 @@ import 'package:dart_style/dart_style.dart';
 
 final _formatter = DartFormatter();
 
-class RepositoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> {
+class RepositoryProviderGenerator
+    extends GeneratorForAnnotation<AggregateRoot> {
   final Map<String, dynamic> config;
   RepositoryProviderGenerator(this.config);
   @override
@@ -38,7 +39,8 @@ class RepositoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> 
     }
     inMemory = config["in_memory"] as bool;
 
-    final aggregateRootName = await elementChecker(element, annotation, buildStep);
+    final aggregateRootName =
+        await elementChecker(element, annotation, buildStep);
 
     final repositoryName = AbstractInterfaceRepositoryName(
       aggregateRootName: aggregateRootName,
@@ -73,7 +75,7 @@ class RepositoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> 
       ]);
 
       p0.directives.addAll([
-        Directive.import('package:flutter_riverpod/flutter_riverpod.dart'),
+        Directive.import('package:riverpod/riverpod.dart'),
         Directive.import(repositoryName.myPath),
         Directive.import(repositoryImplName.myPath),
         Directive.import(inMemoryRepositoryImpl.myPath),
