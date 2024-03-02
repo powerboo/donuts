@@ -37,7 +37,7 @@ Future<AggregateRootName> elementChecker(
   // get annotated argument
   final List<ParameterElement> annotatedElementList = [];
   ElementAnnotation? annotation;
-  // final List<ParameterElement> normalArgumentList = [];
+
   for (final argument in constructorElement.children) {
     if (argument is! ParameterElement) {
       continue;
@@ -51,6 +51,10 @@ Future<AggregateRootName> elementChecker(
       }
     }
   }
+  // key fieldをつけるのは
+  // field
+  // getter
+  // constructor の引数
 
   // key field does not exists.
   if (annotatedElementList.isEmpty || annotation == null) {
@@ -80,11 +84,15 @@ Future<AggregateRootName> elementChecker(
 extension KebabCase on String {
   String toKebabCase() {
     final regExp = RegExp(r'(?<=[a-z])[A-Z]');
-    return replaceAllMapped(regExp, (Match match) => '-${match.group(0)!.toLowerCase()}').toLowerCase();
+    return replaceAllMapped(
+            regExp, (Match match) => '-${match.group(0)!.toLowerCase()}')
+        .toLowerCase();
   }
 
   String toSnakeCase() {
     final regExp = RegExp(r'(?<=[a-z])[A-Z]');
-    return replaceAllMapped(regExp, (Match match) => '_${match.group(0)!.toLowerCase()}').toLowerCase();
+    return replaceAllMapped(
+            regExp, (Match match) => '_${match.group(0)!.toLowerCase()}')
+        .toLowerCase();
   }
 }

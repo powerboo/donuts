@@ -4,6 +4,7 @@ import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
+import 'package:donuts/src/generator/common/names/common/exception_name.dart';
 import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
 import 'package:donuts/src/generator/common/names/factory/factory_impl_name.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
@@ -23,24 +24,42 @@ class FactoryImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
-    final aggregateRootName = await elementChecker(element, annotation, buildStep);
+    final aggregateRootName =
+        await elementChecker(element, annotation, buildStep);
 
     final factoryName = AbstractInterfaceFactoryName(
       aggregateRootName: aggregateRootName,
     );
 
+    final factoryException = ExceptionName(
+      exceptionBaseName: "${factoryName.myClassName}",
+    );
+
     final factoryImpl = FactoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceFactoryName: factoryName,
+      exceptionName: factoryException,
     ).toClassElement();
 
     final lib = Library(((p0) {
       p0.body.add(factoryImpl);
+      p0.body.add(factoryException.toClassElement());
 
+      if (aggregateRootName.keyType == "String" ||
+          aggregateRootName.keyFactoryName == null) {
+        if (!aggregateRootName.isInterface) {
+          p0.directives.addAll([
+            Directive.import("package:uuid/uuid.dart"),
+          ]);
+        }
+      } else {
+        p0.directives.addAll([
+          Directive.import("package:donuts_annotation/donuts_annotation.dart"),
+        ]);
+      }
       p0.directives.addAll([
         Directive.import(aggregateRootName.myPath),
         Directive.import(factoryName.myPath),
-        Directive.import("package:uuid/uuid.dart"),
       ]);
     }));
 

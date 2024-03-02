@@ -52,9 +52,14 @@ class ApplicationServiceProviderGenerator
     final factoryName = AbstractInterfaceFactoryName(
       aggregateRootName: aggregateRootName,
     );
+    final factoryException = ExceptionName(
+      exceptionBaseName: "${factoryName.myClassName}Exception",
+    );
+
     final factoryNameImpl = FactoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceFactoryName: factoryName,
+      exceptionName: factoryException,
     );
 
     final repositoryException = ExceptionName(

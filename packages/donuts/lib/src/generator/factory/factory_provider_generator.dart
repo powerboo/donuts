@@ -5,6 +5,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
+import 'package:donuts/src/generator/common/names/common/exception_name.dart';
 import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
 import 'package:donuts/src/generator/common/names/factory/factory_impl_name.dart';
 import 'package:donuts/src/generator/common/names/factory/factory_provider_name.dart';
@@ -31,27 +32,50 @@ class FactoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> {
     final factoryName = AbstractInterfaceFactoryName(
       aggregateRootName: aggregateRootName,
     );
+
+    final factoryException = ExceptionName(
+      exceptionBaseName: "${factoryName.myClassName}Exception",
+    );
+
     final factoryNameImpl = FactoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceFactoryName: factoryName,
+      exceptionName: factoryException,
     );
 
     final provider = FactoryProviderName(
       aggregateRootName: aggregateRootName,
       factoryName: factoryName,
       factoryNameImpl: factoryNameImpl,
-    ).toFieldElement();
+    );
 
     final lib = Library(((p0) {
       p0.body = ListBuilder<Spec>([
-        provider,
+        provider.toFieldElement(),
       ]);
 
       p0.directives.addAll([
         Directive.import('package:riverpod/riverpod.dart'),
         Directive.import(factoryName.myPath),
-        Directive.import(factoryNameImpl.myPath),
       ]);
+      if (aggregateRootName.isInterface) {
+        p0.directives.addAll([
+          Directive.import(aggregateRootName.myPath),
+          Directive.part("${provider.myPartPath}"),
+        ]);
+      } else {
+        p0.directives.addAll([
+          Directive.import(factoryNameImpl.myPath),
+          Directive.import(aggregateRootName.keyFactoryName!.myPath),
+        ]);
+        if (aggregateRootName.keyFactoryName != null &&
+            aggregateRootName.keyType != "String") {
+          p0.directives.add(
+            Directive.import(
+                "package:donuts_annotation/donuts_annotation.dart"),
+          );
+        }
+      }
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');

@@ -27,7 +27,7 @@ class ListStateImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/state/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.list_state_impl.dart",
+      "${_aggregateRootName.fileName}.list_state_impl.dart",
     );
   }
 

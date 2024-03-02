@@ -33,7 +33,7 @@ class RepositoryProviderName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/repository/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.repository_provider.dart",
+      "${_aggregateRootName.fileName}.repository_provider.dart",
     );
   }
 

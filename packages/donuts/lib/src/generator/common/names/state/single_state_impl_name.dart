@@ -26,7 +26,7 @@ class SingleStateImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/state/",
       _aggregateRootName.baseDirectory,
-      "${myClassName.toSnakeCase()}.dart",
+      "${_aggregateRootName.fileName}.dart",
     );
   }
 
@@ -58,8 +58,8 @@ return null;
         m.modifier = MethodModifier.async;
         m.optionalParameters.add(Parameter((p0) {
           p0.name = _aggregateRootName.keyInstanceName;
-          p0.type =
-              refer("${_aggregateRootName.keyArgumentElement.type.getDisplayString(withNullability: false)}");
+          p0.type = refer(
+              "${_aggregateRootName.keyArgumentElement.type.getDisplayString(withNullability: false)}");
           p0.required = true;
           p0.named = true;
         }));

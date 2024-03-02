@@ -1,32 +1,55 @@
 library donuts_annotation;
 
 class AggregateRoot {
-  const AggregateRoot();
-}
+  // factory
+  final bool extensionFactory;
 
-class KeyArgument<KeyType> {
-  final KeyArgumentDiv keyArgumentDiv;
-  final KeyFactory<KeyType>? keyFactory;
+  // repository
+  final bool extensionRepository;
+  final bool extensionInMemoryRepository;
+  final bool useInMemory;
 
-  const KeyArgument({
-    this.keyArgumentDiv = KeyArgumentDiv.uuidV7,
-    this.keyFactory = null,
+  // application service
+  final bool extensionApplicationService;
+
+  // list state
+  final bool extensionListState;
+
+  // single state
+  final bool extensionSingleState;
+
+  // interface group
+  final List<Type> interfaceChildren;
+
+  const AggregateRoot({
+    // factory
+    this.extensionFactory = false,
+
+    // repository
+    this.extensionRepository = false,
+    this.extensionInMemoryRepository = false,
+    this.useInMemory = false,
+
+    // application service
+    this.extensionApplicationService = false,
+
+    // list state
+    this.extensionListState = false,
+
+    // single state
+    this.extensionSingleState = false,
+
+    // interface group
+    this.interfaceChildren = const [],
   });
 }
 
-enum KeyArgumentDiv {
-  uuidV7("uuidV7"),
-  object("object"),
-  ;
+class KeyArgument<KeyType> {
+  final KeyFactory<KeyType>? keyFactory;
 
-  final String toStringValue;
-  const KeyArgumentDiv(this.toStringValue);
-  factory KeyArgumentDiv.from({
-    required String value,
-  }) {
-    final indexEnum = KeyArgumentDiv.values.firstWhere((e) => e.toStringValue == value);
-    return indexEnum;
-  }
+  const KeyArgument({
+    this.keyFactory = null,
+  });
 }
 
 abstract interface class KeyFactory<KeyType> {

@@ -1,22 +1,23 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
+import 'package:donuts/src/generator/common/names/common/exception_name.dart';
 import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
 import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
-import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:path/path.dart' as p;
-import 'package:donuts/src/generator/common/element_checker.dart';
-import 'package:source_gen/source_gen.dart';
 
 class FactoryImplName {
   final AggregateRootName _aggregateRootName;
   final AbstractInterfaceFactoryName _abstractInterfaceFactoryName;
+  final ExceptionName _exceptionName;
 
   FactoryImplName({
     required AbstractInterfaceFactoryName abstractInterfaceFactoryName,
     required AggregateRootName aggregateRootName,
+    required ExceptionName exceptionName,
   })  : _aggregateRootName = aggregateRootName,
-        _abstractInterfaceFactoryName = abstractInterfaceFactoryName;
+        _abstractInterfaceFactoryName = abstractInterfaceFactoryName,
+        _exceptionName = exceptionName;
 
   String get myClassName {
     return "${_aggregateRootName.element.displayName}FactoryImpl";
@@ -26,7 +27,7 @@ class FactoryImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/factory/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.factory_impl.dart",
+      "${_aggregateRootName.fileName}.factory_impl.dart",
     );
   }
 
@@ -41,28 +42,34 @@ class FactoryImplName {
           _abstractInterfaceFactoryName.myPath,
         ),
       ]);
+      if (!(_aggregateRootName.keyFactoryName == null ||
+          _aggregateRootName.keyType == "String")) {
+        p0.constructors.add(Constructor((ct) {
+          ct.optionalParameters.add(Parameter((p0) {
+            p0.name = 'keyFactory';
+            p0.type = refer('KeyFactory',
+                'package:donuts_annotation/donuts_annotation.dart');
+            p0.required = true;
+            p0.named = true;
+            p0.toThis = true;
+          }));
+        }));
+        p0.fields.add(Field((b) {
+          b.name = 'keyFactory';
+          b.type = refer(
+              'KeyFactory', 'package:donuts_annotation/donuts_annotation.dart');
+          b.modifier = FieldModifier.final$;
+        }));
+      }
 
-      switch (_aggregateRootName.keyArgumentDiv) {
-        case KeyArgumentDiv.uuidV7:
-          p0.fields = ListBuilder<Field>([
-            Field((b) {
-              b.name = 'uuid';
-              b.type = refer('Uuid', 'package:uuid/uuid.dart');
-              b.modifier = FieldModifier.final$;
-              b.assignment = Code("const Uuid()");
-            }),
-          ]);
-          break;
-        case KeyArgumentDiv.object:
-          throw InvalidGenerationSourceError(
-            "un implements.",
-            element: _aggregateRootName.element,
-          );
-        default:
-          throw InvalidGenerationSourceError(
-            "un supported KeyArgumentDiv.",
-            element: _aggregateRootName.element,
-          );
+      if (_aggregateRootName.keyType == "String" &&
+          !_aggregateRootName.isInterface) {
+        p0.fields.add(Field((b) {
+          b.name = 'uuid';
+          b.type = refer('Uuid', 'package:uuid/uuid.dart');
+          b.modifier = FieldModifier.final$;
+          b.assignment = Code("const Uuid()");
+        }));
       }
 
       // body
@@ -75,17 +82,15 @@ class FactoryImplName {
         p0.annotations.add(
           refer('override'),
         );
-
         // ignore annotated argument
-        final ignoreKeyArgumentList = _aggregateRootName.constructorElement.children
+        final ignoreKeyArgumentList = _aggregateRootName
+            .constructorElement.children
             .where((e) => e.name != _aggregateRootName.keyArgumentElement.name)
             .toList();
 
         Map<String, String> map = {};
 
-        // final id = uuid.v7();
-        map.addAll({_aggregateRootName.keyArgumentElement.name: 'id'});
-
+        map.addAll({_aggregateRootName.keyArgumentElement.name: 'key'});
         for (final arg in ignoreKeyArgumentList) {
           if (arg is! ParameterElement) {
             continue;
@@ -113,35 +118,27 @@ class FactoryImplName {
             }));
           }
         }
-        switch (_aggregateRootName.keyArgumentDiv) {
-          case KeyArgumentDiv.uuidV7:
-            p0.body = Code('''
-              final id = uuid.v7();
+
+        if (_aggregateRootName.isInterface) {
+          p0.body = Code(
+              "throw ${_exceptionName.myClassName}(\"[${_aggregateRootName.myClassName}] is interface or abstract.must be implement custom factory.Please check Section XXX in https://pub.dev/packages/donuts\");");
+        } else {
+          p0.body = Code('''
+              final key = ${_aggregateRootName.keyInitializer()};
 
               return ${_aggregateRootName.myClassName}(
                 ${_aggregateRootName.initArgumentString(arg: map)}
               );
             ''');
-            break;
-          case KeyArgumentDiv.object:
-            throw InvalidGenerationSourceError(
-              "un implements.",
-              element: _aggregateRootName.element,
-            );
-          default:
-            throw InvalidGenerationSourceError(
-              "un supported KeyArgumentDiv.",
-              element: _aggregateRootName.element,
-            );
         }
       });
       final restore = Method((p0) {
-        p0.returns = refer(_aggregateRootName.myClassName, _aggregateRootName.myPath);
+        p0.returns =
+            refer(_aggregateRootName.myClassName, _aggregateRootName.myPath);
         p0.name = "restore";
         p0.annotations.add(
           refer('override'),
         );
-
         Map<String, String> map = {};
 
         for (final arg in _aggregateRootName.constructorElement.children) {
@@ -172,11 +169,16 @@ class FactoryImplName {
             }));
           }
         }
-        p0.body = Code('''
+        if (_aggregateRootName.isInterface) {
+          p0.body = Code(
+              "throw ${_exceptionName.myClassName}(\"[${_aggregateRootName.myClassName}] is interface or abstract.must be implement custom factory.Please check Section XXX in https://pub.dev/packages/donuts\");");
+        } else {
+          p0.body = Code('''
               return ${_aggregateRootName.myClassName}(
                 ${_aggregateRootName.initArgumentString(arg: map)}
               );
             ''');
+        }
       });
 
       p0.methods.addAll([create, restore]);

@@ -10,12 +10,12 @@ class JsonSerializableClass {
   final String value;
 
   late final String? nullableString;
-  late final int key;
+  late final String key;
 
   JsonSerializableClass(
     this.value,
     String? nullableString, {
-    @KeyArgument() required int key,
+    @KeyArgument() required String key,
     bool? isOk = false,
   }) {
     if (value.isEmpty) {

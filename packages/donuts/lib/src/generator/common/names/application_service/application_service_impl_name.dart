@@ -33,7 +33,7 @@ class ApplicationServiceImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/application_service/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.application_service_impl.dart",
+      "${_aggregateRootName.fileName}.application_service_impl.dart",
     );
   }
 
@@ -150,7 +150,7 @@ try{
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: created);
   return (created, null);
 } catch(e, stacktrace){
-  return (null, Error(e, stacktrace));
+  return (null, DonutsError(e, stacktrace));
 }
 ''');
       });
@@ -174,7 +174,7 @@ try {
   final target = await _${_abstractInterfaceRepositoryName.myInstanceName}.find(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
   return (target, null);
 } catch (e, stacktrace) {
-  return (null, Error(e, stacktrace));
+  return (null, DonutsError(e, stacktrace));
 }
 ''');
       });
@@ -194,7 +194,7 @@ try {
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: ${_aggregateRootName.myInstanceName});
   return (null, null);
 } catch (e, stacktrace) {
-  return (null, Error(e, stacktrace));
+  return (null, DonutsError(e, stacktrace));
 }
 ''');
       });
@@ -214,7 +214,7 @@ try {
   await _${_abstractInterfaceRepositoryName.myInstanceName}.delete(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
   return (null, null);
 } catch (e, stacktrace) {
-  return (null, Error(e, stacktrace));
+  return (null, DonutsError(e, stacktrace));
 }
 ''');
       });
@@ -243,7 +243,7 @@ try {
   final target = await _${_abstractInterfaceRepositoryName.myInstanceName}.all(cursor: cursor, length: length);
   return (target, null);
 } catch (e, stacktrace) {
-  return (null, Error(e, stacktrace));
+  return (null, DonutsError(e, stacktrace));
 }
 ''');
       });
@@ -336,7 +336,7 @@ try {
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: changed);
   return (changed, null);
 } catch (e, stacktrace) {
-  return (null, Error(e, stacktrace));
+  return (null, DonutsError(e, stacktrace));
 }
 ''');
           } else {
@@ -354,7 +354,7 @@ try {
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: changed);
   return (changed, null);
 } catch (e, stacktrace) {
-  return (null, Error(e, stacktrace));
+  return (null, DonutsError(e, stacktrace));
 }
 ''');
           }

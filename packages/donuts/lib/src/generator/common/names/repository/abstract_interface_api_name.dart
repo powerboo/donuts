@@ -16,7 +16,7 @@ class AbstractInterfaceApiName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/repository/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.dart",
+      "${_aggregateRootName.fileName}.dart",
     );
   }
 

@@ -11,7 +11,7 @@ JsonSerializableClass _$JsonSerializableClassFromJson(
     JsonSerializableClass(
       json['json_serializable_class'] as String,
       json['nullableString'] as String?,
-      key: json['key'] as int,
+      key: json['key'] as String,
     );
 
 Map<String, dynamic> _$JsonSerializableClassToJson(

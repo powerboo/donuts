@@ -20,7 +20,8 @@ SampleAggregateRoot _$SampleAggregateRootFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SampleAggregateRoot {
-  @KeyArgument()
+  @KeyArgument(
+      keyArgumentDiv: KeyArgumentDiv.object, keyFactory: ObjectKeyFactory())
   String get key => throw _privateConstructorUsedError;
   String get value => throw _privateConstructorUsedError;
 
@@ -36,7 +37,11 @@ abstract class $SampleAggregateRootCopyWith<$Res> {
           SampleAggregateRoot value, $Res Function(SampleAggregateRoot) then) =
       _$SampleAggregateRootCopyWithImpl<$Res, SampleAggregateRoot>;
   @useResult
-  $Res call({@KeyArgument() String key, String value});
+  $Res call(
+      {@KeyArgument(
+          keyArgumentDiv: KeyArgumentDiv.object, keyFactory: ObjectKeyFactory())
+      String key,
+      String value});
 }
 
 /// @nodoc
@@ -76,7 +81,11 @@ abstract class _$$SampleAggregateRootImplCopyWith<$Res>
       __$$SampleAggregateRootImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@KeyArgument() String key, String value});
+  $Res call(
+      {@KeyArgument(
+          keyArgumentDiv: KeyArgumentDiv.object, keyFactory: ObjectKeyFactory())
+      String key,
+      String value});
 }
 
 /// @nodoc
@@ -110,14 +119,18 @@ class __$$SampleAggregateRootImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SampleAggregateRootImpl extends _SampleAggregateRoot {
   _$SampleAggregateRootImpl(
-      {@KeyArgument() required this.key, required this.value})
+      {@KeyArgument(
+          keyArgumentDiv: KeyArgumentDiv.object, keyFactory: ObjectKeyFactory())
+      required this.key,
+      required this.value})
       : super._();
 
   factory _$SampleAggregateRootImpl.fromJson(Map<String, dynamic> json) =>
       _$$SampleAggregateRootImplFromJson(json);
 
   @override
-  @KeyArgument()
+  @KeyArgument(
+      keyArgumentDiv: KeyArgumentDiv.object, keyFactory: ObjectKeyFactory())
   final String key;
   @override
   final String value;
@@ -157,7 +170,9 @@ class _$SampleAggregateRootImpl extends _SampleAggregateRoot {
 
 abstract class _SampleAggregateRoot extends SampleAggregateRoot {
   factory _SampleAggregateRoot(
-      {@KeyArgument() required final String key,
+      {@KeyArgument(
+          keyArgumentDiv: KeyArgumentDiv.object, keyFactory: ObjectKeyFactory())
+      required final String key,
       required final String value}) = _$SampleAggregateRootImpl;
   _SampleAggregateRoot._() : super._();
 
@@ -165,7 +180,8 @@ abstract class _SampleAggregateRoot extends SampleAggregateRoot {
       _$SampleAggregateRootImpl.fromJson;
 
   @override
-  @KeyArgument()
+  @KeyArgument(
+      keyArgumentDiv: KeyArgumentDiv.object, keyFactory: ObjectKeyFactory())
   String get key;
   @override
   String get value;

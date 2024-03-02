@@ -27,7 +27,7 @@ class RepositoryImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/repository/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.repository_impl.dart",
+      "${_aggregateRootName.fileName}.repository_impl.dart",
     );
   }
 

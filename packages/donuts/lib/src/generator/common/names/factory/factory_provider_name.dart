@@ -2,6 +2,7 @@ import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dar
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
 import 'package:donuts/src/generator/common/names/factory/factory_impl_name.dart';
+import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:path/path.dart' as p;
 import 'package:donuts/src/generator/common/element_checker.dart';
 
@@ -26,7 +27,15 @@ class FactoryProviderName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/factory/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.factory_provider.dart",
+      "${_aggregateRootName.fileName}.factory_provider.dart",
+    );
+  }
+
+  String get myPartPath {
+    return p.join(
+      "package:${_aggregateRootName.packageName}/donuts/factory/",
+      _aggregateRootName.baseDirectory,
+      "${_aggregateRootName.fileName}.factory_provider.custom.dart",
     );
   }
 
@@ -34,11 +43,55 @@ class FactoryProviderName {
     return Field((p0) {
       p0.name = "${_factoryName.myInstanceName}Provider";
       p0.modifier = FieldModifier.final$;
-      p0.assignment = Code('''
+
+      if (_aggregateRootName.isInterface) {
+        p0.assignment = Code('''
+Provider<${_factoryName.myClassName}>((ref) {
+  return ${_factoryNameImpl.myClassName}Custom();
+})
+''');
+        p0.docs.addAll([
+          "",
+          "/// [${_aggregateRootName.myClassName}] is interface or abstract",
+          "/// must be implement custom factory.",
+          "/// Please check Section XXX in https://pub.dev/packages/donuts",
+          "/// create file : ${_aggregateRootName.myClassName.toSnakeCase()}.factory_provider.custom.dart",
+          "/*",
+          "part of '${_aggregateRootName.myClassName.toSnakeCase()}.factory_provider.dart';",
+          "class ${_factoryNameImpl.myClassName}Custom",
+          "    implements ${_factoryName.myClassName} {",
+          "  @override",
+          "  ${_aggregateRootName.myClassName} create() {",
+          "    throw UnimplementedError();",
+          "  }",
+          "",
+          "  @override",
+          "  ${_aggregateRootName.myClassName} restore(String key) {",
+          "    throw UnimplementedError();",
+          "  }",
+          "}",
+          "*/",
+        ]);
+      } else {
+        late final String keyFactoryString;
+        if (!(_aggregateRootName.keyFactoryName == null ||
+            _aggregateRootName.keyType == "String")) {
+          keyFactoryString =
+              "const KeyFactory? keyFactory = ${_aggregateRootName.keyFactoryName!.initializer()};";
+          p0.assignment = Code('''
+Provider<${_factoryName.myClassName}>((ref) {
+  ${keyFactoryString}
+  return ${_factoryNameImpl.myClassName}(keyFactory: keyFactory);
+})
+''');
+        } else {
+          p0.assignment = Code('''
 Provider<${_factoryName.myClassName}>((ref) {
   return ${_factoryNameImpl.myClassName}();
 })
 ''');
+        }
+      }
     });
   }
 }

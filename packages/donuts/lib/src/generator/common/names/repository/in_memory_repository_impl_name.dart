@@ -23,7 +23,7 @@ class InMemoryRepositoryImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/repository/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.in_memory_repository_impl.dart",
+      "${_aggregateRootName.fileName}.in_memory_repository_impl.dart",
     );
   }
 

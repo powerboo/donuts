@@ -1,4 +1,6 @@
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:donuts/src/generator/common/names/common/key_factory_name.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:path/path.dart' as p;
@@ -9,13 +11,43 @@ class AggregateRootName {
   final ParameterElement keyArgumentElement;
   final ConstructorElement constructorElement;
   final ElementAnnotation annotation;
+  KeyFactoryName? _keyFactoryName = null;
+  late final String keyType;
 
   AggregateRootName({
     required this.element,
     required this.keyArgumentElement,
     required this.constructorElement,
     required this.annotation,
-  }) : _libraryElement = element.library;
+  }) : _libraryElement = element.library {
+    final value = annotation.computeConstantValue();
+    if (value == null) {
+      throw InvalidGenerationSourceError(
+        "[AggregateRootName] annotation.computeConstantValue is null.",
+        element: element,
+      );
+    }
+    final keyFactoryValue = value.getField("keyFactory");
+
+    // key only use String(UUID) or factory
+    keyType = keyArgumentElement.type.getDisplayString(withNullability: false);
+
+    if ((keyFactoryValue == null || keyFactoryValue.isNull) &&
+        keyType != "String") {
+      throw InvalidGenerationSourceError(
+        "[AggregateRootName] key type is [${keyType}].But keyFactory is null.must be set keyFactory.Please check Section YYY together in https://pub.dev/packages/donuts.",
+        element: element,
+      );
+    }
+
+    _keyFactoryName = KeyFactoryName(
+      keyFactory: keyFactoryValue!,
+    );
+  }
+
+  KeyFactoryName? get keyFactoryName {
+    return _keyFactoryName;
+  }
 
   String get packageName {
     if (_libraryElement.source.uri.pathSegments.isEmpty) {
@@ -27,29 +59,8 @@ class AggregateRootName {
     return _libraryElement.source.uri.pathSegments.first;
   }
 
-  KeyArgumentDiv get keyArgumentDiv {
-    final value = annotation.computeConstantValue();
-    if (value == null) {
-      throw InvalidGenerationSourceError(
-        "[AggregateRootName] annotation.computeConstantValue is null.",
-        element: element,
-      );
-    }
-    final div = value.getField("keyArgumentDiv");
-    if (div == null) {
-      throw InvalidGenerationSourceError(
-        "[AggregateRootName] keyArgumentDiv is null.",
-        element: element,
-      );
-    }
-    final d = div.variable?.displayName;
-    if (d == null) {
-      throw InvalidGenerationSourceError(
-        "[AggregateRootName] keyArgumentDiv is not String.",
-        element: element,
-      );
-    }
-    return KeyArgumentDiv.from(value: d);
+  String get fileName {
+    return p.basenameWithoutExtension(_libraryElement.source.uri.path);
   }
 
   String get myClassName {
@@ -66,6 +77,18 @@ class AggregateRootName {
 
   String get keyInstanceName {
     return "${keyArgumentElement.displayName[0].toLowerCase()}${keyArgumentElement.displayName.substring(1)}";
+  }
+
+  bool get isInterface {
+    return element.isInterface || element.isAbstract;
+  }
+
+  String keyInitializer() {
+    if (keyType == "String") {
+      return "uuid.v7()";
+    }
+
+    return "keyFactory.create()";
   }
 
   /// ```dart

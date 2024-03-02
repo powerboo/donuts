@@ -7,7 +7,10 @@ class CommonClass {
   const CommonClass(
     String value,
     String? nullableValue, {
-    @KeyArgument() required this.commonClassId,
+    @KeyArgument(
+      keyFactory: CommonClassIdFactory(),
+    )
+    required this.commonClassId,
     required this.name,
   });
 }
@@ -24,7 +27,19 @@ class CommonClass2 {
   const CommonClass2(
     String value,
     String? nullableValue, {
-    @KeyArgument() required this.commonClassId,
+    @KeyArgument(
+      keyFactory: CommonClassIdFactory(),
+    )
+    required this.commonClassId,
     required this.name,
   });
+}
+
+class CommonClassIdFactory implements KeyFactory<CommonClassId> {
+  const CommonClassIdFactory();
+  @override
+  CommonClassId create() {
+    // TODO: implement create
+    throw UnimplementedError();
+  }
 }

@@ -51,9 +51,14 @@ class ListStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
     final factoryName = AbstractInterfaceFactoryName(
       aggregateRootName: aggregateRootName,
     );
+    final factoryException = ExceptionName(
+      exceptionBaseName: "${factoryName.myClassName}Exception",
+    );
+
     final factoryNameImpl = FactoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceFactoryName: factoryName,
+      exceptionName: factoryException,
     );
 
     final repositoryName = AbstractInterfaceRepositoryName(

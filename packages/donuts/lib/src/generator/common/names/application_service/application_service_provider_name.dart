@@ -38,7 +38,7 @@ class ApplicationServiceProviderName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/application_service/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.application_service_provider.dart",
+      "${_aggregateRootName.fileName}.application_service_provider.dart",
     );
   }
 

@@ -23,7 +23,7 @@ class AbstractInterfaceFactoryName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/factory/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.myClassName.toSnakeCase()}.abstract_interface_factory.dart",
+      "${_aggregateRootName.fileName}.abstract_interface_factory.dart",
     );
   }
 
