@@ -1,3 +1,9 @@
+## 0.1.0
+
+- Added support for class customization.
+- Introduced json converter feature.
+- All generators added.
+
 ## 0.0.5
 
 mod dependence
