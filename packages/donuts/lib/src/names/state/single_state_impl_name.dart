@@ -2,7 +2,6 @@ import 'package:donuts/src/names/application_service/application_service_provide
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:path/path.dart' as p;
-import 'package:donuts/src/generator/common/element_checker.dart';
 
 class SingleStateImplName {
   final AggregateRootName _aggregateRootName;
@@ -38,6 +37,7 @@ class SingleStateImplName {
       p0.fields.add(Field((f) {
         f.name = "_${_aggregateRootName.keyInstanceName}";
         f.type = refer("${_aggregateRootName.keyClassName}?");
+        f.docs.add("// ignore: unused_field");
       }));
 
       final build = Method((m) {
@@ -84,11 +84,40 @@ return target;
 
       final List<Method> methodList = [];
       for (final method in _aggregateRootName.element.methods) {
+        if (method.name == "toString") {
+          continue;
+        }
+
+        // annotated IgnoreMethod
+        if (method.metadata.any((annotation) =>
+            annotation.element?.displayName == 'IgnoreMethod')) {
+          continue;
+        }
+
         methodList.add(Method((m) {
           final methodName = method.displayName;
           m.name = methodName;
           m.returns = refer("Future<void>");
           m.modifier = MethodModifier.async;
+          for (final param in method.parameters) {
+            if (param.isNamed) {
+              m.optionalParameters.add(Parameter((p0) {
+                p0.name = param.name;
+                p0.type =
+                    refer(param.type.getDisplayString(withNullability: true));
+                p0.required = param.isRequired;
+                p0.named = param.isNamed;
+              }));
+            } else {
+              m.requiredParameters.add(Parameter((p0) {
+                p0.name = param.name;
+                p0.type =
+                    refer(param.type.getDisplayString(withNullability: true));
+                p0.required = false;
+                p0.named = false;
+              }));
+            }
+          }
           final doc = method.documentationComment;
           if (doc != null) {
             m.docs.add(doc);
@@ -103,7 +132,7 @@ if (${_aggregateRootName.keyInstanceName} == null) {
   return;
 }
 final service = ref.watch(${_applicationServiceProviderName.myFieldName});
-final (changed, err) = await service.${methodName}(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
+final (changed, err) = await service.${methodName}(${_aggregateRootName.methodArguments(methodName, withKey: true)});
 if (err != null) {
   state = AsyncValue.error(err.error, err.stackTrace);
   return;

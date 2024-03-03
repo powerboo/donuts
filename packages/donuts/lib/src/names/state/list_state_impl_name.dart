@@ -3,7 +3,6 @@ import 'package:donuts/src/names/application_service/application_service_provide
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:path/path.dart' as p;
-import 'package:donuts/src/generator/common/element_checker.dart';
 
 class ListStateImplName {
   final AggregateRootName _aggregateRootName;
@@ -97,7 +96,7 @@ return list;
               annotation.element?.displayName == 'KeyArgument')) {
             continue;
           }
-          if (param.isNamed) {
+          if (param.isPositional) {
             m.requiredParameters.add(Parameter((p0) {
               p0.name = param.name;
               p0.type =
@@ -120,12 +119,12 @@ return list;
 state = const AsyncValue.loading();
 
 final service = ref.watch(${_applicationServiceProviderName.myFieldName});
-final (${_aggregateRootName.myInstanceName}, err) = await service.create(${_aggregateRootName.initArgumentString(ignoreKey: true)});
+final (created, err) = await service.create(${_aggregateRootName.initArgumentString(ignoreKey: true)});
 if (err != null) {
   state = AsyncValue.error(err.error, err.stackTrace);
   return;
 }
-if(${_aggregateRootName.myInstanceName} == null){
+if(created == null){
   state = AsyncValue.error("[${myClassName}Error] ${_aggregateRootName.myInstanceName} is null.", StackTrace.current);
   return;
 }
@@ -165,7 +164,7 @@ await _fetchAll();
         m.modifier = MethodModifier.async;
         m.body = Code('''
 final service = ref.watch(${_applicationServiceProviderName.myFieldName});
-final (${_aggregateRootName.myInstanceName}, err) = await service.find(key: key);
+final (${_aggregateRootName.myInstanceName}, err) = await service.find(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
 if (err != null) {
   return null;
 }

@@ -36,39 +36,6 @@ class ApplicationServiceImplName {
     );
   }
 
-  ///
-  /// void method(
-  ///   String val, {
-  ///     required int? val2,
-  ///   }) {
-  ///   :
-  /// }
-  ///
-  /// val, val2: 123,
-  ///
-  String methodArguments(String methodName) {
-    final method = _aggregateRootName.element.methods
-        .where((element) => element.name == methodName);
-
-    if (method.isEmpty) {
-      return "";
-    }
-
-    final methodElement = method.first;
-
-    StringBuffer buffer = StringBuffer();
-    final positionalParam =
-        methodElement.parameters.where((p) => p.isPositional).toList();
-    for (final param in positionalParam) {
-      buffer.write("${param.name},");
-    }
-
-    for (final param in methodElement.parameters.where((p) => p.isRequired)) {
-      buffer.write("${param.name}:${param.name},");
-    }
-    return buffer.toString();
-  }
-
   Class toClassElement() {
     return Class((p0) {
       p0.constructors.add(Constructor((ct) {
@@ -365,7 +332,7 @@ try {
     throw ${_exceptionName.myClassName}("[${method.name}]target is null.\${${_aggregateRootName.keyInstanceName}}");
   }
 
-  final changed = target.${method.name}(${methodArguments(method.name)});
+  final changed = target.${method.name}(${_aggregateRootName.methodArguments(method.name)});
 
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: changed);
   return (changed, null);
@@ -383,7 +350,7 @@ try {
   }
 
   // ${doc.substring(3).trimLeft()}
-  final changed = target.${method.name}(${methodArguments(method.name)});
+  final changed = target.${method.name}(${_aggregateRootName.methodArguments(method.name)});
 
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: changed);
   return (changed, null);

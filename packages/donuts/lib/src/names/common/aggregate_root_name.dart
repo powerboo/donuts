@@ -217,6 +217,42 @@ class AggregateRootName {
     return buffer.toString();
   }
 
+  ///
+  /// void method(
+  ///   String val, {
+  ///     required int? val2,
+  ///   }) {
+  ///   :
+  /// }
+  ///
+  /// val, val2: 123,
+  ///
+  String methodArguments(String methodName, {bool withKey = false}) {
+    final method =
+        element.methods.where((element) => element.name == methodName);
+
+    if (method.isEmpty) {
+      return "";
+    }
+
+    final methodElement = method.first;
+
+    StringBuffer buffer = StringBuffer();
+    final positionalParam =
+        methodElement.parameters.where((p) => p.isPositional).toList();
+    for (final param in positionalParam) {
+      buffer.write("${param.name},");
+    }
+
+    for (final param in methodElement.parameters.where((p) => p.isRequired)) {
+      buffer.write("${param.name}:${param.name},");
+    }
+    if (withKey) {
+      buffer.write("${keyInstanceName}:${keyInstanceName},");
+    }
+    return buffer.toString();
+  }
+
   /// myPath : package:example_pj/sample_model/child_model/aggregate_root/sample.dart
   String get myPath {
     return _libraryElement.identifier;
