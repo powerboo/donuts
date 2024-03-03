@@ -17,7 +17,9 @@ class RepositoryImplName {
     required ExceptionName exceptionName,
   })  : _aggregateRootName = aggregateRootName,
         _abstractInterfaceRepositoryName = abstractInterfaceRepositoryName,
-        _exceptionName = exceptionName;
+        _exceptionName = exceptionName {
+    // fromJson
+  }
 
   String get myClassName {
     return "${_aggregateRootName.element.displayName}RepositoryImpl";
@@ -42,6 +44,23 @@ class RepositoryImplName {
         ),
       ]);
 
+      late final String toJsonString;
+      late final String fromJsonString;
+      if (_aggregateRootName.jsonConverter == null) {
+        toJsonString = "${_aggregateRootName.myInstanceName}.toJson()";
+        fromJsonString = "${_aggregateRootName.myClassName}.fromJson";
+      } else {
+        p0.fields.add(Field((f) {
+          f.name = "converter";
+          f.type = refer(_aggregateRootName.jsonConverter!.myClassName);
+          f.assignment = Code('''
+          ${_aggregateRootName.jsonConverter!.myClassName}()
+''');
+        }));
+        toJsonString = "converter.toJson(${_aggregateRootName.myInstanceName})";
+        fromJsonString = "${_aggregateRootName.jsonConverter!.fromJson()}";
+      }
+
       final find = Method((p0) {
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<${_aggregateRootName.myClassName}?>');
@@ -59,7 +78,7 @@ class RepositoryImplName {
     final response = await http.get(
       Uri.https(
         'https://www.google.com',
-        "/v1/common-class/\${key}",
+        "/v1/${_aggregateRootName.myClassName.toKebabCase()}/\${${_aggregateRootName.keyInstanceName}}",
       ),
       headers: {},
     );
@@ -68,12 +87,12 @@ class RepositoryImplName {
       throw ${_exceptionName.myClassName}("network error");
     }
     
-    final body = response.body;
+    final body = jsonDecode(response.body);
     if(body is! Map<String, dynamic>){
       throw ${_exceptionName.myClassName}("body is not Map<String, dynamic>");
     }
 
-    return ${_aggregateRootName.myClassName}.fromJson(jsonDecode(body));
+    return ${fromJsonString}(body);
 ''');
       });
 
@@ -103,7 +122,7 @@ class RepositoryImplName {
     final response = await http.get(
       Uri.https(
         'https://www.google.com',
-        "/v1/common-class?cursor=\${cursor}&length=\${length}",
+        "/v1/${_aggregateRootName.myClassName.toKebabCase()}?cursor=\${cursor}&length=\${length}",
       ),
       headers: {},
     );
@@ -119,7 +138,7 @@ class RepositoryImplName {
 
     final List<${_aggregateRootName.myClassName}> result = [];
     for(final r in data){
-      result.add(${_aggregateRootName.myClassName}.fromJson(r));
+      result.add(${fromJsonString}(r));
     }
     return result;
 ''');
@@ -143,9 +162,9 @@ class RepositoryImplName {
     final response = await http.post(
       Uri.https(
         'https://www.google.com',
-        "/v1/common-class",
+        "/v1/${_aggregateRootName.myClassName.toKebabCase()}",
       ),
-      body: jsonEncode(${_aggregateRootName.myInstanceName}.toJson()),
+      body: jsonEncode(${toJsonString}),
       headers: {},
     );
     
@@ -173,7 +192,7 @@ class RepositoryImplName {
     final response = await http.delete(
       Uri.https(
         'https://www.google.com',
-        "/v1/${_aggregateRootName.myClassName.toKebabCase()}/\${key}",
+        "/v1/${_aggregateRootName.myClassName.toKebabCase()}/\${${_aggregateRootName.keyInstanceName}}",
       ),
       headers: {},
     );

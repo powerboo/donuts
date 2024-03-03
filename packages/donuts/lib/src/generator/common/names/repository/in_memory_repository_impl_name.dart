@@ -3,7 +3,6 @@ import 'package:code_builder/code_builder.dart';
 import 'package:donuts/src/generator/common/names/repository/abstract_interface_repository_name.dart';
 import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
 import 'package:path/path.dart' as p;
-import 'package:donuts/src/generator/common/element_checker.dart';
 
 class InMemoryRepositoryImplName {
   final AggregateRootName _aggregateRootName;

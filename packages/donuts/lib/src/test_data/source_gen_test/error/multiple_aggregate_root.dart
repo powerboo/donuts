@@ -1,10 +1,12 @@
 import 'package:donuts_annotation/donuts_annotation.dart';
 
-@AggregateRoot()
-class CommonClass {
+@AggregateRoot(
+  jsonConverter: DuplicateClass1JsonConverter(),
+)
+class DuplicateClass1 {
   final CommonClassId commonClassId;
   final String name;
-  const CommonClass(
+  const DuplicateClass1(
     String value,
     String? nullableValue, {
     @KeyArgument(
@@ -20,11 +22,13 @@ class CommonClassId {
   CommonClassId(this.value);
 }
 
-@AggregateRoot()
-class CommonClass2 {
+@AggregateRoot(
+  jsonConverter: DuplicateClass1JsonConverter(),
+)
+class DuplicateClass2 {
   final CommonClassId commonClassId;
   final String name;
-  const CommonClass2(
+  const DuplicateClass2(
     String value,
     String? nullableValue, {
     @KeyArgument(
@@ -40,6 +44,21 @@ class CommonClassIdFactory implements KeyFactory<CommonClassId> {
   @override
   CommonClassId create() {
     // TODO: implement create
+    throw UnimplementedError();
+  }
+}
+
+class DuplicateClass1JsonConverter
+    implements AggregateRootJsonConverter<DuplicateClass1> {
+  const DuplicateClass1JsonConverter();
+
+  @override
+  DuplicateClass1 fromJson(Map<String, dynamic> json) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> toJson(DuplicateClass1 object) {
     throw UnimplementedError();
   }
 }

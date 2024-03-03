@@ -21,6 +21,8 @@ class AggregateRoot {
   // interface group
   final List<Type> interfaceChildren;
 
+  final AggregateRootJsonConverter? jsonConverter;
+
   const AggregateRoot({
     // factory
     this.extensionFactory = false,
@@ -41,6 +43,7 @@ class AggregateRoot {
 
     // interface group
     this.interfaceChildren = const [],
+    this.jsonConverter = null,
   });
 }
 
@@ -54,4 +57,9 @@ class KeyArgument<KeyType> {
 
 abstract interface class KeyFactory<KeyType> {
   KeyType create();
+}
+
+abstract interface class AggregateRootJsonConverter<AggregateRootType> {
+  AggregateRootType fromJson(Map<String, dynamic> json);
+  Map<String, dynamic> toJson(AggregateRootType aggregateRoot);
 }

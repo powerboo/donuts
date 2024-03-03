@@ -1,3 +1,4 @@
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
@@ -36,7 +37,8 @@ Future<AggregateRootName> elementChecker(
 
   // get annotated argument
   final List<ParameterElement> annotatedElementList = [];
-  ElementAnnotation? annotation;
+  ElementAnnotation? keyFieldAnnotation;
+  DartObject aggregateRootAnnotation = annotation.objectValue;
 
   for (final argument in constructorElement.children) {
     if (argument is! ParameterElement) {
@@ -46,18 +48,14 @@ Future<AggregateRootName> elementChecker(
     for (final a in argument.metadata) {
       if ('KeyArgument' == a.element?.displayName) {
         annotatedElementList.add(argument);
-        annotation = a;
+        keyFieldAnnotation = a;
         break;
       }
     }
   }
-  // key fieldをつけるのは
-  // field
-  // getter
-  // constructor の引数
 
   // key field does not exists.
-  if (annotatedElementList.isEmpty || annotation == null) {
+  if (annotatedElementList.isEmpty || keyFieldAnnotation == null) {
     throw InvalidGenerationSourceError(
       "[${element.displayName}] annotated field does not exists.",
       element: element,
@@ -73,11 +71,40 @@ Future<AggregateRootName> elementChecker(
   }
   final ParameterElement annotatedElement = annotatedElementList.first;
 
+  // key field target
+  // - field
+  // - getter
+  // - constructor arguments
+
+  bool hasPublicEquivalent = false;
+  for (final field in classElement.fields) {
+    if (!field.isPrivate && annotatedElement.displayName == field.name) {
+      hasPublicEquivalent = true;
+      break;
+    }
+  }
+
+  if (!hasPublicEquivalent) {
+    final getter = classElement.lookUpGetter(
+        "${annotatedElement.displayName}", classElement.library);
+    if (getter != null) {
+      hasPublicEquivalent = !getter.isPrivate;
+    }
+  }
+
+  if (!hasPublicEquivalent) {
+    throw InvalidGenerationSourceError(
+      "[${element.displayName}] does not have a public field equivalent to the key field. Please check ZZZZ section in https://pub.dev/packages/donuts.",
+      element: element,
+    );
+  }
+
   return AggregateRootName(
     element: element,
     keyArgumentElement: annotatedElement,
     constructorElement: constructorElement,
-    annotation: annotation,
+    keyFieldAnnotation: keyFieldAnnotation,
+    aggregateRootAnnotation: aggregateRootAnnotation,
   );
 }
 

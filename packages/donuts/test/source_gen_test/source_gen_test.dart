@@ -12,8 +12,11 @@ Future<void> main() async {
     await testFactory(name);
     await testFactoryImpl(name);
     await testFactoryProvider(name);
+    await testRepository(name);
+    await testInMemoryRepositoryImpl(name);
+    await testRepositoryImpl(name);
+    await testRepositoryProvider(name);
     /*
-    await testRepository('abstract_class');
     await testApplicationService('abstract_class');
     await testState('abstract_class');
     // */
@@ -24,8 +27,11 @@ Future<void> main() async {
     await testFactory(name);
     await testFactoryImpl(name);
     await testFactoryProvider(name);
+    await testRepository(name);
+    await testInMemoryRepositoryImpl(name);
+    await testRepositoryImpl(name);
+    await testRepositoryProvider(name);
     /*
-    await testRepository('abstract_interface_class');
     await testApplicationService('abstract_interface_class');
     await testState('abstract_interface_class');
     // */
@@ -36,9 +42,11 @@ Future<void> main() async {
     await testFactory(name);
     await testFactoryImpl(name);
     await testFactoryProvider(name);
-
+    await testRepository(name);
+    await testInMemoryRepositoryImpl(name);
+    await testRepositoryImpl(name);
+    await testRepositoryProvider(name);
     /*
-    await testRepository('common_types');
     await testApplicationService('common_types');
     await testState('common_types');
     // */
@@ -49,9 +57,11 @@ Future<void> main() async {
     await testFactory(name);
     await testFactoryImpl(name);
     await testFactoryProvider(name);
-
+    await testRepository(name);
+    await testInMemoryRepositoryImpl(name);
+    await testRepositoryImpl(name);
+    await testRepositoryProvider(name);
     /*
-    await testRepository('freezed_class');
     await testApplicationService('freezed_class');
     await testState('freezed_class');
     // */
@@ -62,9 +72,11 @@ Future<void> main() async {
     await testFactory(name);
     await testFactoryImpl(name);
     await testFactoryProvider(name);
-
+    await testRepository(name);
+    await testInMemoryRepositoryImpl(name);
+    await testRepositoryImpl(name);
+    await testRepositoryProvider(name);
     /*
-    await testRepository('interface_class');
     await testApplicationService('interface_class');
     await testState('interface_class');
     // */
@@ -75,22 +87,26 @@ Future<void> main() async {
     await testFactory(name);
     await testFactoryImpl(name);
     await testFactoryProvider(name);
-
+    await testRepository(name);
+    await testInMemoryRepositoryImpl(name);
+    await testRepositoryImpl(name);
+    await testRepositoryProvider(name);
     /*
-    await testRepository('json_serializable_class');
     await testApplicationService('json_serializable_class');
     await testState('json_serializable_class');
     // */
   });
 
-  test("error", () async {
+  test("multiple_aggregate_root", () async {
+    /*
     final name = "multiple_aggregate_root";
     await testFactory(name, error: true);
     await testFactoryImpl(name, error: true);
     await testFactoryProvider(name, error: true);
-
-    /*
-    await testRepository('multiple_aggregate_root');
+    await testRepository(name, error: true);
+    await testInMemoryRepositoryImpl(name, error: true);
+    await testRepositoryImpl(name, error: true);
+    await testRepositoryProvider(name, error: true);
     await testApplicationService('multiple_aggregate_root');
     await testState('multiple_aggregate_root');
     // */
@@ -137,6 +153,10 @@ Future<void> main() async {
     duplicateKeyArgument,
     AbstractInterfaceFactoryGenerator(),
   );
+
+  // does not have fromJson. But does not have jsonConverter
+
+  // does not have toJson. But does not have jsonConverter
 }
 
 Future<void> testFactory(String fileName, {bool error = false}) async {
@@ -216,8 +236,78 @@ Future<void> testRepository(String fileName, {bool error = false}) async {
     {
       'donuts|lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.abstract_interface_repository.dart':
           useAssetReader,
+    },
+    (r) => r.libraries.firstWhere(
+        (element) => element.source.toString().contains('${fileName}')),
+  );
+
+  final paths = [
+    '/donuts/lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.abstract_interface_repository.dart',
+  ];
+
+  for (final path in paths) {
+    final result = await main.session.getErrors(path) as ErrorsResult;
+    if (!error) {
+      expect(result.errors, isEmpty);
+    } else {
+      expect(result.errors, isNotEmpty);
+    }
+  }
+}
+
+Future<void> testInMemoryRepositoryImpl(String fileName,
+    {bool error = false}) async {
+  final main = await resolveSources(
+    {
+      'donuts|lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.in_memory_repository_impl.dart':
+          useAssetReader,
+    },
+    (r) => r.libraries.firstWhere(
+        (element) => element.source.toString().contains('${fileName}')),
+  );
+
+  final paths = [
+    '/donuts/lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.in_memory_repository_impl.dart',
+  ];
+
+  for (final path in paths) {
+    final result = await main.session.getErrors(path) as ErrorsResult;
+    if (!error) {
+      expect(result.errors, isEmpty);
+    } else {
+      expect(result.errors, isNotEmpty);
+    }
+  }
+}
+
+Future<void> testRepositoryImpl(String fileName, {bool error = false}) async {
+  final main = await resolveSources(
+    {
       'donuts|lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.repository_impl.dart':
           useAssetReader,
+    },
+    (r) => r.libraries.firstWhere(
+        (element) => element.source.toString().contains('${fileName}')),
+  );
+
+  final paths = [
+    '/donuts/lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.repository_impl.dart',
+  ];
+
+  for (final path in paths) {
+    final result = await main.session.getErrors(path) as ErrorsResult;
+    if (!error) {
+      expect(result.errors, isEmpty);
+    } else {
+      expect(result.errors, isNotEmpty);
+    }
+  }
+}
+
+Future<void> testRepositoryProvider(String fileName,
+    {bool error = false}) async {
+  final main = await resolveSources(
+    {
       'donuts|lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.repository_provider.dart':
           useAssetReader,
     },
@@ -226,8 +316,6 @@ Future<void> testRepository(String fileName, {bool error = false}) async {
   );
 
   final paths = [
-    '/donuts/lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.abstract_interface_repository.dart',
-    '/donuts/lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.repository_impl.dart',
     '/donuts/lib/donuts/repository/src/test_data/source_gen_test/${error ? "error" : "common"}/${fileName}.repository_provider.dart',
   ];
 

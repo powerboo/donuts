@@ -4,7 +4,6 @@ import 'package:donuts/src/generator/common/names/repository/abstract_interface_
 import 'package:donuts/src/generator/common/names/repository/in_memory_repository_impl_name.dart';
 import 'package:donuts/src/generator/common/names/repository/repository_impl_name.dart';
 import 'package:path/path.dart' as p;
-import 'package:donuts/src/generator/common/element_checker.dart';
 
 class RepositoryProviderName {
   final AggregateRootName _aggregateRootName;

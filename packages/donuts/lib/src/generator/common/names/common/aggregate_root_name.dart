@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:donuts/src/generator/common/names/common/converter_name.dart';
 import 'package:donuts/src/generator/common/names/common/key_factory_name.dart';
-import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:path/path.dart' as p;
 
@@ -10,7 +10,10 @@ class AggregateRootName {
   late final LibraryElement _libraryElement;
   final ParameterElement keyArgumentElement;
   final ConstructorElement constructorElement;
-  final ElementAnnotation annotation;
+  final ElementAnnotation keyFieldAnnotation;
+  final DartObject aggregateRootAnnotation;
+  ConverterName? _converterName = null;
+
   KeyFactoryName? _keyFactoryName = null;
   late final String keyType;
 
@@ -18,16 +21,17 @@ class AggregateRootName {
     required this.element,
     required this.keyArgumentElement,
     required this.constructorElement,
-    required this.annotation,
+    required this.keyFieldAnnotation,
+    required this.aggregateRootAnnotation,
   }) : _libraryElement = element.library {
-    final value = annotation.computeConstantValue();
-    if (value == null) {
+    final keyFieldAnnotationValue = keyFieldAnnotation.computeConstantValue();
+    if (keyFieldAnnotationValue == null) {
       throw InvalidGenerationSourceError(
         "[AggregateRootName] annotation.computeConstantValue is null.",
         element: element,
       );
     }
-    final keyFactoryValue = value.getField("keyFactory");
+    final keyFactoryValue = keyFieldAnnotationValue.getField("keyFactory");
 
     // key only use String(UUID) or factory
     keyType = keyArgumentElement.type.getDisplayString(withNullability: false);
@@ -43,6 +47,66 @@ class AggregateRootName {
     _keyFactoryName = KeyFactoryName(
       keyFactory: keyFactoryValue!,
     );
+
+    final converter = aggregateRootAnnotation.getField("jsonConverter");
+    final isNullConverter = converter == null;
+    final hasFromJson = (element.methods.any(
+              (method) => method.name == "fromJson",
+            ) ||
+            element.constructors.any(
+              (constructor) => constructor.name == "fromJson",
+            )) ||
+        element.allSupertypes.any((type) => type.methods.any(
+              (method) => method.name == "fromJson",
+            ));
+
+    final hasToJson = (element.methods.any(
+          (method) => method.name == "toJson",
+        ) ||
+        element.mixins.any((mixin) => mixin.methods.any(
+              (method) => method.name == "toJson",
+            )) ||
+        element.allSupertypes.any((type) => type.methods.any(
+              (method) => method.name == "toJson",
+            )));
+
+    // does not have fromJson and toJson
+    if ((!hasToJson || !hasFromJson) && isNullConverter) {
+      throw InvalidGenerationSourceError(
+        "[AggregateRootName][${element.displayName}]does not have json method.must be json converter.Please check Section YYY together in https://pub.dev/packages/donuts.",
+        element: element,
+      );
+    }
+
+    if (hasToJson && hasFromJson) {
+      return;
+    }
+
+    final converterType = converter?.type;
+    if (converterType == null) {
+      throw InvalidGenerationSourceError(
+        "[AggregateRootName]converter type is null.",
+        element: element,
+      );
+    }
+
+    final converterElement = converterType.element;
+
+    if (converterElement is! ClassElement) {
+      throw InvalidGenerationSourceError(
+        "[AggregateRootName] converter element is null.",
+        element: element,
+      );
+    }
+
+    _converterName = ConverterName(
+      aggregateRootElement: element,
+      converterElement: converterElement,
+    );
+  }
+
+  ConverterName? get jsonConverter {
+    return _converterName;
   }
 
   KeyFactoryName? get keyFactoryName {
