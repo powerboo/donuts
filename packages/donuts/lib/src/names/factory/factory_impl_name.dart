@@ -1,9 +1,9 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:donuts/src/generator/common/names/common/exception_name.dart';
-import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
-import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
+import 'package:donuts/src/names/common/exception_name.dart';
+import 'package:donuts/src/names/factory/abstract_interface_factory_name.dart';
+import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:path/path.dart' as p;
 
 class FactoryImplName {

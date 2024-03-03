@@ -1,5 +1,5 @@
-import 'package:donuts/src/generator/common/names/application_service/application_service_provider_name.dart';
-import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
+import 'package:donuts/src/names/application_service/application_service_provider_name.dart';
+import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:path/path.dart' as p;
 import 'package:donuts/src/generator/common/element_checker.dart';

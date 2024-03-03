@@ -1,12 +1,11 @@
 import 'package:donuts_annotation/donuts_annotation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'json_serializable_class.g.dart';
+// part 'json_serializable_class.g.dart';
 
-@AggregateRoot()
-@JsonSerializable()
+@AggregateRoot(
+  jsonConverter: AbstractClassJsonConverter(),
+)
 class JsonSerializableClass {
-  @JsonKey(name: 'json_serializable_class')
   final String value;
 
   late final String? nullableString;
@@ -25,21 +24,30 @@ class JsonSerializableClass {
     this.nullableString = nullableString;
   }
 
+  /*
   factory JsonSerializableClass.fromJson(Map<String, Object?> json) =>
       _$JsonSerializableClassFromJson(json);
 
   Map<String, Object?> toJson() => _$JsonSerializableClassToJson(this);
+  // */
 
   @override
   String toString() {
     return value;
   }
+}
+
+class AbstractClassJsonConverter
+    implements AggregateRootJsonConverter<JsonSerializableClass> {
+  const AbstractClassJsonConverter();
 
   @override
-  bool operator ==(Object other) =>
-      identical(other, this) ||
-      (other is JsonSerializableClass && other.value == value);
+  JsonSerializableClass fromJson(Map<String, dynamic> json) {
+    throw UnimplementedError();
+  }
 
   @override
-  int get hashCode => runtimeType.hashCode ^ value.hashCode;
+  Map<String, dynamic> toJson(JsonSerializableClass object) {
+    throw UnimplementedError();
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:donuts/src/generator/common/names/common/converter_name.dart';
-import 'package:donuts/src/generator/common/names/common/key_factory_name.dart';
+import 'package:donuts/src/names/common/converter_name.dart';
+import 'package:donuts/src/names/common/key_factory_name.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:path/path.dart' as p;
 

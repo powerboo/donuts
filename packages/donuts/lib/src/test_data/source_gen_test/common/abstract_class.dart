@@ -3,6 +3,11 @@ import 'package:donuts_annotation/donuts_annotation.dart';
 
 @AggregateRoot(
   jsonConverter: AbstractClassJsonConverter(),
+  /*
+  interfaceChildren: [
+    ImplementsClass,
+  ],
+  // */
 )
 abstract class AbstractClass {
   String get key;
@@ -13,6 +18,12 @@ abstract class AbstractClass {
     )
     String key,
   );
+
+  /// method1
+  AbstractClass commonMethod1();
+
+  /// method2
+  AbstractClass commonMethod2({required int intValue});
 }
 
 class AbstractClassJsonConverter

@@ -1,12 +1,11 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
-import 'package:donuts/src/generator/common/names/repository/abstract_interface_repository_name.dart';
-import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
-import 'package:donuts/src/generator/common/names/common/exception_name.dart';
+import 'package:donuts/src/names/factory/abstract_interface_factory_name.dart';
+import 'package:donuts/src/names/repository/abstract_interface_repository_name.dart';
+import 'package:donuts/src/names/common/aggregate_root_name.dart';
+import 'package:donuts/src/names/common/exception_name.dart';
 import 'package:path/path.dart' as p;
-import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:source_gen/source_gen.dart';
 
 class ApplicationServiceImplName {
@@ -35,6 +34,39 @@ class ApplicationServiceImplName {
       _aggregateRootName.baseDirectory,
       "${_aggregateRootName.fileName}.application_service_impl.dart",
     );
+  }
+
+  ///
+  /// void method(
+  ///   String val, {
+  ///     required int? val2,
+  ///   }) {
+  ///   :
+  /// }
+  ///
+  /// val, val2: 123,
+  ///
+  String methodArguments(String methodName) {
+    final method = _aggregateRootName.element.methods
+        .where((element) => element.name == methodName);
+
+    if (method.isEmpty) {
+      return "";
+    }
+
+    final methodElement = method.first;
+
+    StringBuffer buffer = StringBuffer();
+    final positionalParam =
+        methodElement.parameters.where((p) => p.isPositional).toList();
+    for (final param in positionalParam) {
+      buffer.write("${param.name},");
+    }
+
+    for (final param in methodElement.parameters.where((p) => p.isRequired)) {
+      buffer.write("${param.name}:${param.name},");
+    }
+    return buffer.toString();
   }
 
   Class toClassElement() {
@@ -95,7 +127,7 @@ class ApplicationServiceImplName {
       final refObject = Field((p0) {
         p0.name = "ref";
         p0.type = refer(
-          'ProviderRef<dynamic>',
+          'ProviderRef<${myClassName}>',
           'package:riverpod/riverpod.dart',
         );
         p0.modifier = FieldModifier.final$;
@@ -113,7 +145,7 @@ class ApplicationServiceImplName {
       final create = Method((p0) {
         p0.modifier = MethodModifier.async;
         p0.returns =
-            refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
+            refer('Future<(${_aggregateRootName.myClassName}?, DonutsError?)>');
         p0.name = 'create';
 
         for (final argument in _aggregateRootName.constructorElement.children) {
@@ -158,7 +190,7 @@ try{
       final find = Method((p0) {
         p0.modifier = MethodModifier.async;
         p0.returns =
-            refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
+            refer('Future<(${_aggregateRootName.myClassName}?, DonutsError?)>');
         p0.name = 'find';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.keyInstanceName;
@@ -181,7 +213,7 @@ try {
 
       final save = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(void, Error?)>');
+        p0.returns = refer('Future<(void, DonutsError?)>');
         p0.name = 'save';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.myInstanceName;
@@ -201,7 +233,7 @@ try {
 
       final delete = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns = refer('Future<(void, Error?)>');
+        p0.returns = refer('Future<(void, DonutsError?)>');
         p0.name = 'delete';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = _aggregateRootName.keyInstanceName;
@@ -221,8 +253,8 @@ try {
 
       final all = Method((p0) {
         p0.modifier = MethodModifier.async;
-        p0.returns =
-            refer('Future<(List<${_aggregateRootName.myClassName}>?, Error?)>');
+        p0.returns = refer(
+            'Future<(List<${_aggregateRootName.myClassName}>?, DonutsError?)>');
         p0.name = 'all';
         p0.optionalParameters.add(Parameter((p1) {
           p1.name = 'cursor';
@@ -251,27 +283,28 @@ try {
       // aggregate method
       final List<Method> methodList = [];
       for (final method in _aggregateRootName.element.methods) {
+        if (method.name == "toString") {
+          continue;
+        }
+
+        // annotated IgnoreMethod
+        if (method.metadata.any((annotation) =>
+            annotation.element?.displayName == 'IgnoreMethod')) {
+          continue;
+        }
+
         methodList.add(Method((m) {
           // method
           m.name = method.name;
           m.modifier = MethodModifier.async;
 
-          // key argument
-          if (_aggregateRootName.keyArgumentElement.isPositional) {
-            m.optionalParameters.add(Parameter((p1) {
-              p1.name = _aggregateRootName.keyInstanceName;
-              p1.type = refer(_aggregateRootName.keyClassName);
-              p1.named = false;
-              p1.required = false;
-            }));
-          } else {
-            m.optionalParameters.add(Parameter((p1) {
-              p1.name = _aggregateRootName.keyInstanceName;
-              p1.type = refer(_aggregateRootName.keyClassName);
-              p1.named = true;
-              p1.required = true;
-            }));
-          }
+          // key argument always required named
+          m.optionalParameters.add(Parameter((p1) {
+            p1.name = _aggregateRootName.keyInstanceName;
+            p1.type = refer(_aggregateRootName.keyClassName);
+            p1.named = true;
+            p1.required = true;
+          }));
 
           // doc
           final doc = method.documentationComment;
@@ -280,12 +313,13 @@ try {
           }
 
           // return
-          m.returns =
-              refer('Future<(${_aggregateRootName.myClassName}?, Error?)>');
+          m.returns = refer(
+              'Future<(${_aggregateRootName.myClassName}?, DonutsError?)>');
           if (method.returnType.getDisplayString(withNullability: false) !=
-              _aggregateRootName.myClassName) {
+                  _aggregateRootName.myClassName &&
+              method.name != "toString") {
             throw InvalidGenerationSourceError(
-                "The return type must be AggregateRoot. If returning something else, please annotate the AggregateRoot with @IgnoreTarget.");
+                "The return type must be [${_aggregateRootName.myClassName}].method name [${method.name}]");
           }
           /*
           if (method.returnType.isDartAsyncFuture ||
@@ -331,7 +365,7 @@ try {
     throw ${_exceptionName.myClassName}("[${method.name}]target is null.\${${_aggregateRootName.keyInstanceName}}");
   }
 
-  final changed = target.${method.name}();
+  final changed = target.${method.name}(${methodArguments(method.name)});
 
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: changed);
   return (changed, null);
@@ -349,7 +383,7 @@ try {
   }
 
   // ${doc.substring(3).trimLeft()}
-  final changed = target.${method.name}();
+  final changed = target.${method.name}(${methodArguments(method.name)});
 
   await _${_abstractInterfaceRepositoryName.myInstanceName}.save(${_aggregateRootName.myInstanceName}: changed);
   return (changed, null);
@@ -371,8 +405,4 @@ try {
       ]);
     });
   }
-}
-
-(void, int?) funcabc() {
-  return (null, null);
 }

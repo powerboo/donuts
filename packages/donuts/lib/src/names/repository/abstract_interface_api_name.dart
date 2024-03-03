@@ -1,5 +1,5 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
+import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:path/path.dart' as p;
 
 class AbstractInterfaceApiName {

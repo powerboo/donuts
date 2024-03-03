@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:donuts/src/generator/common/names/common/aggregate_root_name.dart';
+import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:source_gen/source_gen.dart';
 
 Future<AggregateRootName> elementChecker(

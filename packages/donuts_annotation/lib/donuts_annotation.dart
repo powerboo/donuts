@@ -19,7 +19,7 @@ class AggregateRoot {
   final bool extensionSingleState;
 
   // interface group
-  final List<Type> interfaceChildren;
+  // final List<Type> interfaceChildren;
 
   final AggregateRootJsonConverter? jsonConverter;
 
@@ -42,7 +42,7 @@ class AggregateRoot {
     this.extensionSingleState = false,
 
     // interface group
-    this.interfaceChildren = const [],
+    // this.interfaceChildren = const [],
     this.jsonConverter = null,
   });
 }
@@ -62,4 +62,8 @@ abstract interface class KeyFactory<KeyType> {
 abstract interface class AggregateRootJsonConverter<AggregateRootType> {
   AggregateRootType fromJson(Map<String, dynamic> json);
   Map<String, dynamic> toJson(AggregateRootType aggregateRoot);
+}
+
+class IgnoreMethod {
+  const IgnoreMethod();
 }

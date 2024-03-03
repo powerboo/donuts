@@ -5,10 +5,10 @@ import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
-import 'package:donuts/src/generator/common/names/common/exception_name.dart';
-import 'package:donuts/src/generator/common/names/factory/abstract_interface_factory_name.dart';
-import 'package:donuts/src/generator/common/names/factory/factory_impl_name.dart';
-import 'package:donuts/src/generator/common/names/factory/factory_provider_name.dart';
+import 'package:donuts/src/names/common/exception_name.dart';
+import 'package:donuts/src/names/factory/abstract_interface_factory_name.dart';
+import 'package:donuts/src/names/factory/factory_impl_name.dart';
+import 'package:donuts/src/names/factory/factory_provider_name.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 

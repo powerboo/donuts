@@ -16,8 +16,9 @@ Future<void> main() async {
     await testInMemoryRepositoryImpl(name);
     await testRepositoryImpl(name);
     await testRepositoryProvider(name);
+    await testApplicationServiceImpl(name);
+    await testApplicationServiceProvider(name);
     /*
-    await testApplicationService('abstract_class');
     await testState('abstract_class');
     // */
   });
@@ -31,8 +32,9 @@ Future<void> main() async {
     await testInMemoryRepositoryImpl(name);
     await testRepositoryImpl(name);
     await testRepositoryProvider(name);
+    await testApplicationServiceImpl(name);
+    await testApplicationServiceProvider(name);
     /*
-    await testApplicationService('abstract_interface_class');
     await testState('abstract_interface_class');
     // */
   });
@@ -46,8 +48,9 @@ Future<void> main() async {
     await testInMemoryRepositoryImpl(name);
     await testRepositoryImpl(name);
     await testRepositoryProvider(name);
+    await testApplicationServiceImpl(name);
+    await testApplicationServiceProvider(name);
     /*
-    await testApplicationService('common_types');
     await testState('common_types');
     // */
   });
@@ -61,8 +64,9 @@ Future<void> main() async {
     await testInMemoryRepositoryImpl(name);
     await testRepositoryImpl(name);
     await testRepositoryProvider(name);
+    await testApplicationServiceImpl(name);
+    await testApplicationServiceProvider(name);
     /*
-    await testApplicationService('freezed_class');
     await testState('freezed_class');
     // */
   });
@@ -76,8 +80,9 @@ Future<void> main() async {
     await testInMemoryRepositoryImpl(name);
     await testRepositoryImpl(name);
     await testRepositoryProvider(name);
+    await testApplicationServiceImpl(name);
+    await testApplicationServiceProvider(name);
     /*
-    await testApplicationService('interface_class');
     await testState('interface_class');
     // */
   });
@@ -91,8 +96,9 @@ Future<void> main() async {
     await testInMemoryRepositoryImpl(name);
     await testRepositoryImpl(name);
     await testRepositoryProvider(name);
+    await testApplicationServiceImpl(name);
+    await testApplicationServiceProvider(name);
     /*
-    await testApplicationService('json_serializable_class');
     await testState('json_serializable_class');
     // */
   });
@@ -107,7 +113,9 @@ Future<void> main() async {
     await testInMemoryRepositoryImpl(name, error: true);
     await testRepositoryImpl(name, error: true);
     await testRepositoryProvider(name, error: true);
-    await testApplicationService('multiple_aggregate_root');
+    await testApplicationServiceImpl(name);
+    await testApplicationServiceProvider(name);
+
     await testState('multiple_aggregate_root');
     // */
   });
@@ -329,12 +337,10 @@ Future<void> testRepositoryProvider(String fileName,
   }
 }
 
-Future<void> testApplicationService(String fileName) async {
+Future<void> testApplicationServiceImpl(String fileName) async {
   final main = await resolveSources(
     {
       'donuts|lib/donuts/application_service/src/test_data/source_gen_test/common/${fileName}.application_service_impl.dart':
-          useAssetReader,
-      'donuts|lib/donuts/application_service/src/test_data/source_gen_test/common/${fileName}.application_service_provider.dart':
           useAssetReader,
     },
     (r) => r.libraries.firstWhere(
@@ -343,6 +349,25 @@ Future<void> testApplicationService(String fileName) async {
 
   final paths = [
     '/donuts/lib/donuts/application_service/src/test_data/source_gen_test/common/${fileName}.application_service_impl.dart',
+  ];
+
+  for (final path in paths) {
+    final result = await main.session.getErrors(path) as ErrorsResult;
+    expect(result.errors, isEmpty);
+  }
+}
+
+Future<void> testApplicationServiceProvider(String fileName) async {
+  final main = await resolveSources(
+    {
+      'donuts|lib/donuts/application_service/src/test_data/source_gen_test/common/${fileName}.application_service_provider.dart':
+          useAssetReader,
+    },
+    (r) => r.libraries.firstWhere(
+        (element) => element.source.toString().contains('${fileName}')),
+  );
+
+  final paths = [
     '/donuts/lib/donuts/application_service/src/test_data/source_gen_test/common/${fileName}.application_service_provider.dart',
   ];
 
