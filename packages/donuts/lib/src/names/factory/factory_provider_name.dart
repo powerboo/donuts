@@ -43,7 +43,7 @@ class FactoryProviderName {
       p0.name = "${_factoryName.myInstanceName}Provider";
       p0.modifier = FieldModifier.final$;
 
-      if (_aggregateRootName.isInterface) {
+      if (_aggregateRootName.isInterface || _aggregateRootName.customFactory) {
         p0.assignment = Code('''
 Provider<${_factoryName.myClassName}>((ref) {
   return ${_factoryNameImpl.myClassName}Custom();
@@ -55,6 +55,7 @@ Provider<${_factoryName.myClassName}>((ref) {
           "/// must be implement custom factory.",
           "/// Please check Section XXX in https://pub.dev/packages/donuts",
           "/// create file : ${_aggregateRootName.myClassName.toSnakeCase()}.factory_provider.custom.dart",
+          "/// Please copy and paste the following text into the file",
           "/*",
           "part of '${_aggregateRootName.myClassName.toSnakeCase()}.factory_provider.dart';",
           "class ${_factoryNameImpl.myClassName}Custom",

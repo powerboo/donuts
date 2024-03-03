@@ -70,6 +70,15 @@ targets:
       # ------------------------------------------------------------
       # application service
       # ------------------------------------------------------------
+      donuts|abstractInterfaceApplicationServiceBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/application_service/src/test_data/{{file}}.abstract_interface_application_service.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
       donuts|applicationServiceImplBuilder:
         options:
           build_extensions:
@@ -187,6 +196,17 @@ builders:
   # ------------------------------------------------------------
   # application service
   # ------------------------------------------------------------
+  donuts|abstractInterfaceApplicationServiceBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/application_service/{{file}}.abstract_interface_application_service.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["abstractInterfaceApplicationServiceBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
   donuts|applicationServiceImplBuilder:
     defaults:
       options:

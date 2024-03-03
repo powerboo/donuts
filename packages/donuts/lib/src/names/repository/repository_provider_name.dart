@@ -1,3 +1,4 @@
+import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts/src/names/repository/abstract_interface_repository_name.dart';
@@ -36,21 +37,52 @@ class RepositoryProviderName {
     );
   }
 
+  String get myPartPath {
+    return p.join(
+      "package:${_aggregateRootName.packageName}/donuts/repository/",
+      _aggregateRootName.baseDirectory,
+      "${_aggregateRootName.fileName}.repository_provider.custom.dart",
+    );
+  }
+
   Field toFieldElement() {
     return Field((p0) {
       p0.name = myFieldName;
       p0.modifier = FieldModifier.final$;
-      p0.assignment = Code('''
+      if (_aggregateRootName.customRepository) {
+        p0.docs.addAll([
+          "",
+          "/// [${_aggregateRootName.myClassName}] is interface or abstract",
+          "/// must be implement custom factory.",
+          "/// Please check Section XXX in https://pub.dev/packages/donuts",
+          "/// create file : ${_aggregateRootName.myClassName.toSnakeCase()}.repository_provider.custom.dart",
+          "/// Please copy and paste the following text into the file",
+          "/*",
+          "part of '${_aggregateRootName.myClassName.toSnakeCase()}.repository_provider.dart';",
+          "class ${_repositoryImplName.myClassName}Custom",
+          "    implements ${_repositoryName.myClassName} {",
+          "}",
+          "*/",
+        ]);
+        p0.assignment = Code('''
+Provider<${_repositoryName.myClassName}>((ref) {
+  return ${_repositoryImplName.myClassName}Custom();
+})
+''');
+
+        return;
+      } else {
+        p0.assignment = Code('''
 Provider<${_repositoryName.myClassName}>((ref) {
   const bool inMemory = ${_inMemory.toString()};
   if(inMemory){
-    // ignore: dead_code
     return ${_inMemoryRepositoryImpl.myClassName}();
   }
   // ignore: dead_code
   return ${_repositoryImplName.myClassName}();
 })
 ''');
+      }
     });
   }
 }

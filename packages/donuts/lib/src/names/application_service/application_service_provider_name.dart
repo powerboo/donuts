@@ -1,3 +1,5 @@
+import 'package:donuts/src/generator/common/element_checker.dart';
+import 'package:donuts/src/names/application_service/abstract_interface_application_service_name.dart';
 import 'package:donuts/src/names/application_service/application_service_impl_name.dart';
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
@@ -14,6 +16,8 @@ class ApplicationServiceProviderName {
   final AbstractInterfaceFactoryName _abstractInterfaceFactoryName;
   final FactoryProviderName _factoryProvider;
   final RepositoryProviderName _repositoryProvider;
+  final AbstractInterfaceApplicationServiceName
+      _abstractInterfaceApplicationServiceName;
 
   ApplicationServiceProviderName({
     required AggregateRootName aggregateRootName,
@@ -22,12 +26,16 @@ class ApplicationServiceProviderName {
     required AbstractInterfaceFactoryName abstractInterfaceFactoryName,
     required FactoryProviderName factoryProvider,
     required RepositoryProviderName repositoryProvider,
+    required AbstractInterfaceApplicationServiceName
+        abstractInterfaceApplicationServiceName,
   })  : _aggregateRootName = aggregateRootName,
         _applicationServiceImplName = applicationServiceImplName,
         _abstractInterfaceRepositoryName = abstractInterfaceRepositoryName,
         _abstractInterfaceFactoryName = abstractInterfaceFactoryName,
         _factoryProvider = factoryProvider,
-        _repositoryProvider = repositoryProvider;
+        _repositoryProvider = repositoryProvider,
+        _abstractInterfaceApplicationServiceName =
+            abstractInterfaceApplicationServiceName;
 
   String get myFieldName {
     return "${_aggregateRootName.myInstanceName}ApplicationServiceProvider";
@@ -41,19 +49,52 @@ class ApplicationServiceProviderName {
     );
   }
 
+  String get myPartPath {
+    return p.join(
+      "package:${_aggregateRootName.packageName}/donuts/application_service/",
+      _aggregateRootName.baseDirectory,
+      "${_aggregateRootName.fileName}.application_service_provider.custom.dart",
+    );
+  }
+
   Field toFieldElement() {
     return Field((p0) {
       p0.name = myFieldName;
       p0.modifier = FieldModifier.final$;
-      p0.assignment = Code('''
+      if (_aggregateRootName.customApplicationService) {
+        p0.docs.addAll([
+          "",
+          "/// [${_aggregateRootName.myClassName}] is interface or abstract",
+          "/// must be implement custom factory.",
+          "/// Please check Section XXX in https://pub.dev/packages/donuts",
+          "/// create file : ${_aggregateRootName.myClassName.toSnakeCase()}.application_service_provider.custom.dart",
+          "/// Please copy and paste the following text into the file",
+          "/*",
+          "part of '${_aggregateRootName.myClassName.toSnakeCase()}.application_service_provider.dart';",
+          "class ${_applicationServiceImplName.myClassName}Custom ",
+          "   implements ${_abstractInterfaceApplicationServiceName.myClassName}{",
+          "    ${_applicationServiceImplName.myClassName}Custom({required this.ref});",
+          "    ProviderRef<${_abstractInterfaceApplicationServiceName.myClassName}> ref;",
+          "}",
+          "*/",
+        ]);
+        p0.assignment = Code('''
+Provider<${_abstractInterfaceApplicationServiceName.myClassName}>((ref) {
+  return ${_applicationServiceImplName.myClassName}Custom(
+    ref: ref,
+  );
+})
+''');
+      } else {
+        p0.assignment = Code('''
 Provider<${_applicationServiceImplName.myClassName}>((ref) {
   return ${_applicationServiceImplName.myClassName}(
     ${_abstractInterfaceFactoryName.myInstanceName} : ref.watch(${_factoryProvider.myFieldName}),
     ${_abstractInterfaceRepositoryName.myInstanceName} : ref.watch(${_repositoryProvider.myFieldName}),
-    ref : ref,
   );
 })
 ''');
+      }
     });
   }
 }

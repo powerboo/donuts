@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
+import 'package:donuts/src/names/application_service/abstract_interface_application_service_name.dart';
 import 'package:donuts/src/names/application_service/application_service_impl_name.dart';
 import 'package:donuts/src/names/application_service/application_service_provider_name.dart';
 import 'package:donuts/src/names/common/exception_name.dart';
@@ -85,11 +85,16 @@ class SingleStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
           "${aggregateRootName.element.displayName}ApplicationServiceImpl",
     );
 
+    final applicationService = AbstractInterfaceApplicationServiceName(
+      aggregateRootName: aggregateRootName,
+    );
+
     final applicationServiceImplName = ApplicationServiceImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceRepositoryName: repositoryName,
       abstractInterfaceFactoryName: factoryName,
       exceptionName: exception,
+      abstractInterfaceApplicationServiceName: applicationService,
     );
 
     final factoryProvider = FactoryProviderName(
@@ -113,6 +118,7 @@ class SingleStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
       abstractInterfaceFactoryName: factoryName,
       factoryProvider: factoryProvider,
       repositoryProvider: repositoryProvider,
+      abstractInterfaceApplicationServiceName: applicationService,
     );
 
     final singleStateImpl = SingleStateImplName(
@@ -129,16 +135,36 @@ AsyncNotifierProvider<${singleStateImpl.myClassName}, ${aggregateRootName.myClas
     });
 
     final lib = Library(((p0) {
-      p0.body = ListBuilder<Spec>([
-        provider,
-        singleStateImpl.toClassElement(),
-      ]);
+      p0.body.add(provider);
 
       p0.directives.addAll([
         Directive.import("package:riverpod/riverpod.dart"),
         Directive.import(aggregateRootName.myPath),
         Directive.import(applicationServiceProvider.myPath),
       ]);
+      if (aggregateRootName.customSingleState) {
+        p0.directives.add(Directive.part(singleStateImpl.myPartPath));
+        p0.docs.add(
+            "/// [${aggregateRootName.myClassName}] is interface or abstract");
+        p0.docs.add("/// must be implement custom factory.");
+        p0.docs.add(
+            "/// Please check Section XXX in https://pub.dev/packages/donuts");
+        p0.docs.add(
+            "/// create file : ${aggregateRootName.myClassName.toSnakeCase()}.single_state_impl.custom.dart");
+        p0.docs
+            .add("/// Please copy and paste the following text into the file");
+        p0.docs.add("/*");
+
+        p0.docs.add(
+            "part of '${aggregateRootName.myClassName.toSnakeCase()}.single_state_impl.dart';");
+        p0.docs.add(_formatter.format(
+            '${singleStateImpl.toClassElement().accept(DartEmitter())}'));
+        p0.docs.add("*/");
+      } else {
+        p0.body.add(
+          singleStateImpl.toClassElement(),
+        );
+      }
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');

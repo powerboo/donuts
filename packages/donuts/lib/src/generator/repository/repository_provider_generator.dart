@@ -67,19 +67,29 @@ class RepositoryProviderGenerator
       repositoryImplName: repositoryImplName,
       inMemoryRepositoryImpl: inMemoryRepositoryImpl,
       inMemory: inMemory,
-    ).toFieldElement();
+    );
 
     final lib = Library(((p0) {
       p0.body = ListBuilder<Spec>([
-        provider,
+        provider.toFieldElement(),
       ]);
 
       p0.directives.addAll([
         Directive.import('package:riverpod/riverpod.dart'),
         Directive.import(repositoryName.myPath),
-        Directive.import(repositoryImplName.myPath),
-        Directive.import(inMemoryRepositoryImpl.myPath),
       ]);
+
+      if (aggregateRootName.customRepository) {
+        p0.directives.addAll([
+          Directive.import(aggregateRootName.myPath),
+          Directive.part("${provider.myPartPath}"),
+        ]);
+      } else {
+        p0.directives.addAll([
+          Directive.import(repositoryImplName.myPath),
+          Directive.import(inMemoryRepositoryImpl.myPath),
+        ]);
+      }
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');

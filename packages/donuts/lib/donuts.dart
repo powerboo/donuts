@@ -1,4 +1,5 @@
 import 'package:build/build.dart';
+import 'package:donuts/src/generator/application_service/abstract_interface_application_service_generator.dart';
 import 'package:donuts/src/generator/application_service/application_service_impl_generator.dart';
 import 'package:donuts/src/generator/application_service/application_service_provider_generator.dart';
 import 'package:donuts/src/generator/factory/abstract_interface_factory_generator.dart';
@@ -100,6 +101,15 @@ Builder repositoryProviderBuilder(BuilderOptions options) {
 }
 
 // -------------- application service ----------------
+/// abstract interface application service
+Builder abstractInterfaceApplicationServiceBuilder(BuilderOptions options) {
+  return LibraryBuilder(
+    AbstractInterfaceApplicationServiceGenerator(),
+    generatedExtension: ".abstract_interface_application_service.dart",
+    options: options,
+  );
+}
+
 /// application service impl
 Builder applicationServiceImplBuilder(BuilderOptions options) {
   return LibraryBuilder(

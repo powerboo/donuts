@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
+import 'package:donuts/src/names/application_service/abstract_interface_application_service_name.dart';
 import 'package:donuts/src/names/application_service/application_service_impl_name.dart';
 import 'package:donuts/src/names/application_service/application_service_provider_name.dart';
 import 'package:donuts/src/names/common/exception_name.dart';
@@ -86,12 +87,16 @@ class ApplicationServiceProviderGenerator
       exceptionBaseName:
           "${aggregateRootName.element.displayName}ApplicationServiceImpl",
     );
+    final applicationService = AbstractInterfaceApplicationServiceName(
+      aggregateRootName: aggregateRootName,
+    );
 
     final applicationServiceImplName = ApplicationServiceImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceRepositoryName: repositoryName,
       abstractInterfaceFactoryName: factoryName,
       exceptionName: exception,
+      abstractInterfaceApplicationServiceName: applicationService,
     );
 
     final factoryProvider = FactoryProviderName(
@@ -115,6 +120,7 @@ class ApplicationServiceProviderGenerator
       abstractInterfaceFactoryName: factoryName,
       factoryProvider: factoryProvider,
       repositoryProvider: repositoryProvider,
+      abstractInterfaceApplicationServiceName: applicationService,
     );
 
     final lib = Library(((p0) {
@@ -124,10 +130,21 @@ class ApplicationServiceProviderGenerator
 
       p0.directives.addAll([
         Directive.import('package:riverpod/riverpod.dart'),
-        Directive.import(factoryProvider.myPath),
-        Directive.import(repositoryProvider.myPath),
-        Directive.import(applicationServiceImplName.myPath),
       ]);
+      if (aggregateRootName.customApplicationService) {
+        p0.directives.addAll([
+          Directive.import("package:donuts_annotation/donuts_error.dart"),
+          Directive.import(aggregateRootName.myPath),
+          Directive.import(applicationService.myPath),
+          Directive.part("${applicationServiceProvider.myPartPath}"),
+        ]);
+      } else {
+        p0.directives.addAll([
+          Directive.import(factoryProvider.myPath),
+          Directive.import(repositoryProvider.myPath),
+          Directive.import(applicationServiceImplName.myPath),
+        ]);
+      }
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');

@@ -25,7 +25,15 @@ class SingleStateImplName {
     return p.join(
       "package:${_aggregateRootName.packageName}/donuts/state/",
       _aggregateRootName.baseDirectory,
-      "${_aggregateRootName.fileName}.dart",
+      "${_aggregateRootName.fileName}.single_state_impl.dart",
+    );
+  }
+
+  String get myPartPath {
+    return p.join(
+      "package:${_aggregateRootName.packageName}/donuts/state/",
+      _aggregateRootName.baseDirectory,
+      "${_aggregateRootName.fileName}.single_state_impl.custom.dart",
     );
   }
 

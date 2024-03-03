@@ -2,21 +2,21 @@ library donuts_annotation;
 
 class AggregateRoot {
   // factory
-  final bool extensionFactory;
+  final bool customFactory;
 
   // repository
-  final bool extensionRepository;
-  final bool extensionInMemoryRepository;
-  final bool useInMemory;
+  final bool customRepository;
+  final bool customInMemoryRepository;
+  // final bool useInMemory;
 
   // application service
-  final bool extensionApplicationService;
+  final bool customApplicationService;
 
   // list state
-  final bool extensionListState;
+  final bool customListState;
 
   // single state
-  final bool extensionSingleState;
+  final bool customSingleState;
 
   // interface group
   // final List<Type> interfaceChildren;
@@ -25,21 +25,21 @@ class AggregateRoot {
 
   const AggregateRoot({
     // factory
-    this.extensionFactory = false,
+    this.customFactory = false,
 
     // repository
-    this.extensionRepository = false,
-    this.extensionInMemoryRepository = false,
-    this.useInMemory = false,
+    this.customRepository = false,
+    this.customInMemoryRepository = false,
+    // this.useInMemory = false,
 
     // application service
-    this.extensionApplicationService = false,
+    this.customApplicationService = false,
 
     // list state
-    this.extensionListState = false,
+    this.customListState = false,
 
     // single state
-    this.extensionSingleState = false,
+    this.customSingleState = false,
 
     // interface group
     // this.interfaceChildren = const [],

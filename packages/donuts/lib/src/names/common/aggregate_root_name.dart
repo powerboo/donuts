@@ -17,6 +17,14 @@ class AggregateRootName {
   KeyFactoryName? _keyFactoryName = null;
   late final String keyType;
 
+  // custom class
+  late final bool customFactory;
+  late final bool customRepository;
+  late final bool customInMemoryRepository;
+  late final bool customApplicationService;
+  late final bool customListState;
+  late final bool customSingleState;
+
   AggregateRootName({
     required this.element,
     required this.keyArgumentElement,
@@ -24,6 +32,28 @@ class AggregateRootName {
     required this.keyFieldAnnotation,
     required this.aggregateRootAnnotation,
   }) : _libraryElement = element.library {
+    final customFactoryValue =
+        aggregateRootAnnotation.getField("customFactory")?.toBoolValue();
+    final customRepositoryValue =
+        aggregateRootAnnotation.getField("customRepository")?.toBoolValue();
+    final customInMemoryRepositoryValue = aggregateRootAnnotation
+        .getField("customInMemoryRepository")
+        ?.toBoolValue();
+    final customApplicationServiceValue = aggregateRootAnnotation
+        .getField("customApplicationService")
+        ?.toBoolValue();
+    final customListStateValue =
+        aggregateRootAnnotation.getField("customListState")?.toBoolValue();
+    final customSingleStateValue =
+        aggregateRootAnnotation.getField("customSingleState")?.toBoolValue();
+
+    customFactory = customFactoryValue ?? false;
+    customRepository = customRepositoryValue ?? false;
+    customInMemoryRepository = customInMemoryRepositoryValue ?? false;
+    customApplicationService = customApplicationServiceValue ?? false;
+    customListState = customListStateValue ?? false;
+    customSingleState = customSingleStateValue ?? false;
+
     final keyFieldAnnotationValue = keyFieldAnnotation.computeConstantValue();
     if (keyFieldAnnotationValue == null) {
       throw InvalidGenerationSourceError(

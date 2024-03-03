@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
+import 'package:donuts/src/names/application_service/abstract_interface_application_service_name.dart';
 import 'package:donuts/src/names/factory/abstract_interface_factory_name.dart';
 import 'package:donuts/src/names/repository/abstract_interface_repository_name.dart';
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
@@ -13,16 +14,22 @@ class ApplicationServiceImplName {
   final AbstractInterfaceRepositoryName _abstractInterfaceRepositoryName;
   final AbstractInterfaceFactoryName _abstractInterfaceFactoryName;
   final ExceptionName _exceptionName;
+  final AbstractInterfaceApplicationServiceName
+      _abstractInterfaceApplicationServiceName;
 
   ApplicationServiceImplName({
     required AggregateRootName aggregateRootName,
     required AbstractInterfaceRepositoryName abstractInterfaceRepositoryName,
     required AbstractInterfaceFactoryName abstractInterfaceFactoryName,
     required ExceptionName exceptionName,
+    required AbstractInterfaceApplicationServiceName
+        abstractInterfaceApplicationServiceName,
   })  : _aggregateRootName = aggregateRootName,
         _abstractInterfaceRepositoryName = abstractInterfaceRepositoryName,
         _abstractInterfaceFactoryName = abstractInterfaceFactoryName,
-        _exceptionName = exceptionName;
+        _exceptionName = exceptionName,
+        _abstractInterfaceApplicationServiceName =
+            abstractInterfaceApplicationServiceName;
 
   String get myClassName {
     return "${_aggregateRootName.element.displayName}ApplicationServiceImpl";
@@ -38,6 +45,10 @@ class ApplicationServiceImplName {
 
   Class toClassElement() {
     return Class((p0) {
+      p0.implements.add(refer(
+          _abstractInterfaceApplicationServiceName.myClassName,
+          _abstractInterfaceApplicationServiceName.myPath));
+
       p0.constructors.add(Constructor((ct) {
         ct.optionalParameters.add(Parameter((p1) {
           p1.name = _abstractInterfaceFactoryName.myInstanceName;
@@ -56,13 +67,6 @@ class ApplicationServiceImplName {
             _abstractInterfaceRepositoryName.myClassName,
             _abstractInterfaceRepositoryName.myPath,
           );
-        }));
-
-        ct.optionalParameters.add(Parameter((p1) {
-          p1.name = "ref";
-          p1.named = true;
-          p1.required = true;
-          p1.toThis = true;
         }));
 
         ct.initializers.addAll([
@@ -91,22 +95,12 @@ class ApplicationServiceImplName {
         p0.modifier = FieldModifier.final$;
       });
 
-      final refObject = Field((p0) {
-        p0.name = "ref";
-        p0.type = refer(
-          'ProviderRef<${myClassName}>',
-          'package:riverpod/riverpod.dart',
-        );
-        p0.modifier = FieldModifier.final$;
-      });
-
       p0.name = myClassName;
       p0.abstract = false;
 
       p0.fields.addAll([
         factory,
         repository,
-        refObject,
       ]);
 
       final create = Method((p0) {
@@ -114,6 +108,9 @@ class ApplicationServiceImplName {
         p0.returns =
             refer('Future<(${_aggregateRootName.myClassName}?, DonutsError?)>');
         p0.name = 'create';
+        p0.annotations.add(
+          refer('override'),
+        );
 
         for (final argument in _aggregateRootName.constructorElement.children) {
           if (argument is! ParameterElement) {
@@ -155,6 +152,10 @@ try{
       });
 
       final find = Method((p0) {
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.modifier = MethodModifier.async;
         p0.returns =
             refer('Future<(${_aggregateRootName.myClassName}?, DonutsError?)>');
@@ -179,6 +180,10 @@ try {
       });
 
       final save = Method((p0) {
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<(void, DonutsError?)>');
         p0.name = 'save';
@@ -219,6 +224,10 @@ try {
       });
 
       final all = Method((p0) {
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.modifier = MethodModifier.async;
         p0.returns = refer(
             'Future<(List<${_aggregateRootName.myClassName}>?, DonutsError?)>');
@@ -261,6 +270,10 @@ try {
         }
 
         methodList.add(Method((m) {
+          p0.annotations.add(
+            refer('override'),
+          );
+
           // method
           m.name = method.name;
           m.modifier = MethodModifier.async;

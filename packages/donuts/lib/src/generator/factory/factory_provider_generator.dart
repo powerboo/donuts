@@ -58,7 +58,7 @@ class FactoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> {
         Directive.import('package:riverpod/riverpod.dart'),
         Directive.import(factoryName.myPath),
       ]);
-      if (aggregateRootName.isInterface) {
+      if (aggregateRootName.isInterface || aggregateRootName.customFactory) {
         p0.directives.addAll([
           Directive.import(aggregateRootName.myPath),
           Directive.part("${provider.myPartPath}"),

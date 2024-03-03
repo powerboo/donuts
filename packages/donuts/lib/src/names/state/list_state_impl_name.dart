@@ -30,6 +30,14 @@ class ListStateImplName {
     );
   }
 
+  String get myPartPath {
+    return p.join(
+      "package:${_aggregateRootName.packageName}/donuts/state/",
+      _aggregateRootName.baseDirectory,
+      "${_aggregateRootName.fileName}.list_state_impl.custom.dart",
+    );
+  }
+
   Class toClassElement() {
     return Class((p0) {
       p0.name = myClassName;
