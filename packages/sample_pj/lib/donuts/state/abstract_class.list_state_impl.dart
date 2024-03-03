@@ -5,17 +5,16 @@
 // **************************************************************************
 
 import 'package:riverpod/riverpod.dart';
-import 'package:sample_pj/sample_aggregate_root.dart';
-import 'package:sample_pj/donuts/application_service/sample_aggregate_root.application_service_provider.dart';
+import 'package:sample_pj/abstract_class.dart';
+import 'package:sample_pj/donuts/application_service/abstract_class.application_service_provider.dart';
 
-final sampleAggregateRootListStateImplProvider = AsyncNotifierProvider<
-    SampleAggregateRootListStateImpl,
-    List<SampleAggregateRoot>>(SampleAggregateRootListStateImpl.new);
+final abstractClassListStateImplProvider =
+    AsyncNotifierProvider<AbstractClassListStateImpl, List<AbstractClass>>(
+        AbstractClassListStateImpl.new);
 
-class SampleAggregateRootListStateImpl
-    extends AsyncNotifier<List<SampleAggregateRoot>> {
+class AbstractClassListStateImpl extends AsyncNotifier<List<AbstractClass>> {
   Future<void> _fetchAll() async {
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
+    final service = ref.watch(abstractClassApplicationServiceProvider);
     final (list, err) = await service.all();
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -23,7 +22,7 @@ class SampleAggregateRootListStateImpl
     }
     if (list == null) {
       state = AsyncValue.error(
-          "[SampleAggregateRootListStateImplError] sampleAggregateRoot is null.",
+          "[AbstractClassListStateImplError] abstractClass is null.",
           StackTrace.current);
       return;
     }
@@ -31,10 +30,10 @@ class SampleAggregateRootListStateImpl
   }
 
   @override
-  Future<List<SampleAggregateRoot>> build() async {
+  Future<List<AbstractClass>> build() async {
     state = const AsyncValue.loading();
 
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
+    final service = ref.watch(abstractClassApplicationServiceProvider);
     final (list, err) = await service.all();
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -42,44 +41,42 @@ class SampleAggregateRootListStateImpl
     }
     if (list == null) {
       state = AsyncValue.error(
-          "[SampleAggregateRootListStateImplError] sampleAggregateRoot is null.",
+          "[AbstractClassListStateImplError] abstractClass is null.",
           StackTrace.current);
       return [];
     }
     return list;
   }
 
-  Future<void> create({required String value}) async {
+  Future<void> create() async {
     state = const AsyncValue.loading();
 
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
-    final (created, err) = await service.create(
-      value: value,
-    );
+    final service = ref.watch(abstractClassApplicationServiceProvider);
+    final (created, err) = await service.create();
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
       return;
     }
     if (created == null) {
       state = AsyncValue.error(
-          "[SampleAggregateRootListStateImplError] sampleAggregateRoot is null.",
+          "[AbstractClassListStateImplError] abstractClass is null.",
           StackTrace.current);
       return;
     }
     await _fetchAll();
   }
 
-  Future<SampleAggregateRoot?> find({required ObjectId key}) async {
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
-    final (sampleAggregateRoot, err) = await service.find(key: key);
+  Future<AbstractClass?> find({required String key}) async {
+    final service = ref.watch(abstractClassApplicationServiceProvider);
+    final (abstractClass, err) = await service.find(key: key);
     if (err != null) {
       return null;
     }
-    return sampleAggregateRoot;
+    return abstractClass;
   }
 
-  Future<void> delete({required ObjectId key}) async {
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
+  Future<void> delete({required String key}) async {
+    final service = ref.watch(abstractClassApplicationServiceProvider);
     final (_, err) = await service.delete(key: key);
     if (err != null) {
       return;

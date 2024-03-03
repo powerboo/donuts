@@ -9,15 +9,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  donuts_annotation: ^0.0.3
+  donuts_annotation: ^0.1.0
   flutter_riverpod: ^2.4.10
   uuid: ^4.3.3
   http: ^1.2.0
   freezed: ^2.4.7
   json_serializable: ^6.7.1
+  json_annotation: ^4.8.1
 dev_dependencies:
-  donuts:
-    path: ../donuts
+  donuts: ^0.1.0
 
   flutter_test:
     sdk: flutter

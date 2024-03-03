@@ -4,17 +4,18 @@
 // ApplicationServiceImplGenerator
 // **************************************************************************
 
-import 'package:donuts_annotation/error.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:donuts_annotation/donuts_error.dart';
 import 'package:sample_pj/sample_aggregate_root.dart';
 import 'package:sample_pj/donuts/factory/sample_aggregate_root.abstract_interface_factory.dart';
 import 'package:sample_pj/donuts/repository/sample_aggregate_root.abstract_interface_repository.dart';
+import 'package:sample_pj/donuts/application_service/sample_aggregate_root.abstract_interface_application_service.dart';
 
-class SampleAggregateRootApplicationServiceImpl {
+@override
+class SampleAggregateRootApplicationServiceImpl
+    implements SampleAggregateRootApplicationService {
   SampleAggregateRootApplicationServiceImpl({
     required SampleAggregateRootFactory sampleAggregateRootFactory,
     required SampleAggregateRootRepository sampleAggregateRootRepository,
-    required this.ref,
   })  : _sampleAggregateRootFactory = sampleAggregateRootFactory,
         _sampleAggregateRootRepository = sampleAggregateRootRepository;
 
@@ -22,9 +23,9 @@ class SampleAggregateRootApplicationServiceImpl {
 
   final SampleAggregateRootRepository _sampleAggregateRootRepository;
 
-  final ProviderRef<dynamic> ref;
-
-  Future<(SampleAggregateRoot?, Error?)> create({required String value}) async {
+  @override
+  Future<(SampleAggregateRoot?, DonutsError?)> create(
+      {required String value}) async {
     try {
       final created = _sampleAggregateRootFactory.create(
         value: value,
@@ -32,40 +33,44 @@ class SampleAggregateRootApplicationServiceImpl {
       await _sampleAggregateRootRepository.save(sampleAggregateRoot: created);
       return (created, null);
     } catch (e, stacktrace) {
-      return (null, Error(e, stacktrace));
+      return (null, DonutsError(e, stacktrace));
     }
   }
 
-  Future<(SampleAggregateRoot?, Error?)> find({required String key}) async {
+  @override
+  Future<(SampleAggregateRoot?, DonutsError?)> find(
+      {required ObjectId key}) async {
     try {
       final target = await _sampleAggregateRootRepository.find(key: key);
       return (target, null);
     } catch (e, stacktrace) {
-      return (null, Error(e, stacktrace));
+      return (null, DonutsError(e, stacktrace));
     }
   }
 
-  Future<(void, Error?)> save(
+  @override
+  Future<(void, DonutsError?)> save(
       {required SampleAggregateRoot sampleAggregateRoot}) async {
     try {
       await _sampleAggregateRootRepository.save(
           sampleAggregateRoot: sampleAggregateRoot);
       return (null, null);
     } catch (e, stacktrace) {
-      return (null, Error(e, stacktrace));
+      return (null, DonutsError(e, stacktrace));
     }
   }
 
-  Future<(void, Error?)> delete({required String key}) async {
+  Future<(void, DonutsError?)> delete({required ObjectId key}) async {
     try {
       await _sampleAggregateRootRepository.delete(key: key);
       return (null, null);
     } catch (e, stacktrace) {
-      return (null, Error(e, stacktrace));
+      return (null, DonutsError(e, stacktrace));
     }
   }
 
-  Future<(List<SampleAggregateRoot>?, Error?)> all({
+  @override
+  Future<(List<SampleAggregateRoot>?, DonutsError?)> all({
     int cursor = 0,
     int length = 100,
   }) async {
@@ -74,12 +79,13 @@ class SampleAggregateRootApplicationServiceImpl {
           cursor: cursor, length: length);
       return (target, null);
     } catch (e, stacktrace) {
-      return (null, Error(e, stacktrace));
+      return (null, DonutsError(e, stacktrace));
     }
   }
 
   /// method 1
-  Future<(SampleAggregateRoot?, Error?)> method1({required String key}) async {
+  Future<(SampleAggregateRoot?, DonutsError?)> method1(
+      {required ObjectId key}) async {
     try {
       final target = await _sampleAggregateRootRepository.find(key: key);
       if (target == null) {
@@ -93,7 +99,7 @@ class SampleAggregateRootApplicationServiceImpl {
       await _sampleAggregateRootRepository.save(sampleAggregateRoot: changed);
       return (changed, null);
     } catch (e, stacktrace) {
-      return (null, Error(e, stacktrace));
+      return (null, DonutsError(e, stacktrace));
     }
   }
 }

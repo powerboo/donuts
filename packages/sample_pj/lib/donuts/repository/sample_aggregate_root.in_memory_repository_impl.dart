@@ -12,7 +12,7 @@ class InMemorySampleAggregateRootRepositoryImpl
   List<SampleAggregateRoot> store = [];
 
   @override
-  Future<SampleAggregateRoot?> find({required String key}) async {
+  Future<SampleAggregateRoot?> find({required ObjectId key}) async {
     return store.where((s) => s.key == key).firstOrNull;
   }
 
@@ -36,7 +36,7 @@ class InMemorySampleAggregateRootRepositoryImpl
   }
 
   @override
-  Future<void> delete({required String key}) async {
+  Future<void> delete({required ObjectId key}) async {
     store = store.where((s) => s.key != key).toList();
   }
 }

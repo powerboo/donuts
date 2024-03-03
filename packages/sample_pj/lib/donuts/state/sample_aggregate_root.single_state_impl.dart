@@ -4,7 +4,7 @@
 // SingleStateGenerator
 // **************************************************************************
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:sample_pj/sample_aggregate_root.dart';
 import 'package:sample_pj/donuts/application_service/sample_aggregate_root.application_service_provider.dart';
 
@@ -14,25 +14,25 @@ final sampleAggregateRootSingleStateImplProvider = AsyncNotifierProvider<
 
 class SampleAggregateRootSingleStateImpl
     extends AsyncNotifier<SampleAggregateRoot?> {
-  final _service = ref.watch(sampleAggregateRootApplicationServiceProvider);
-
-  String? _key;
+  // ignore: unused_field
+  ObjectId? _key;
 
   @override
   Future<SampleAggregateRoot?> build() async {
     return null;
   }
 
-  Future<SampleAggregateRoot?> set() async {
+  Future<SampleAggregateRoot?> set({required ObjectId key}) async {
     state = const AsyncValue.loading();
-    final (target, err) = await _service.find(key: key);
+    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
+    final (target, err) = await service.find(key: key);
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
       return null;
     }
     if (target == null) {
       _key = null;
-      state = null;
+      state = const AsyncValue.data(null);
       return null;
     }
     _key = key;
@@ -50,17 +50,20 @@ class SampleAggregateRootSingleStateImpl
           StackTrace.current);
       return;
     }
-    final (changed, err) = await _service.method1(key: key);
+    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
+    final (changed, err) = await service.method1(
+      key: key,
+    );
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
       return;
     }
     if (changed == null) {
       state = AsyncValue.error(
-          "[SampleAggregateRootSingleStateImplError] Failed to execute [method1]. key[${key}]",
+          "[SampleAggregateRootSingleStateImplError] Failed to execute [method1]. key[$key]",
           StackTrace.current);
       return;
     }
-    state = changed;
+    state = AsyncValue.data(changed);
   }
 }

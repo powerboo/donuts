@@ -4,16 +4,18 @@
 // FactoryImplGenerator
 // **************************************************************************
 
-import 'package:uuid/uuid.dart';
+import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:sample_pj/sample_aggregate_root.dart';
 import 'package:sample_pj/donuts/factory/sample_aggregate_root.abstract_interface_factory.dart';
 
 class SampleAggregateRootFactoryImpl implements SampleAggregateRootFactory {
-  final Uuid uuid = const Uuid();
+  SampleAggregateRootFactoryImpl({required KeyFactory this.keyFactory});
+
+  final KeyFactory keyFactory;
 
   @override
   SampleAggregateRoot create({required String value}) {
-    final key = uuid.v7();
+    final key = keyFactory.create();
 
     return SampleAggregateRoot(
       key: key,
@@ -23,7 +25,7 @@ class SampleAggregateRootFactoryImpl implements SampleAggregateRootFactory {
 
   @override
   SampleAggregateRoot restore({
-    required String key,
+    required ObjectId key,
     required String value,
   }) {
     return SampleAggregateRoot(

@@ -5,17 +5,16 @@
 // **************************************************************************
 
 import 'package:riverpod/riverpod.dart';
-import 'package:sample_pj/sample_aggregate_root.dart';
-import 'package:sample_pj/donuts/application_service/sample_aggregate_root.application_service_provider.dart';
+import 'package:sample_pj/freezed_class.dart';
+import 'package:sample_pj/donuts/application_service/freezed_class.application_service_provider.dart';
 
-final sampleAggregateRootListStateImplProvider = AsyncNotifierProvider<
-    SampleAggregateRootListStateImpl,
-    List<SampleAggregateRoot>>(SampleAggregateRootListStateImpl.new);
+final freezedClassListStateImplProvider =
+    AsyncNotifierProvider<FreezedClassListStateImpl, List<FreezedClass>>(
+        FreezedClassListStateImpl.new);
 
-class SampleAggregateRootListStateImpl
-    extends AsyncNotifier<List<SampleAggregateRoot>> {
+class FreezedClassListStateImpl extends AsyncNotifier<List<FreezedClass>> {
   Future<void> _fetchAll() async {
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
+    final service = ref.watch(freezedClassApplicationServiceProvider);
     final (list, err) = await service.all();
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -23,7 +22,7 @@ class SampleAggregateRootListStateImpl
     }
     if (list == null) {
       state = AsyncValue.error(
-          "[SampleAggregateRootListStateImplError] sampleAggregateRoot is null.",
+          "[FreezedClassListStateImplError] freezedClass is null.",
           StackTrace.current);
       return;
     }
@@ -31,10 +30,10 @@ class SampleAggregateRootListStateImpl
   }
 
   @override
-  Future<List<SampleAggregateRoot>> build() async {
+  Future<List<FreezedClass>> build() async {
     state = const AsyncValue.loading();
 
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
+    final service = ref.watch(freezedClassApplicationServiceProvider);
     final (list, err) = await service.all();
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -42,19 +41,27 @@ class SampleAggregateRootListStateImpl
     }
     if (list == null) {
       state = AsyncValue.error(
-          "[SampleAggregateRootListStateImplError] sampleAggregateRoot is null.",
+          "[FreezedClassListStateImplError] freezedClass is null.",
           StackTrace.current);
       return [];
     }
     return list;
   }
 
-  Future<void> create({required String value}) async {
+  Future<void> create(
+    int intValue,
+    int? nullableInt, {
+    required String freezedClass,
+    String? nullableString,
+  }) async {
     state = const AsyncValue.loading();
 
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
+    final service = ref.watch(freezedClassApplicationServiceProvider);
     final (created, err) = await service.create(
-      value: value,
+      intValue,
+      nullableInt,
+      freezedClass: freezedClass,
+      nullableString: nullableString,
     );
     if (err != null) {
       state = AsyncValue.error(err.error, err.stackTrace);
@@ -62,24 +69,24 @@ class SampleAggregateRootListStateImpl
     }
     if (created == null) {
       state = AsyncValue.error(
-          "[SampleAggregateRootListStateImplError] sampleAggregateRoot is null.",
+          "[FreezedClassListStateImplError] freezedClass is null.",
           StackTrace.current);
       return;
     }
     await _fetchAll();
   }
 
-  Future<SampleAggregateRoot?> find({required ObjectId key}) async {
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
-    final (sampleAggregateRoot, err) = await service.find(key: key);
+  Future<FreezedClass?> find({required String key}) async {
+    final service = ref.watch(freezedClassApplicationServiceProvider);
+    final (freezedClass, err) = await service.find(key: key);
     if (err != null) {
       return null;
     }
-    return sampleAggregateRoot;
+    return freezedClass;
   }
 
-  Future<void> delete({required ObjectId key}) async {
-    final service = ref.watch(sampleAggregateRootApplicationServiceProvider);
+  Future<void> delete({required String key}) async {
+    final service = ref.watch(freezedClassApplicationServiceProvider);
     final (_, err) = await service.delete(key: key);
     if (err != null) {
       return;

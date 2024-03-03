@@ -4,101 +4,102 @@
 // RepositoryImplGenerator
 // **************************************************************************
 
-import 'package:sample_pj/donuts/repository/sample_aggregate_root.abstract_interface_repository.dart';
-import 'package:sample_pj/sample_aggregate_root.dart';
+import 'package:sample_pj/donuts/repository/abstract_class.abstract_interface_repository.dart';
+import 'package:sample_pj/abstract_class.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class SampleAggregateRootRepositoryImpl
-    implements SampleAggregateRootRepository {
+class AbstractClassRepositoryImpl implements AbstractClassRepository {
+  AbstractClassJsonConverter converter = AbstractClassJsonConverter();
+
   @override
-  Future<SampleAggregateRoot?> find({required ObjectId key}) async {
+  Future<AbstractClass?> find({required String key}) async {
     final response = await http.get(
       Uri.https(
         'https://www.google.com',
-        "/v1/sample-aggregate-root/${key}",
+        "/v1/abstract-class/${key}",
       ),
       headers: {},
     );
 
     if (response.statusCode != 200) {
-      throw SampleAggregateRootRepositoryException("network error");
+      throw AbstractClassRepositoryException("network error");
     }
 
     final body = jsonDecode(response.body);
     if (body is! Map<String, dynamic>) {
-      throw SampleAggregateRootRepositoryException(
+      throw AbstractClassRepositoryException(
           "body is not Map<String, dynamic>");
     }
 
-    return SampleAggregateRoot.fromJson(body);
+    return converter.fromJson(body);
   }
 
   @override
-  Future<List<SampleAggregateRoot>> all({
+  Future<List<AbstractClass>> all({
     int cursor = 0,
     int length = 100,
   }) async {
     final response = await http.get(
       Uri.https(
         'https://www.google.com',
-        "/v1/sample-aggregate-root?cursor=${cursor}&length=${length}",
+        "/v1/abstract-class?cursor=${cursor}&length=${length}",
       ),
       headers: {},
     );
 
     if (response.statusCode != 200) {
-      throw SampleAggregateRootRepositoryException("network error");
+      throw AbstractClassRepositoryException("network error");
     }
 
     final data = jsonDecode(response.body);
     if (data is! List<Map<String, dynamic>>) {
-      throw SampleAggregateRootRepositoryException(
+      throw AbstractClassRepositoryException(
           "data is not List<Map<String, dynamic>>");
     }
 
-    final List<SampleAggregateRoot> result = [];
+    final List<AbstractClass> result = [];
     for (final r in data) {
-      result.add(SampleAggregateRoot.fromJson(r));
+      result.add(converter.fromJson(r));
     }
     return result;
   }
 
   @override
-  Future<void> save({required SampleAggregateRoot sampleAggregateRoot}) async {
+  Future<void> save({required AbstractClass abstractClass}) async {
     final response = await http.post(
       Uri.https(
         'https://www.google.com',
-        "/v1/sample-aggregate-root",
+        "/v1/abstract-class",
       ),
-      body: jsonEncode(sampleAggregateRoot.toJson()),
+      body: jsonEncode(converter.toJson(abstractClass)),
       headers: {},
     );
 
     if (response.statusCode != 200) {
-      throw SampleAggregateRootRepositoryException("network error");
+      throw AbstractClassRepositoryException("network error");
     }
   }
 
   @override
-  Future<void> delete({required ObjectId key}) async {
+  Future<void> delete({required String key}) async {
     final response = await http.delete(
       Uri.https(
         'https://www.google.com',
-        "/v1/sample-aggregate-root/${key}",
+        "/v1/abstract-class/${key}",
       ),
       headers: {},
     );
 
     if (response.statusCode != 200) {
-      throw SampleAggregateRootRepositoryException("network error");
+      throw AbstractClassRepositoryException("network error");
     }
   }
 }
 
-class SampleAggregateRootRepositoryException implements Exception {
-  const SampleAggregateRootRepositoryException(String message)
-      : message = "[SampleAggregateRootRepositoryException]$message";
+class AbstractClassRepositoryException implements Exception {
+  const AbstractClassRepositoryException(String message)
+      : message = "[AbstractClassRepositoryException]$message";
 
   final String message;
 

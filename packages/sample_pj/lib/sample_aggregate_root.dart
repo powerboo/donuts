@@ -10,10 +10,9 @@ class SampleAggregateRoot with _$SampleAggregateRoot {
   const SampleAggregateRoot._();
   factory SampleAggregateRoot({
     @KeyArgument(
-      keyArgumentDiv: KeyArgumentDiv.object,
       keyFactory: ObjectKeyFactory(),
     )
-    required String key,
+    required ObjectId key,
     required String value,
   }) = _SampleAggregateRoot;
 
@@ -35,9 +34,15 @@ class ObjectKeyFactory implements KeyFactory<ObjectId> {
   }
 }
 
-class ObjectId {
-  final String value;
-  ObjectId(this.value);
+@freezed
+class ObjectId with _$ObjectId {
+  const ObjectId._();
+  factory ObjectId({
+    required String value,
+  }) = _ObjectId;
+
+  factory ObjectId.fromJson(Map<String, dynamic> json) =>
+      _ObjectId.fromJson(json);
 }
 
 class SampleAggregateRootException implements Exception {
