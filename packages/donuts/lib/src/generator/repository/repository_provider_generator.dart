@@ -79,15 +79,37 @@ class RepositoryProviderGenerator
         Directive.import(repositoryName.myPath),
       ]);
 
-      if (aggregateRootName.customRepository) {
-        p0.directives.addAll([
-          Directive.import(aggregateRootName.myPath),
-          Directive.part("${provider.myPartPath}"),
-        ]);
-      } else {
+      if (!aggregateRootName.customRepository &&
+          !aggregateRootName.customInMemoryRepository) {
         p0.directives.addAll([
           Directive.import(repositoryImplName.myPath),
           Directive.import(inMemoryRepositoryImpl.myPath),
+        ]);
+      }
+
+      if (aggregateRootName.customRepository ||
+          aggregateRootName.customInMemoryRepository) {
+        p0.directives.addAll([
+          Directive.import(aggregateRootName.myPath),
+        ]);
+      }
+
+      if (aggregateRootName.customRepository) {
+        p0.directives.addAll([
+          Directive.import(repositoryImplName.myPath),
+        ]);
+      }
+
+      if (aggregateRootName.customInMemoryRepository) {
+        p0.directives.addAll([
+          Directive.import(inMemoryRepositoryImpl.myPath),
+        ]);
+      }
+
+      if (aggregateRootName.customRepository ||
+          aggregateRootName.customInMemoryRepository) {
+        p0.directives.addAll([
+          Directive.part("${provider.myPartPath}"),
         ]);
       }
     }));

@@ -49,7 +49,8 @@ class RepositoryProviderName {
     return Field((p0) {
       p0.name = myFieldName;
       p0.modifier = FieldModifier.final$;
-      if (_aggregateRootName.customRepository) {
+      if (_aggregateRootName.customRepository ||
+          _aggregateRootName.customInMemoryRepository) {
         p0.docs.addAll([
           "",
           "/// [${_aggregateRootName.myClassName}] is interface or abstract",
@@ -59,26 +60,51 @@ class RepositoryProviderName {
           "/// Please copy and paste the following text into the file",
           "/*",
           "part of '${_aggregateRootName.myClassName.toSnakeCase()}.repository_provider.dart';",
-          "class ${_repositoryImplName.myClassName}Custom",
-          "    implements ${_repositoryName.myClassName} {",
-          "}",
-          "*/",
         ]);
-        p0.assignment = Code('''
+      }
+      if (_aggregateRootName.customRepository) {
+        p0.docs.addAll([
+          "class ${_repositoryImplName.myClassName}Custom",
+          "    extends ${_repositoryImplName.myClassName} {",
+          "}",
+        ]);
+      }
+      if (_aggregateRootName.customInMemoryRepository) {
+        p0.docs.addAll([
+          "class ${_inMemoryRepositoryImpl.myClassName}Custom",
+          "    extends ${_inMemoryRepositoryImpl.myClassName} {",
+          "}",
+        ]);
+      }
+      if (_aggregateRootName.customRepository ||
+          _aggregateRootName.customInMemoryRepository) {
+        p0.docs.add("*/");
+      }
+
+      p0.assignment = Code('''
 Provider<${_repositoryName.myClassName}>((ref) {
-  return ${_repositoryImplName.myClassName}Custom();
+  const bool inMemory = ${_inMemory.toString()};
+  if(inMemory){
+    ${_inMemory ? "" : "// ignore: dead_code"}
+    return ${_inMemoryRepositoryImpl.myClassName}${_aggregateRootName.customInMemoryRepository ? "Custom" : ""}();
+  }
+
+  ${!_inMemory ? "" : "// ignore: dead_code"}
+  return ${_repositoryImplName.myClassName}${_aggregateRootName.customRepository ? "Custom" : ""}();
 })
 ''');
 
-        return;
-      } else {
+      if (!_aggregateRootName.customRepository &&
+          !_aggregateRootName.customInMemoryRepository) {
         p0.assignment = Code('''
 Provider<${_repositoryName.myClassName}>((ref) {
   const bool inMemory = ${_inMemory.toString()};
   if(inMemory){
+    ${_inMemory ? "" : "// ignore: dead_code"}
     return ${_inMemoryRepositoryImpl.myClassName}();
   }
-  // ignore: dead_code
+
+  ${!_inMemory ? "" : "// ignore: dead_code"}
   return ${_repositoryImplName.myClassName}();
 })
 ''');

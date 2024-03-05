@@ -108,6 +108,21 @@ targets:
         options:
           build_extensions:
             "^lib/src/test_data/{{file}}.dart": "lib/donuts/state/src/test_data/{{file}}.single_state_impl.dart"
+      # ------------------------------------------------------------
+      # view
+      # ------------------------------------------------------------
+      donuts|listViewBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/view/src/test_data/{{file}}.list_view.dart"
+      donuts|detailViewBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/view/src/test_data/{{file}}.detail_view.dart"
+      donuts|createModalBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/view/src/test_data/{{file}}.create_modal.dart"
 
 builders:
   # ------------------------------------------------------------
@@ -250,6 +265,42 @@ builders:
           "^lib/{{file}}.dart": "lib/donuts/state/{{file}}.single_state_impl.dart"
     import: "package:donuts/donuts.dart"
     builder_factories: ["singleStateBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  # ------------------------------------------------------------
+  # view
+  # ------------------------------------------------------------
+  donuts|listViewBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/view/{{file}}.list_view.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["listViewBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  donuts|detailViewBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/view/{{file}}.detail_view.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["detailViewBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+  donuts|createModalBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/view/{{file}}.create_modal.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["createModalBuilder"]
     build_extensions: {}
     auto_apply: dependents
     build_to: source

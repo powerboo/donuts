@@ -1,3 +1,8 @@
+## 0.1.1
+
+- mod expansion method.
+- add generator for view
+
 ## 0.1.0
 
 - Added support for class customization.

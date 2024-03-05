@@ -63,7 +63,7 @@ class ApplicationServiceImplGenerator
       ]);
 
       p0.directives.addAll([
-        Directive.import("package:donuts_annotation/donuts_error.dart"),
+        Directive.import("package:donuts_annotation/donuts_annotation.dart"),
         Directive.import(aggregateRootName.myPath),
         Directive.import(factoryName.myPath),
         Directive.import(repositoryName.myPath),

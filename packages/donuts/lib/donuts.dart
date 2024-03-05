@@ -1,4 +1,5 @@
 import 'package:build/build.dart';
+import 'package:source_gen/source_gen.dart';
 import 'package:donuts/src/generator/application_service/abstract_interface_application_service_generator.dart';
 import 'package:donuts/src/generator/application_service/application_service_impl_generator.dart';
 import 'package:donuts/src/generator/application_service/application_service_provider_generator.dart';
@@ -11,7 +12,9 @@ import 'package:donuts/src/generator/repository/repository_impl_generator.dart';
 import 'package:donuts/src/generator/repository/repository_provider_generator.dart';
 import 'package:donuts/src/generator/state/list_state_generator.dart';
 import 'package:donuts/src/generator/state/single_state_generator.dart';
-import 'package:source_gen/source_gen.dart';
+import 'package:donuts/src/generator/view/create_modal_generator.dart';
+import 'package:donuts/src/generator/view/detail_view_generator.dart';
+import 'package:donuts/src/generator/view/list_view_generator.dart';
 
 /*
 
@@ -143,6 +146,34 @@ Builder singleStateBuilder(BuilderOptions options) {
   return LibraryBuilder(
     SingleStateGenerator({'in_memory': false}),
     generatedExtension: ".single_state_impl.dart",
+    options: options,
+  );
+}
+
+// -------------- view ----------------
+/// list view
+Builder listViewBuilder(BuilderOptions options) {
+  return LibraryBuilder(
+    ListViewGenerator({'in_memory': false}),
+    generatedExtension: ".list_view.dart",
+    options: options,
+  );
+}
+
+/// detail view
+Builder detailViewBuilder(BuilderOptions options) {
+  return LibraryBuilder(
+    DetailViewGenerator({'in_memory': false}),
+    generatedExtension: ".detail_view.dart",
+    options: options,
+  );
+}
+
+/// create view
+Builder createModalBuilder(BuilderOptions options) {
+  return LibraryBuilder(
+    CreateModalGenerator({'in_memory': false}),
+    generatedExtension: ".create_modal.dart",
     options: options,
   );
 }

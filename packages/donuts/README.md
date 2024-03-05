@@ -8,7 +8,7 @@ Focus domain modeling and UI.
 
 - You can generate a layered architecture boilerplate for domain-driven design
 - Once you have written the entity, you can generate the repository, factory, and application_service.
-- The generated code will be extensible to suit your project(now develop)
+- The generated code will be extensible to suit your project
 
 # Motivation
 
@@ -63,5 +63,4 @@ generated code
 
 # Roadmap
 
-- Extension generated class
 - generate interface for [method_to_swagger_yaml](https://pub.dev/packages/method_to_swagger_yaml)

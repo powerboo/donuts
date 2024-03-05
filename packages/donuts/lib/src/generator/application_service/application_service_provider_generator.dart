@@ -133,9 +133,14 @@ class ApplicationServiceProviderGenerator
       ]);
       if (aggregateRootName.customApplicationService) {
         p0.directives.addAll([
-          Directive.import("package:donuts_annotation/donuts_error.dart"),
+          Directive.import("package:donuts_annotation/donuts_annotation.dart"),
           Directive.import(aggregateRootName.myPath),
+          Directive.import(factoryName.myPath),
+          Directive.import(repositoryName.myPath),
+          Directive.import(factoryProvider.myPath),
+          Directive.import(repositoryProvider.myPath),
           Directive.import(applicationService.myPath),
+          Directive.import(applicationServiceImplName.myPath),
           Directive.part("${applicationServiceProvider.myPartPath}"),
         ]);
       } else {

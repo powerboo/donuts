@@ -72,9 +72,18 @@ class ApplicationServiceProviderName {
           "/*",
           "part of '${_aggregateRootName.myClassName.toSnakeCase()}.application_service_provider.dart';",
           "class ${_applicationServiceImplName.myClassName}Custom ",
-          "   implements ${_abstractInterfaceApplicationServiceName.myClassName}{",
-          "    ${_applicationServiceImplName.myClassName}Custom({required this.ref});",
-          "    ProviderRef<${_abstractInterfaceApplicationServiceName.myClassName}> ref;",
+          "   extends ${_applicationServiceImplName.myClassName}{",
+          "    ${_applicationServiceImplName.myClassName}Custom({",
+          "  required this.ref,",
+          "  required this.${_abstractInterfaceFactoryName.myInstanceName},",
+          "  required this.${_abstractInterfaceRepositoryName.myInstanceName},",
+          "  }): super (",
+          "${_abstractInterfaceFactoryName.myInstanceName} : ${_abstractInterfaceFactoryName.myInstanceName},",
+          "${_abstractInterfaceRepositoryName.myInstanceName} : ${_abstractInterfaceRepositoryName.myInstanceName},",
+          ");",
+          "  final ProviderRef<${_abstractInterfaceApplicationServiceName.myClassName}> ref;",
+          "  final ${_abstractInterfaceFactoryName.myClassName} ${_abstractInterfaceFactoryName.myInstanceName};",
+          "  final ${_abstractInterfaceRepositoryName.myClassName} ${_abstractInterfaceRepositoryName.myInstanceName};",
           "}",
           "*/",
         ]);
@@ -82,6 +91,8 @@ class ApplicationServiceProviderName {
 Provider<${_abstractInterfaceApplicationServiceName.myClassName}>((ref) {
   return ${_applicationServiceImplName.myClassName}Custom(
     ref: ref,
+    ${_abstractInterfaceFactoryName.myInstanceName} : ref.watch(${_factoryProvider.myFieldName}),
+    ${_abstractInterfaceRepositoryName.myInstanceName} : ref.watch(${_repositoryProvider.myFieldName}),
   );
 })
 ''');
