@@ -67,3 +67,9 @@ abstract interface class AggregateRootJsonConverter<AggregateRootType> {
 class IgnoreMethod {
   const IgnoreMethod();
 }
+
+class DonutsError {
+  final Object error;
+  final StackTrace stackTrace;
+  DonutsError(this.error, this.stackTrace);
+}
