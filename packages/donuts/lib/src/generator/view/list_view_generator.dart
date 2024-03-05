@@ -146,8 +146,7 @@ class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
       p0.directives.addAll([
         Directive.import("package:flutter/material.dart"),
         Directive.import("package:hooks_riverpod/hooks_riverpod.dart"),
-        // Directive.import(aggregateRootName.myPath),
-        // Directive.import(listStateImpl.myPath),
+        Directive.import(listStateImpl.myPath),
       ]);
     }));
 

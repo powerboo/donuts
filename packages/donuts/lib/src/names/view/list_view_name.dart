@@ -49,13 +49,43 @@ class ListViewName {
         p3.returns = refer("Widget");
         p3.body = Block((p4) {
           p4.statements.add(Code('''
+    final listAsyncValue = ref.watch(${_listStateImplName.myInstanceName});
+    
     return Scaffold(
       appBar: const ${_headerName.myClassName}(),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {},
-          child: const Text('ボタン'),
-        ),
+      body: listAsyncValue.when(
+        data: (${_aggregateRootName.myInstanceName}List){
+          if (${_aggregateRootName.myInstanceName}List.isEmpty){
+            return Center(child:Text("is empty"),);
+          }
+          
+          return ListView.builder(
+            itemCount: ${_aggregateRootName.myInstanceName}List.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(${_aggregateRootName.myInstanceName}List[index].${_aggregateRootName.keyInstanceName}.toString()),);
+            },
+          );
+        },
+        error: (error, stackTrace) {
+          return Column(
+            children: [
+              Text("Error"),
+              const Divider(),
+              Text(error.toString()),
+              const SizedBox(height:20),
+
+              Text("StackTrace"),
+              const Divider(),
+              Text(stackTrace.toString()),
+            ],
+          );
+        },
+        loading: () {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );'''));
         });
