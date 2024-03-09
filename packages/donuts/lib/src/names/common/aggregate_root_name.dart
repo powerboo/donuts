@@ -191,6 +191,40 @@ class AggregateRootName {
   ///     String a, {
   ///       required int b,
   ///     });
+  ///    // method_1
+  ///    void method1(
+  ///     String a, {
+  ///       required int b,
+  ///       bool? val,
+  ///     }){
+  ///       return;
+  ///     }
+  /// }
+  /// final val = Sample(
+  ///  arg.a, {
+  ///    b: arg.b,
+  ///  }
+  /// );
+  /// val.method1(
+  ///   '',        //
+  ///   b: 1,      // generate
+  ///   val: null, //
+  /// );
+  /// ```
+  String methodArgumentString(String methodName) {
+    return '''
+"",
+b:1,
+val:null,
+''';
+  }
+
+  /// ```dart
+  /// class Sample{
+  ///   Sample(
+  ///     String a, {
+  ///       required int b,
+  ///     });
   /// }
   /// final val = Sample(
   ///  arg.a, {     //

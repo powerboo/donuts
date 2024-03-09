@@ -16,8 +16,8 @@ import 'package:donuts/src/names/repository/in_memory_repository_impl_name.dart'
 import 'package:donuts/src/names/repository/repository_impl_name.dart';
 import 'package:donuts/src/names/repository/repository_provider_name.dart';
 import 'package:donuts/src/names/state/single_state_impl_name.dart';
-import 'package:donuts/src/names/view/detail_view_name.dart';
-import 'package:donuts/src/names/view/header_name.dart';
+import 'package:donuts/src/names/view/detail_view/detail_view_name.dart';
+import 'package:donuts/src/names/view/common/header_name.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
 
@@ -142,13 +142,14 @@ class DetailViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
 
     final lib = Library(((p0) {
       p0.body.add(singleView.toClassElement());
+      p0.body.addAll(singleView.toModalElement());
       p0.body.add(headerName.toClassElement());
 
       p0.directives.addAll([
         Directive.import("package:flutter/material.dart"),
         Directive.import("package:hooks_riverpod/hooks_riverpod.dart"),
-        // Directive.import(aggregateRootName.myPath),
-        // Directive.import(singleStateImpl.myPath),
+        Directive.import(aggregateRootName.myPath),
+        Directive.import(singleStateImpl.myPath),
       ]);
     }));
 

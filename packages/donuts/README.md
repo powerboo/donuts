@@ -61,6 +61,18 @@ generated code
 // create modal
 ```
 
-# Roadmap
+### Generate list view router list
 
-- generate interface for [method_to_swagger_yaml](https://pub.dev/packages/method_to_swagger_yaml)
+generate `GoRouter` routes navigate to ListView
+[https://pub.dev/packages/annotation_indexer](https://pub.dev/packages/annotation_indexer)
+
+# TODO
+
+1. Make any class usable within an extended `part of` file
+
+- plan 1: Allow specifying imports in the @AggregatorRoot annotation
+
+2. generate interface for [method_to_swagger_yaml](https://pub.dev/packages/method_to_swagger_yaml)
+
+3. Generate code using `riverpod` and `flutter_hooks` considering dependencies
+4. Allow injecting initial in-memory data from outside

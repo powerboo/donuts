@@ -16,8 +16,11 @@ import 'package:donuts/src/names/repository/in_memory_repository_impl_name.dart'
 import 'package:donuts/src/names/repository/repository_impl_name.dart';
 import 'package:donuts/src/names/repository/repository_provider_name.dart';
 import 'package:donuts/src/names/state/list_state_impl_name.dart';
-import 'package:donuts/src/names/view/header_name.dart';
-import 'package:donuts/src/names/view/list_view_name.dart';
+import 'package:donuts/src/names/state/single_state_impl_name.dart';
+import 'package:donuts/src/names/view/common/header_name.dart';
+import 'package:donuts/src/names/view/create_modal/create_modal_name.dart';
+import 'package:donuts/src/names/view/detail_view/detail_view_name.dart';
+import 'package:donuts/src/names/view/list_view/list_view_name.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
 
@@ -128,15 +131,33 @@ class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
       aggregateRootName: aggregateRootName,
       applicationServiceProviderName: applicationServiceProvider,
     );
+    final singleStateImpl = SingleStateImplName(
+      aggregateRootName: aggregateRootName,
+      applicationServiceProviderName: applicationServiceProvider,
+    );
+
     final headerName = HeaderName(
       aggregateRootName: aggregateRootName,
       title: "[${aggregateRootName.myClassName}]ListView",
+    );
+
+    final detailView = DetailViewName(
+      aggregateRootName: aggregateRootName,
+      singleStateImplName: singleStateImpl,
+      headerName: headerName,
+    );
+
+    final createModalName = CreateModalName(
+      aggregateRootName: aggregateRootName,
+      listStateImplName: listStateImpl,
     );
 
     final listView = ListViewName(
       aggregateRootName: aggregateRootName,
       listStateImplName: listStateImpl,
       headerName: headerName,
+      detailViewName: detailView,
+      createModalName: createModalName,
     );
 
     final lib = Library(((p0) {
@@ -146,7 +167,11 @@ class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
       p0.directives.addAll([
         Directive.import("package:flutter/material.dart"),
         Directive.import("package:hooks_riverpod/hooks_riverpod.dart"),
+        Directive.import(
+            "package:annotation_indexer_annotation/annotation_indexer_annotation.dart"),
         Directive.import(listStateImpl.myPath),
+        Directive.import(detailView.myPath),
+        Directive.import(createModalName.myPath)
       ]);
     }));
 

@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   analyzer: ">=6.0.0 <7.0.0"
+  annotation_indexer_annotation: ^0.0.1 # un used. only use declared import path
   build: ^2.4.1
   built_collection: ^5.1.1
   build_config: ^1.1.1

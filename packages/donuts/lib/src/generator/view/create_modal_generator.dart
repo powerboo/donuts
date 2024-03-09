@@ -16,7 +16,7 @@ import 'package:donuts/src/names/repository/in_memory_repository_impl_name.dart'
 import 'package:donuts/src/names/repository/repository_impl_name.dart';
 import 'package:donuts/src/names/repository/repository_provider_name.dart';
 import 'package:donuts/src/names/state/list_state_impl_name.dart';
-import 'package:donuts/src/names/view/create_modal_name.dart';
+import 'package:donuts/src/names/view/create_modal/create_modal_name.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
 
@@ -138,8 +138,8 @@ class CreateModalGenerator extends GeneratorForAnnotation<AggregateRoot> {
       p0.directives.addAll([
         Directive.import("package:flutter/material.dart"),
         Directive.import("package:hooks_riverpod/hooks_riverpod.dart"),
-        // Directive.import(aggregateRootName.myPath),
-        // Directive.import(listStateImpl.myPath),
+        Directive.import(aggregateRootName.myPath),
+        Directive.import(listStateImpl.myPath),
       ]);
     }));
 
