@@ -2,6 +2,7 @@
 
 - mod expansion method.
 - add generator for view
+- add [annotation_indexer](https://pub.dev/packages/annotation_indexer)
 
 ## 0.1.0
 
