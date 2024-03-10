@@ -32,6 +32,12 @@ class DetailViewName {
   List<Method> toModalElement() {
     final List<Method> methodList = [];
     for (final method in _aggregateRootName.element.methods) {
+      // annotated IgnoreMethod
+      if (method.metadata.any(
+          (annotation) => annotation.element?.displayName == 'IgnoreMethod')) {
+        continue;
+      }
+
       methodList.add(Method((p0) {
         p0.name = "${method.name}ExecShowModal";
         p0.returns = refer("Future<void>");
@@ -65,7 +71,7 @@ await showModalBottomSheet(
       fieldWidgetList.writeln('''
 Row(
   children: [
-    Text("${field.type.getDisplayString(withNullability: true)} ${field.name} :"),
+    const Text("${field.type.getDisplayString(withNullability: true)} ${field.name} :"),
     Text(data.${field.name}.toString()),
   ],
 ),
@@ -91,6 +97,12 @@ Row(
 
     final StringBuffer methodButtonList = StringBuffer();
     for (final method in _aggregateRootName.element.methods) {
+      // annotated IgnoreMethod
+      if (method.metadata.any(
+          (annotation) => annotation.element?.displayName == 'IgnoreMethod')) {
+        continue;
+      }
+
       methodButtonList.writeln('''
 Row(
   mainAxisAlignment: MainAxisAlignment.center,
