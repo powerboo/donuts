@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:donuts/src/names/application_service/application_service_provider_name.dart';
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
@@ -36,6 +37,79 @@ class ListStateImplName {
       _aggregateRootName.baseDirectory,
       "${_aggregateRootName.fileName}.list_state_impl.custom.dart",
     );
+  }
+
+  List<ArgumentClass> createArgumentList() {
+    final List<ArgumentClass> args = [];
+    for (final param in _aggregateRootName.constructorElement.parameters) {
+      if (param.metadata.any(
+          (annotation) => annotation.element?.displayName == 'KeyArgument')) {
+        continue;
+      }
+
+      late final String defaultValue;
+
+      if (param.type.isDartCoreBool) {
+        defaultValue = "false";
+      }
+
+      if (param.type.isDartCoreDouble) {
+        defaultValue = "0.0";
+      }
+
+      if (param.type.isDartCoreEnum) {
+        defaultValue =
+            "${param.type.getDisplayString(withNullability: false)}.values.first";
+      }
+
+      if (param.type.isDartCoreFunction) {
+        defaultValue = "null";
+      }
+
+      if (param.type.isDartCoreInt) {
+        defaultValue = "0";
+      }
+
+      if (param.type.isDartCoreList) {
+        defaultValue = "[]";
+      }
+
+      if (param.type.isDartCoreMap) {
+        defaultValue = "{}";
+      }
+
+      if (param.type.isDartCoreNull) {
+        defaultValue = "null";
+      }
+
+      if (param.type.isDartCoreNum) {
+        defaultValue = "0";
+      }
+
+      if (param.type.isDartCoreObject) {
+        defaultValue = "null";
+      }
+
+      if (param.type.isDartCoreSet) {
+        defaultValue = "{}";
+      }
+
+      if (param.type.isDartCoreString) {
+        defaultValue = "''";
+      }
+
+      if (param.type.isDartCoreSymbol) {
+        defaultValue = "Symbol('')";
+      }
+
+      args.add(ArgumentClass(
+        isNullable: param.type.nullabilitySuffix == NullabilitySuffix.question,
+        name: param.name,
+        type: param.type.getDisplayString(withNullability: true),
+        defaultValue: defaultValue,
+      ));
+    }
+    return args;
   }
 
   Class toClassElement() {
@@ -210,4 +284,17 @@ class ListStateNameException implements Exception {
   String toString() {
     return message;
   }
+}
+
+class ArgumentClass {
+  final bool isNullable;
+  final String name;
+  final String type;
+  final String defaultValue;
+  const ArgumentClass({
+    required this.isNullable,
+    required this.name,
+    required this.type,
+    required this.defaultValue,
+  });
 }

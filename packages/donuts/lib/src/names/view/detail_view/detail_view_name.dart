@@ -42,6 +42,11 @@ class DetailViewName {
           p.named = true;
         }));
         p0.body = Code('''
+/* 
+ref.read(${_singleStateImplName.myInstanceName}.notifier)
+.${method.name}(${_aggregateRootName.methodArgumentString(method.name)})
+*/
+
 await showModalBottomSheet(
   context: context,
   builder: (context) => const Text("${method.name}"),
@@ -60,12 +65,28 @@ await showModalBottomSheet(
       fieldWidgetList.writeln('''
 Row(
   children: [
-    Text("${field.name}: "),
-    Text("${field.type.getDisplayString(withNullability: true)}"),
+    Text("${field.type.getDisplayString(withNullability: true)} ${field.name} :"),
     Text(data.${field.name}.toString()),
   ],
 ),
 ''');
+    }
+
+    final StringBuffer accessorWidgetList = StringBuffer();
+    for (final mixin in _aggregateRootName.element.mixins) {
+      for (final accessor in mixin.accessors) {
+        if (accessor.name == "copyWith") {
+          continue;
+        }
+        accessorWidgetList.writeln('''
+Row(
+  children: [
+    Text("${accessor.type.returnType.getDisplayString(withNullability: true)} ${accessor.name} "),
+    Text(data.${accessor.name}.toString()),
+  ],
+),
+''');
+      }
     }
 
     final StringBuffer methodButtonList = StringBuffer();
@@ -75,9 +96,6 @@ Row(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
     ElevatedButton(
-      /* 
-      ref.read(${_singleStateImplName.myInstanceName}.notifier).${method.name}(${_aggregateRootName.methodArgumentString(method.name)})
-      */
       onPressed: () => ${method.name}ExecShowModal(context:context),
       child: const Text("${method.name}"),
     ),
@@ -111,20 +129,17 @@ Row(
       body: value.when(
         data: (data) {
           if (data == null) {
-            return Scaffold(
-              appBar: const ${_headerName.myClassName}(),
-              body: Column(
-                children: [
-                  const Text("Error"),
-                  const Divider(),
-                  const SizedBox(height:20),
-                  const Text("value is null"),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text("back"),
-                  ),
-                ],
-              ),
+            return Column(
+              children: [
+                const Text("Error"),
+                const Divider(),
+                const SizedBox(height:20),
+                const Text("value is null"),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("back"),
+                ),
+              ],
             );
           }
 
@@ -132,6 +147,7 @@ Row(
             child: Column(
               children: [
                 ${fieldWidgetList.toString()}
+                ${accessorWidgetList.toString()}
                 const Divider(),
                 ${methodButtonList.toString()}
               ],

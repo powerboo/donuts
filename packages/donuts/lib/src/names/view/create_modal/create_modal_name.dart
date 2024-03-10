@@ -36,13 +36,80 @@ class CreateModalName {
         p.required = true;
         p.named = true;
       }));
+
+      final argumentList = _listStateImplName.createArgumentList();
+
+      // declare
+      final StringBuffer stateDeclareList = StringBuffer();
+      final StringBuffer controllerList = StringBuffer();
+      controllerList.writeln("// --------------  text field ----------------");
+      stateDeclareList.writeln("// --------------  state ----------------");
+      for (final arg in argumentList) {
+        // state
+        stateDeclareList.writeln(
+            "final ${arg.name}State = useState<${arg.type}>(${arg.isNullable ? "null" : arg.defaultValue});");
+        // text field
+        controllerList.writeln(
+            "final ${arg.name}Controller = useTextEditingController();");
+      }
+
+      // widget
+      final StringBuffer textFieldList = StringBuffer();
+      for (final arg in argumentList) {
+        textFieldList.writeln('''
+Row(
+  children: [
+    const Text("${arg.name}"),
+    const SizedBox(width: 20),
+    Expanded(
+      child: TextField(
+        controller: ${arg.name}Controller,
+        onChanged: (value) {
+          final val = value as ${arg.type};
+          ${arg.name}State.value = val;
+        },
+      ),
+    ),
+  ],
+),
+''');
+      }
+
+      final Map<String, String> arg = {};
+      for (final param in _aggregateRootName.constructorElement.parameters) {
+        arg.addAll({param.name: "${param.name}State.value"});
+      }
+
       p.body = Code('''
 await showModalBottomSheet(
     context: context,
     builder: (_) {
       return HookConsumer(
         builder: (context, ref, child) {
-          return Container();
+          ${controllerList.toString()}
+          ${stateDeclareList.toString()}
+
+          return SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+              child: Column(
+                children: [
+                  ${textFieldList.toString()}
+                  ElevatedButton(
+                    onPressed: () async {
+                      ref.read(${_listStateImplName.myInstanceName}.notifier).create(
+                        ${_aggregateRootName.initArgumentString(arg: arg, ignoreKey: true)}
+                      ).then((value){
+                        Navigator.pop(context);
+                      },);
+                    },
+                    child: const Text("Create"),
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       );
     },

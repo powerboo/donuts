@@ -138,7 +138,7 @@ class CreateModalGenerator extends GeneratorForAnnotation<AggregateRoot> {
       p0.directives.addAll([
         Directive.import("package:flutter/material.dart"),
         Directive.import("package:hooks_riverpod/hooks_riverpod.dart"),
-        Directive.import(aggregateRootName.myPath),
+        Directive.import("package:flutter_hooks/flutter_hooks.dart"),
         Directive.import(listStateImpl.myPath),
       ]);
     }));

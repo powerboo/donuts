@@ -1,6 +1,7 @@
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts/src/names/state/list_state_impl_name.dart';
+import 'package:donuts/src/names/state/single_state_impl_name.dart';
 import 'package:donuts/src/names/view/common/header_name.dart';
 import 'package:donuts/src/names/view/create_modal/create_modal_name.dart';
 import 'package:donuts/src/names/view/detail_view/detail_view_name.dart';
@@ -9,6 +10,7 @@ import 'package:path/path.dart' as p;
 class ListViewName {
   final AggregateRootName _aggregateRootName;
   final ListStateImplName _listStateImplName;
+  final SingleStateImplName _singleStateImplName;
 
   final HeaderName _headerName;
   final DetailViewName _detailViewName;
@@ -16,12 +18,14 @@ class ListViewName {
 
   ListViewName({
     required AggregateRootName aggregateRootName,
+    required SingleStateImplName singleStateImplName,
     required ListStateImplName listStateImplName,
     required HeaderName headerName,
     required DetailViewName detailViewName,
     required CreateModalName createModalName,
   })  : _aggregateRootName = aggregateRootName,
         _listStateImplName = listStateImplName,
+        _singleStateImplName = singleStateImplName,
         _headerName = headerName,
         _detailViewName = detailViewName,
         _createModalName = createModalName;
@@ -80,30 +84,37 @@ class ListViewName {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(${_aggregateRootName.myInstanceName}List[index].${_aggregateRootName.keyInstanceName}.toString()),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ${_detailViewName.myClassName}(),
-                    ),
-                  );
+                onTap: () async {
+                  ref
+                    .read(${_singleStateImplName.myInstanceName}.notifier)
+                    .set(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.myInstanceName}List[index].${_aggregateRootName.keyInstanceName})
+                    .then((value){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ${_detailViewName.myClassName}(),
+                      ),
+                    );
+                  });
                 },
               );
             },
           );
         },
         error: (error, stackTrace) {
-          return Column(
-            children: [
-              const Text("Error"),
-              const Divider(),
-              Text(error.toString()),
-              const SizedBox(height:20),
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text("Error"),
+                const Divider(),
+                Text(error.toString()),
+                const SizedBox(height:20),
 
-              const Text("StackTrace"),
-              const Divider(),
-              Text(stackTrace.toString()),
-            ],
+                const Text("StackTrace"),
+                const Divider(),
+                Text(stackTrace.toString()),
+              ],
+            ),
           );
         },
         loading: () {

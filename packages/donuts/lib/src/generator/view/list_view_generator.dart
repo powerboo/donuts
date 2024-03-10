@@ -158,6 +158,7 @@ class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
       headerName: headerName,
       detailViewName: detailView,
       createModalName: createModalName,
+      singleStateImplName: singleStateImpl,
     );
 
     final lib = Library(((p0) {
@@ -170,6 +171,7 @@ class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
         Directive.import(
             "package:annotation_indexer_annotation/annotation_indexer_annotation.dart"),
         Directive.import(listStateImpl.myPath),
+        Directive.import(singleStateImpl.myPath),
         Directive.import(detailView.myPath),
         Directive.import(createModalName.myPath)
       ]);

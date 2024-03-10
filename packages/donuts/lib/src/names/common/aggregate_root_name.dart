@@ -269,7 +269,11 @@ val:null,
 
     final StringBuffer buffer = StringBuffer();
     for (final p in requiredParam) {
-      buffer.write("${p.displayName},");
+      if (arg.containsKey(p.displayName)) {
+        buffer.write("${arg[p.displayName]},");
+      } else {
+        buffer.write("${p.displayName},");
+      }
     }
     for (final p in namedParam) {
       if (!augmentList.containsKey(p.displayName)) {
