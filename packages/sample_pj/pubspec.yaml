@@ -12,7 +12,8 @@ dependencies:
     sdk: flutter
 
   donuts_annotation: ^0.1.1
-  flutter_riverpod: ^2.4.10
+  annotation_indexer_annotation: ^0.0.1
+  flutter_hooks: ^0.20.5
   uuid: ^4.3.3
   http: ^1.2.0
   freezed: ^2.4.7
@@ -23,13 +24,15 @@ dependencies:
   camera: ^0.10.5+9
   intl: ^0.19.0
   cupertino_icons: ^1.0.2
+  logging: ^1.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
-  donuts: ^0.1.0
+  donuts: ^0.1.1
+  annotation_indexer: ^0.0.3
   analyzer: ^6.2.0
   build_runner: ^2.4.8
 

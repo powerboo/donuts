@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:annotation_indexer_annotation/annotation_indexer_annotation.dart';
 import 'package:sample_pj/donuts/state/domain/donuts_json_serializable_class.list_state_impl.dart';
+import 'package:sample_pj/donuts/state/domain/donuts_json_serializable_class.single_state_impl.dart';
 import 'package:sample_pj/donuts/view/domain/donuts_json_serializable_class.detail_view.dart';
 import 'package:sample_pj/donuts/view/domain/donuts_json_serializable_class.create_modal.dart';
 
@@ -45,30 +46,38 @@ class DonutsJsonSerializableClassListView extends HookConsumerWidget {
               return ListTile(
                 title:
                     Text(donutsJsonSerializableClassList[index].key.toString()),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const DonutsJsonSerializableClassDetailView(),
-                    ),
-                  );
+                onTap: () async {
+                  ref
+                      .read(donutsJsonSerializableClassSingleStateImplProvider
+                          .notifier)
+                      .set(key: donutsJsonSerializableClassList[index].key)
+                      .then((value) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const DonutsJsonSerializableClassDetailView(),
+                      ),
+                    );
+                  });
                 },
               );
             },
           );
         },
         error: (error, stackTrace) {
-          return Column(
-            children: [
-              const Text("Error"),
-              const Divider(),
-              Text(error.toString()),
-              const SizedBox(height: 20),
-              const Text("StackTrace"),
-              const Divider(),
-              Text(stackTrace.toString()),
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text("Error"),
+                const Divider(),
+                Text(error.toString()),
+                const SizedBox(height: 20),
+                const Text("StackTrace"),
+                const Divider(),
+                Text(stackTrace.toString()),
+              ],
+            ),
           );
         },
         loading: () {

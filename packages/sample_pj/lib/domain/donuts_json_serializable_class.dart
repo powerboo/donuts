@@ -18,6 +18,7 @@ class DonutsJsonSerializableClass {
     bool? isOk = false,
   });
 
+  @IgnoreMethod()
   @override
   String toString() {
     return key;

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:annotation_indexer_annotation/annotation_indexer_annotation.dart';
 import 'package:sample_pj/donuts/state/domain/sample_aggregate_root.list_state_impl.dart';
+import 'package:sample_pj/donuts/state/domain/sample_aggregate_root.single_state_impl.dart';
 import 'package:sample_pj/donuts/view/domain/sample_aggregate_root.detail_view.dart';
 import 'package:sample_pj/donuts/view/domain/sample_aggregate_root.create_modal.dart';
 
@@ -43,30 +44,37 @@ class SampleAggregateRootListView extends HookConsumerWidget {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(sampleAggregateRootList[index].key.toString()),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const SampleAggregateRootDetailView(),
-                    ),
-                  );
+                onTap: () async {
+                  ref
+                      .read(sampleAggregateRootSingleStateImplProvider.notifier)
+                      .set(key: sampleAggregateRootList[index].key)
+                      .then((value) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const SampleAggregateRootDetailView(),
+                      ),
+                    );
+                  });
                 },
               );
             },
           );
         },
         error: (error, stackTrace) {
-          return Column(
-            children: [
-              const Text("Error"),
-              const Divider(),
-              Text(error.toString()),
-              const SizedBox(height: 20),
-              const Text("StackTrace"),
-              const Divider(),
-              Text(stackTrace.toString()),
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text("Error"),
+                const Divider(),
+                Text(error.toString()),
+                const SizedBox(height: 20),
+                const Text("StackTrace"),
+                const Divider(),
+                Text(stackTrace.toString()),
+              ],
+            ),
           );
         },
         loading: () {

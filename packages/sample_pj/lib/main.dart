@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sample_pj/route.dart';
+import 'package:sample_pj/view/root_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +24,16 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
       title: "donuts sample app",
-      debugShowCheckedModeBanner: false,
-      routerConfig: GoRouter(routes: routes),
+      debugShowCheckedModeBanner: true,
+      routerConfig: GoRouter(
+        routes: [
+          GoRoute(
+            path: "/",
+            builder: (context, state) => const RootView(),
+            routes: routes,
+          ),
+        ],
+      ),
     );
   }
 }

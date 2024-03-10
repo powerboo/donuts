@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:annotation_indexer_annotation/annotation_indexer_annotation.dart';
 import 'package:sample_pj/donuts/state/domain/abstract_class.list_state_impl.dart';
+import 'package:sample_pj/donuts/state/domain/abstract_class.single_state_impl.dart';
 import 'package:sample_pj/donuts/view/domain/abstract_class.detail_view.dart';
 import 'package:sample_pj/donuts/view/domain/abstract_class.create_modal.dart';
 
@@ -43,29 +44,36 @@ class AbstractClassListView extends HookConsumerWidget {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(abstractClassList[index].key.toString()),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AbstractClassDetailView(),
-                    ),
-                  );
+                onTap: () async {
+                  ref
+                      .read(abstractClassSingleStateImplProvider.notifier)
+                      .set(key: abstractClassList[index].key)
+                      .then((value) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AbstractClassDetailView(),
+                      ),
+                    );
+                  });
                 },
               );
             },
           );
         },
         error: (error, stackTrace) {
-          return Column(
-            children: [
-              const Text("Error"),
-              const Divider(),
-              Text(error.toString()),
-              const SizedBox(height: 20),
-              const Text("StackTrace"),
-              const Divider(),
-              Text(stackTrace.toString()),
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text("Error"),
+                const Divider(),
+                Text(error.toString()),
+                const SizedBox(height: 20),
+                const Text("StackTrace"),
+                const Divider(),
+                Text(stackTrace.toString()),
+              ],
+            ),
           );
         },
         loading: () {
