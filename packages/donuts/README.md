@@ -68,11 +68,13 @@ generate `GoRouter` routes navigate to ListView
 
 # TODO
 
-1. Make any class usable within an extended `part of` file
+- [ ] Make any class usable within an extended `part of` file
 
-- plan 1: Allow specifying imports in the @AggregatorRoot annotation
+- [ ] plan 1: Allow specifying imports in the @AggregatorRoot annotation
 
-2. generate interface for [method_to_swagger_yaml](https://pub.dev/packages/method_to_swagger_yaml)
+- [ ] generate interface for [method_to_swagger_yaml](https://pub.dev/packages/method_to_swagger_yaml)
 
-3. Generate code using `riverpod` and `flutter_hooks` considering dependencies
-4. Allow injecting initial in-memory data from outside
+- [ ] Generate code using `riverpod` and `flutter_hooks` considering dependencies
+- [ ] Allow injecting initial in-memory data from outside
+- [ ] Performance Tuning
+  - [ ] Reduce the initial build time which takes more than 15 minutes

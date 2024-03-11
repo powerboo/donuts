@@ -51,55 +51,33 @@ class ListStateImplName {
 
       if (param.type.isDartCoreBool) {
         defaultValue = "false";
-      }
-
-      if (param.type.isDartCoreDouble) {
+      } else if (param.type.isDartCoreDouble) {
         defaultValue = "0.0";
-      }
-
-      if (param.type.isDartCoreEnum) {
+      } else if (param.type.isDartCoreEnum) {
         defaultValue =
             "${param.type.getDisplayString(withNullability: false)}.values.first";
-      }
-
-      if (param.type.isDartCoreFunction) {
+      } else if (param.type.isDartCoreFunction) {
         defaultValue = "null";
-      }
-
-      if (param.type.isDartCoreInt) {
+      } else if (param.type.isDartCoreInt) {
         defaultValue = "0";
-      }
-
-      if (param.type.isDartCoreList) {
+      } else if (param.type.isDartCoreList) {
         defaultValue = "[]";
-      }
-
-      if (param.type.isDartCoreMap) {
+      } else if (param.type.isDartCoreMap) {
         defaultValue = "{}";
-      }
-
-      if (param.type.isDartCoreNull) {
+      } else if (param.type.isDartCoreNull) {
         defaultValue = "null";
-      }
-
-      if (param.type.isDartCoreNum) {
+      } else if (param.type.isDartCoreNum) {
         defaultValue = "0";
-      }
-
-      if (param.type.isDartCoreObject) {
+      } else if (param.type.isDartCoreObject) {
         defaultValue = "null";
-      }
-
-      if (param.type.isDartCoreSet) {
+      } else if (param.type.isDartCoreSet) {
         defaultValue = "{}";
-      }
-
-      if (param.type.isDartCoreString) {
+      } else if (param.type.isDartCoreString) {
         defaultValue = "''";
-      }
-
-      if (param.type.isDartCoreSymbol) {
+      } else if (param.type.isDartCoreSymbol) {
         defaultValue = "Symbol('')";
+      } else {
+        defaultValue = "null";
       }
 
       args.add(ArgumentClass(
