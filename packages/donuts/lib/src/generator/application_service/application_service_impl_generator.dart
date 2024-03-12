@@ -56,6 +56,10 @@ class ApplicationServiceImplGenerator
       abstractInterfaceApplicationServiceName: applicationService,
     );
 
+    final dependenciesImportList = aggregateRootName
+        .dependenciesImportPathList()
+        .map((e) => Directive.import(e.identifier));
+
     final lib = Library(((p0) {
       p0.body = ListBuilder<Spec>([
         applicationServiceImpl.toClassElement(),
@@ -69,6 +73,8 @@ class ApplicationServiceImplGenerator
         Directive.import(repositoryName.myPath),
         Directive.import(applicationService.myPath),
       ]);
+
+      p0.directives.addAll(dependenciesImportList);
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');

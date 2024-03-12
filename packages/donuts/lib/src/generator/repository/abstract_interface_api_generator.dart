@@ -35,6 +35,10 @@ class AbstractInterfaceApiGenerator
       aggregateRootName: aggregateRootName,
     ).toClassElement();
 
+    final dependenciesImportList = aggregateRootName
+        .dependenciesImportPathList()
+        .map((e) => Directive.import(e.identifier));
+
     final lib = Library(((p0) {
       p0.body.addAll([
         abstractInterfaceApi,
@@ -43,6 +47,7 @@ class AbstractInterfaceApiGenerator
         Directive.import(repositoryNames.myPath),
         Directive.import(aggregateRootName.myPath),
       ]);
+      p0.directives.addAll(dependenciesImportList);
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');

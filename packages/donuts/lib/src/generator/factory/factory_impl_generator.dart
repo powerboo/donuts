@@ -41,6 +41,10 @@ class FactoryImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
       exceptionName: factoryException,
     ).toClassElement();
 
+    final dependenciesImportList = aggregateRootName
+        .dependenciesImportPathList()
+        .map((e) => Directive.import(e.identifier));
+
     final lib = Library(((p0) {
       p0.body.add(factoryImpl);
       p0.body.add(factoryException.toClassElement());
@@ -61,6 +65,7 @@ class FactoryImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
         Directive.import(aggregateRootName.myPath),
         Directive.import(factoryName.myPath),
       ]);
+      p0.directives.addAll(dependenciesImportList);
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');

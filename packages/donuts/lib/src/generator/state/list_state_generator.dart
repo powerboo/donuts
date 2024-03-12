@@ -135,6 +135,10 @@ AsyncNotifierProvider<${listStateImpl.myClassName}, List<${aggregateRootName.myC
 ''');
     });
 
+    final dependenciesImportList = aggregateRootName
+        .dependenciesImportPathList()
+        .map((e) => Directive.import(e.identifier));
+
     final lib = Library(((p0) {
       p0.body.add(provider);
 
@@ -143,6 +147,9 @@ AsyncNotifierProvider<${listStateImpl.myClassName}, List<${aggregateRootName.myC
         Directive.import(aggregateRootName.myPath),
         Directive.import(applicationServiceProvider.myPath),
       ]);
+
+      p0.directives.addAll(dependenciesImportList);
+
       if (aggregateRootName.customListState) {
         p0.directives.add(Directive.part(listStateImpl.myPartPath));
         p0.docs.add(

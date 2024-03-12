@@ -161,6 +161,10 @@ class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
       singleStateImplName: singleStateImpl,
     );
 
+    final dependenciesImportList = aggregateRootName
+        .dependenciesImportPathList()
+        .map((e) => Directive.import(e.identifier));
+
     final lib = Library(((p0) {
       p0.body.add(listView.toClassElement());
       p0.body.add(headerName.toClassElement());
@@ -175,6 +179,8 @@ class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
         Directive.import(detailView.myPath),
         Directive.import(createModalName.myPath)
       ]);
+
+      p0.directives.addAll(dependenciesImportList);
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');

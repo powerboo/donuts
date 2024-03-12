@@ -42,6 +42,10 @@ class InMemoryRepositoryImplGenerator
       exceptionBaseName: repositoryName.myClassName,
     ).toClassElement();
 
+    final dependenciesImportList = aggregateRootName
+        .dependenciesImportPathList()
+        .map((e) => Directive.import(e.identifier));
+
     final lib = Library(((p0) {
       p0.body = ListBuilder<Spec>([
         inMemoryRepositoryImpl,
@@ -52,6 +56,8 @@ class InMemoryRepositoryImplGenerator
         Directive.import(aggregateRootName.myPath),
         Directive.import(repositoryName.myPath),
       ]);
+
+      p0.directives.addAll(dependenciesImportList);
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');

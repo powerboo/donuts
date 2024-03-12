@@ -31,10 +31,16 @@ class AbstractInterfaceApplicationServiceGenerator
       aggregateRootName: aggregateRootName,
     );
 
+    final dependenciesImportList = aggregateRootName
+        .dependenciesImportPathList()
+        .map((e) => Directive.import(e.identifier));
+
     final lib = Library(((p0) {
       p0.body = ListBuilder<Spec>([
         applicationService.toClassElement(),
       ]);
+
+      p0.directives.addAll(dependenciesImportList);
 
       p0.directives.addAll([
         Directive.import("package:donuts_annotation/donuts_annotation.dart"),

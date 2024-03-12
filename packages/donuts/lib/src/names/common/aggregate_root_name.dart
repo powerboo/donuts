@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:donuts/src/names/common/converter_name.dart';
 import 'package:donuts/src/names/common/key_factory_name.dart';
 import 'package:source_gen/source_gen.dart';
@@ -175,6 +176,36 @@ class AggregateRootName {
 
   bool get isInterface {
     return element.isInterface || element.isAbstract;
+  }
+
+  List<LibraryElement> dependenciesImportPathList() {
+    final usedImports = <LibraryElement>{};
+
+    void collectImports(DartType type) {
+      if (type is InterfaceType) {
+        final importElement = element.library.importedLibraries.where(
+          (import) =>
+              import.identifier.toString() ==
+              type.element.source.uri.toString(),
+        );
+        if (importElement.isNotEmpty) {
+          usedImports.add(importElement.first);
+        }
+        type.typeArguments.forEach(collectImports);
+      }
+    }
+
+    element.fields.forEach((field) {
+      collectImports(field.type);
+    });
+
+    element.constructors
+        .expand((constructor) => constructor.parameters)
+        .forEach((parameter) {
+      collectImports(parameter.type);
+    });
+    final result = usedImports.toList();
+    return result;
   }
 
   String keyInitializer() {

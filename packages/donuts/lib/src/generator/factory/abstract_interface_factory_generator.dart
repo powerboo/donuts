@@ -30,12 +30,17 @@ class AbstractInterfaceFactoryGenerator
       aggregateRootName: aggregateRootName,
     ).toClassElement();
 
+    final dependenciesImportList = aggregateRootName
+        .dependenciesImportPathList()
+        .map((e) => Directive.import(e.identifier));
+
     final lib = Library(((p0) {
       p0.body.add(abstractInterfaceFactory);
 
       p0.directives.add(
         Directive.import(aggregateRootName.myPath),
       );
+      p0.directives.addAll(dependenciesImportList);
     }));
 
     return _formatter.format('${lib.accept(DartEmitter())}');
