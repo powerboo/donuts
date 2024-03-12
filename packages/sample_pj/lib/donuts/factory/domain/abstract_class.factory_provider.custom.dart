@@ -2,12 +2,14 @@ part of 'abstract_class.factory_provider.dart';
 
 class AbstractClassFactoryImplCustom implements AbstractClassFactoryImpl {
   @override
-  AbstractClass restore(String key) {
+  AbstractClass create() {
+    // TODO: implement create
     throw UnimplementedError();
   }
 
   @override
-  AbstractClass create() {
+  AbstractClass restore(String key) {
+    // TODO: implement restore
     throw UnimplementedError();
   }
 }

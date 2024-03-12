@@ -7,6 +7,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:sample_pj/donuts/view/domain/abstract_class.list_view.dart';
 import 'package:sample_pj/donuts/view/domain/donuts_json_serializable_class.list_view.dart';
+import 'package:sample_pj/donuts/view/domain/fruits/apple/apple.list_view.dart';
+import 'package:sample_pj/donuts/view/domain/fruits/orange/orange.list_view.dart';
 import 'package:sample_pj/donuts/view/domain/freezed_class.list_view.dart';
 import 'package:sample_pj/donuts/view/domain/sample_aggregate_root.list_view.dart';
 
@@ -18,6 +20,14 @@ final List<RouteBase> routes = [
   GoRoute(
     path: ListViewPath.donutsJsonSerializableClassListView.route,
     builder: (context, state) => const DonutsJsonSerializableClassListView(),
+  ),
+  GoRoute(
+    path: ListViewPath.appleListView.route,
+    builder: (context, state) => const AppleListView(),
+  ),
+  GoRoute(
+    path: ListViewPath.orangeListView.route,
+    builder: (context, state) => const OrangeListView(),
   ),
   GoRoute(
     path: ListViewPath.freezedClassListView.route,
@@ -33,6 +43,8 @@ class ListViewPath {
   static const Path abstractClassListView = Path("AbstractClassListView");
   static const Path donutsJsonSerializableClassListView =
       Path("DonutsJsonSerializableClassListView");
+  static const Path appleListView = Path("AppleListView");
+  static const Path orangeListView = Path("OrangeListView");
   static const Path freezedClassListView = Path("FreezedClassListView");
   static const Path sampleAggregateRootListView =
       Path("SampleAggregateRootListView");
@@ -41,6 +53,8 @@ class ListViewPath {
 final List<Path> paths = [
   ListViewPath.abstractClassListView,
   ListViewPath.donutsJsonSerializableClassListView,
+  ListViewPath.appleListView,
+  ListViewPath.orangeListView,
   ListViewPath.freezedClassListView,
   ListViewPath.sampleAggregateRootListView,
 ];
