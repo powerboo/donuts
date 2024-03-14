@@ -201,9 +201,17 @@ class AggregateRootName {
 
     element.constructors
         .expand((constructor) => constructor.parameters)
-        .forEach((parameter) {
+        .forEach(
+      (parameter) {
+        collectImports(parameter.type);
+      },
+    );
+
+    element.methods.expand((method) => method.parameters).forEach(
+      (parameter) {
       collectImports(parameter.type);
-    });
+      },
+    );
     final result = usedImports.toList();
     return result;
   }

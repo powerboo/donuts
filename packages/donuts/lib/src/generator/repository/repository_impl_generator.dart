@@ -59,6 +59,11 @@ class RepositoryImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
         Directive.import("dart:convert"),
       ]);
 
+      if (aggregateRootName.jsonConverter != null) {
+        p0.directives
+            .add(Directive.import(aggregateRootName.jsonConverter!.myPath));
+      }
+
       p0.directives.addAll(dependenciesImportList);
     }));
 

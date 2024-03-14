@@ -3,9 +3,11 @@
   "configurations": [
     {
       "name": "donuts",
-      "cwd": "donuts",
+      "cwd": "packages/donuts",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "program": ".dart_tool/build/entrypoint/build.dart",
+      "args": ["build", "--delete-conflicting-outputs"]
     },
     {
       "name": "donuts_annotation",

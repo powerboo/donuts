@@ -204,6 +204,10 @@ try {
       });
 
       final delete = Method((p0) {
+        p0.annotations.add(
+          refer('override'),
+        );
+
         p0.modifier = MethodModifier.async;
         p0.returns = refer('Future<(void, DonutsError?)>');
         p0.name = 'delete';
@@ -270,7 +274,7 @@ try {
         }
 
         methodList.add(Method((m) {
-          p0.annotations.add(
+          m.annotations.add(
             refer('override'),
           );
 
