@@ -70,6 +70,7 @@ class DonutsJsonSerializableClassApplicationServiceImpl
     }
   }
 
+  @override
   Future<(void, DonutsError?)> delete({required String key}) async {
     try {
       await _donutsJsonSerializableClassRepository.delete(key: key);

@@ -64,6 +64,7 @@ class FreezedClassApplicationServiceImpl
     }
   }
 
+  @override
   Future<(void, DonutsError?)> delete({required String key}) async {
     try {
       await _freezedClassRepository.delete(key: key);

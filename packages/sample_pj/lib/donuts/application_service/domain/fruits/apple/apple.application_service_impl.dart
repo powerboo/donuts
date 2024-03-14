@@ -55,6 +55,7 @@ class AppleApplicationServiceImpl implements AppleApplicationService {
     }
   }
 
+  @override
   Future<(void, DonutsError?)> delete({required FruitsId id}) async {
     try {
       await _appleRepository.delete(id: id);

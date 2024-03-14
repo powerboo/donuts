@@ -10,8 +10,6 @@ import 'package:sample_pj/donuts/factory/domain/abstract_class.abstract_interfac
 import 'package:sample_pj/donuts/repository/domain/abstract_class.abstract_interface_repository.dart';
 import 'package:sample_pj/donuts/application_service/domain/abstract_class.abstract_interface_application_service.dart';
 
-@override
-@override
 class AbstractClassApplicationServiceImpl
     implements AbstractClassApplicationService {
   AbstractClassApplicationServiceImpl({
@@ -56,6 +54,7 @@ class AbstractClassApplicationServiceImpl
     }
   }
 
+  @override
   Future<(void, DonutsError?)> delete({required String key}) async {
     try {
       await _abstractClassRepository.delete(key: key);
@@ -80,6 +79,7 @@ class AbstractClassApplicationServiceImpl
   }
 
   /// method1
+  @override
   Future<(AbstractClass?, DonutsError?)> commonMethod1(
       {required String key}) async {
     try {
@@ -100,6 +100,7 @@ class AbstractClassApplicationServiceImpl
   }
 
   /// method2
+  @override
   Future<(AbstractClass?, DonutsError?)> commonMethod2({
     required String key,
     required int intValue,

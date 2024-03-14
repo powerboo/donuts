@@ -55,6 +55,7 @@ class OrangeApplicationServiceImpl implements OrangeApplicationService {
     }
   }
 
+  @override
   Future<(void, DonutsError?)> delete({required FruitsId id}) async {
     try {
       await _orangeRepository.delete(id: id);

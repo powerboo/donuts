@@ -10,7 +10,6 @@ import 'package:sample_pj/donuts/factory/domain/sample_aggregate_root.abstract_i
 import 'package:sample_pj/donuts/repository/domain/sample_aggregate_root.abstract_interface_repository.dart';
 import 'package:sample_pj/donuts/application_service/domain/sample_aggregate_root.abstract_interface_application_service.dart';
 
-@override
 class SampleAggregateRootApplicationServiceImpl
     implements SampleAggregateRootApplicationService {
   SampleAggregateRootApplicationServiceImpl({
@@ -60,6 +59,7 @@ class SampleAggregateRootApplicationServiceImpl
     }
   }
 
+  @override
   Future<(void, DonutsError?)> delete({required ObjectId key}) async {
     try {
       await _sampleAggregateRootRepository.delete(key: key);
@@ -84,6 +84,7 @@ class SampleAggregateRootApplicationServiceImpl
   }
 
   /// method 1
+  @override
   Future<(SampleAggregateRoot?, DonutsError?)> method1(
       {required ObjectId key}) async {
     try {

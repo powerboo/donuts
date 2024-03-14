@@ -8,6 +8,7 @@ import 'package:sample_pj/donuts/repository/domain/abstract_class.abstract_inter
 import 'package:sample_pj/domain/abstract_class.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:sample_pj/domain/abstract_class.dart';
 
 class AbstractClassRepositoryImpl implements AbstractClassRepository {
   AbstractClassJsonConverter converter = AbstractClassJsonConverter();

@@ -8,6 +8,7 @@ import 'package:sample_pj/donuts/repository/domain/donuts_json_serializable_clas
 import 'package:sample_pj/domain/donuts_json_serializable_class.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:sample_pj/domain/donuts_json_serializable_class.dart';
 
 class DonutsJsonSerializableClassRepositoryImpl
     implements DonutsJsonSerializableClassRepository {
