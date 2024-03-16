@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:donuts/src/names/application_service/application_service_provider_name.dart';
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
@@ -83,7 +84,8 @@ class ListStateImplName {
       args.add(ArgumentClass(
         isNullable: param.type.nullabilitySuffix == NullabilitySuffix.question,
         name: param.name,
-        type: param.type.getDisplayString(withNullability: true),
+        typeName: param.type.getDisplayString(withNullability: true),
+        type: param.type,
         defaultValue: defaultValue,
       ));
     }
@@ -267,12 +269,15 @@ class ListStateNameException implements Exception {
 class ArgumentClass {
   final bool isNullable;
   final String name;
-  final String type;
+  final String typeName;
   final String defaultValue;
+  final DartType type;
+
   const ArgumentClass({
     required this.isNullable,
     required this.name,
-    required this.type,
+    required this.typeName,
     required this.defaultValue,
+    required this.type,
   });
 }

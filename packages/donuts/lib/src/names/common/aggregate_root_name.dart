@@ -178,6 +178,10 @@ class AggregateRootName {
     return element.isInterface || element.isAbstract;
   }
 
+  // コンストラクタとフィールドのimport
+  // 他に必要なimport
+  // - メソッドごとのargument : interface_application, list_state,single_state
+  // - メソッドごとのargument + bodyのvalues : application
   List<LibraryElement> dependenciesImportPathList() {
     final usedImports = <LibraryElement>{};
 
@@ -209,7 +213,7 @@ class AggregateRootName {
 
     element.methods.expand((method) => method.parameters).forEach(
       (parameter) {
-      collectImports(parameter.type);
+        collectImports(parameter.type);
       },
     );
     final result = usedImports.toList();

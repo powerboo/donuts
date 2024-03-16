@@ -46,8 +46,8 @@ class CreateModalName {
       stateDeclareList.writeln("// --------------  state ----------------");
       for (final arg in argumentList) {
         // state
-        stateDeclareList
-            .writeln("final ${arg.name}State = useState<${arg.type}?>(null);");
+        stateDeclareList.writeln(
+            "final ${arg.name}State = useState<${arg.type.getDisplayString(withNullability: false)}?>(null);");
         // text field
         controllerList.writeln(
             "final ${arg.name}Controller = useTextEditingController();");
