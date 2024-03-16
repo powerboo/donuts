@@ -245,10 +245,10 @@ packages:
     dependency: "direct dev"
     description:
       name: donuts
-      sha256: "10bf03b3ed6aff7ebd5605a37b03446a099b2bfed791d12e479515a82d6af9c4"
+      sha256: "593a1b1f4e3093607cf4e222d1d93c768eed45f720a23170b1319b187f63cfc5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.4"
+    version: "0.1.6"
   donuts_annotation:
     dependency: "direct main"
     description:

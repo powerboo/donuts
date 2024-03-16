@@ -20,7 +20,7 @@ Future<void> orangeCreateModal({required BuildContext context}) async {
           final nameController = useTextEditingController();
 
           // --------------  state ----------------
-          final nameState = useState<String>('');
+          final nameState = useState<String?>(null);
 
           return SizedBox(
             width: double.infinity,
@@ -45,10 +45,16 @@ Future<void> orangeCreateModal({required BuildContext context}) async {
                   ),
                   ElevatedButton(
                     onPressed: () async {
+                      final name = nameState.value;
+
+                      if (name == null) {
+                        return;
+                      }
+
                       ref
                           .read(orangeListStateImplProvider.notifier)
                           .create(
-                            name: nameState.value,
+                            name: name,
                           )
                           .then(
                         (value) {

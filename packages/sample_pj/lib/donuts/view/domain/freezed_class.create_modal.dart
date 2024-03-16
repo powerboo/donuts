@@ -22,9 +22,9 @@ Future<void> freezedClassCreateModal({required BuildContext context}) async {
           final nullableStringController = useTextEditingController();
 
           // --------------  state ----------------
-          final intValueState = useState<int>(0);
+          final intValueState = useState<int?>(null);
           final nullableIntState = useState<int?>(null);
-          final freezedClassState = useState<String>('');
+          final freezedClassState = useState<String?>(null);
           final nullableStringState = useState<String?>(null);
 
           return SizedBox(
@@ -95,13 +95,31 @@ Future<void> freezedClassCreateModal({required BuildContext context}) async {
                   ),
                   ElevatedButton(
                     onPressed: () async {
+                      final intValue = intValueState.value;
+                      final nullableInt = nullableIntState.value;
+                      final freezedClass = freezedClassState.value;
+                      final nullableString = nullableStringState.value;
+
+                      if (intValue == null) {
+                        return;
+                      }
+                      if (nullableInt == null) {
+                        return;
+                      }
+                      if (freezedClass == null) {
+                        return;
+                      }
+                      if (nullableString == null) {
+                        return;
+                      }
+
                       ref
                           .read(freezedClassListStateImplProvider.notifier)
                           .create(
-                            intValueState.value,
-                            nullableIntState.value,
-                            freezedClass: freezedClassState.value,
-                            nullableString: nullableStringState.value,
+                            intValue,
+                            nullableInt,
+                            freezedClass: freezedClass,
+                            nullableString: nullableString,
                           )
                           .then(
                         (value) {

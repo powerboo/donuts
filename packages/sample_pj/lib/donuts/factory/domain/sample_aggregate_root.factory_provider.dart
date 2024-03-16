@@ -9,6 +9,8 @@ import 'package:sample_pj/donuts/factory/domain/sample_aggregate_root.abstract_i
 import 'package:sample_pj/donuts/factory/domain/sample_aggregate_root.factory_impl.dart';
 import 'package:sample_pj/domain/sample_aggregate_root.dart';
 import 'package:donuts_annotation/donuts_annotation.dart';
+import 'package:sample_pj/domain/sample_aggregate_root.dart';
+import 'package:donuts_annotation/donuts_annotation.dart';
 
 final sampleAggregateRootFactoryProvider =
     Provider<SampleAggregateRootFactory>((ref) {

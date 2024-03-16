@@ -20,7 +20,7 @@ Future<void> appleCreateModal({required BuildContext context}) async {
           final appleController = useTextEditingController();
 
           // --------------  state ----------------
-          final appleState = useState<String>('');
+          final appleState = useState<String?>(null);
 
           return SizedBox(
             width: double.infinity,
@@ -45,10 +45,16 @@ Future<void> appleCreateModal({required BuildContext context}) async {
                   ),
                   ElevatedButton(
                     onPressed: () async {
+                      final apple = appleState.value;
+
+                      if (apple == null) {
+                        return;
+                      }
+
                       ref
                           .read(appleListStateImplProvider.notifier)
                           .create(
-                            apple: appleState.value,
+                            apple: apple,
                           )
                           .then(
                         (value) {

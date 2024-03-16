@@ -20,7 +20,7 @@ Future<void> sampleAggregateRootCreateModal(
           final valueController = useTextEditingController();
 
           // --------------  state ----------------
-          final valueState = useState<String>('');
+          final valueState = useState<String?>(null);
 
           return SizedBox(
             width: double.infinity,
@@ -45,11 +45,17 @@ Future<void> sampleAggregateRootCreateModal(
                   ),
                   ElevatedButton(
                     onPressed: () async {
+                      final value = valueState.value;
+
+                      if (value == null) {
+                        return;
+                      }
+
                       ref
                           .read(
                               sampleAggregateRootListStateImplProvider.notifier)
                           .create(
-                            value: valueState.value,
+                            value: value,
                           )
                           .then(
                         (value) {

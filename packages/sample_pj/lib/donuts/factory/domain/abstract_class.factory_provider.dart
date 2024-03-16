@@ -7,6 +7,8 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:sample_pj/donuts/factory/domain/abstract_class.abstract_interface_factory.dart';
 import 'package:sample_pj/donuts/factory/domain/abstract_class.factory_impl.dart';
+import 'package:donuts/src/test_data/source_gen_test/common/key_field_factory.dart';
+import 'package:donuts_annotation/donuts_annotation.dart';
 import 'package:sample_pj/domain/abstract_class.dart';
 part 'package:sample_pj/donuts/factory/domain/abstract_class.factory_provider.custom.dart';
 

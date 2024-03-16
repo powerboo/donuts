@@ -62,12 +62,22 @@ Future<void> donutsJsonSerializableClassCreateModal(
                   ),
                   ElevatedButton(
                     onPressed: () async {
+                      final nullableString = nullableStringState.value;
+                      final isOk = isOkState.value;
+
+                      if (nullableString == null) {
+                        return;
+                      }
+                      if (isOk == null) {
+                        return;
+                      }
+
                       ref
                           .read(donutsJsonSerializableClassListStateImplProvider
                               .notifier)
                           .create(
-                            nullableStringState.value,
-                            isOk: isOkState.value,
+                            nullableString,
+                            isOk: isOk,
                           )
                           .then(
                         (value) {
