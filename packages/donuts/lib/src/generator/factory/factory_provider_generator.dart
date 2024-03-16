@@ -49,6 +49,10 @@ class FactoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> {
       factoryNameImpl: factoryNameImpl,
     );
 
+    final dependenciesImportList = aggregateRootName
+        .dependenciesImportPathList()
+        .map((e) => Directive.import(e.identifier));
+
     final lib = Library(((p0) {
       p0.body = ListBuilder<Spec>([
         provider.toFieldElement(),
@@ -59,6 +63,15 @@ class FactoryProviderGenerator extends GeneratorForAnnotation<AggregateRoot> {
         Directive.import(factoryName.myPath),
         Directive.import(factoryNameImpl.myPath),
       ]);
+
+      if (aggregateRootName.keyFactoryName != null) {
+        p0.directives
+            .add(Directive.import(aggregateRootName.keyFactoryName!.myPath));
+        p0.directives.add(Directive.import(
+            "package:donuts_annotation/donuts_annotation.dart"));
+        p0.directives.addAll(dependenciesImportList);
+      }
+
       if (aggregateRootName.isInterface || aggregateRootName.customFactory) {
         p0.directives.addAll([
           Directive.import(aggregateRootName.myPath),

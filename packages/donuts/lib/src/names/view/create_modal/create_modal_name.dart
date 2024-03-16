@@ -46,8 +46,8 @@ class CreateModalName {
       stateDeclareList.writeln("// --------------  state ----------------");
       for (final arg in argumentList) {
         // state
-        stateDeclareList.writeln(
-            "final ${arg.name}State = useState<${arg.type}>(${arg.isNullable ? "null" : arg.defaultValue});");
+        stateDeclareList
+            .writeln("final ${arg.name}State = useState<${arg.type}?>(null);");
         // text field
         controllerList.writeln(
             "final ${arg.name}Controller = useTextEditingController();");
@@ -75,9 +75,22 @@ Row(
 ''');
       }
 
-      final Map<String, String> arg = {};
+      final StringBuffer stateList = StringBuffer();
       for (final param in _aggregateRootName.constructorElement.parameters) {
-        arg.addAll({param.name: "${param.name}State.value"});
+        if (param.metadata
+            .any((e) => e.element?.displayName == "KeyArgument")) {
+          continue;
+        }
+        stateList
+            .writeln('''final ${param.name} = ${param.name}State.value;''');
+      }
+      final StringBuffer unwrapNull = StringBuffer();
+      for (final param in _aggregateRootName.constructorElement.parameters) {
+        if (param.metadata
+            .any((e) => e.element?.displayName == "KeyArgument")) {
+          continue;
+        }
+        unwrapNull.writeln("if(${param.name}== null){return;}");
       }
 
       p.body = Code('''
@@ -98,8 +111,10 @@ await showModalBottomSheet(
                   ${textFieldList.toString()}
                   ElevatedButton(
                     onPressed: () async {
+                      ${stateList.toString()}
+                      ${unwrapNull.toString()}
                       ref.read(${_listStateImplName.myInstanceName}.notifier).create(
-                        ${_aggregateRootName.initArgumentString(arg: arg, ignoreKey: true)}
+                        ${_aggregateRootName.initArgumentString(ignoreKey: true)}
                       ).then((value){
                         Navigator.pop(context);
                       },);
