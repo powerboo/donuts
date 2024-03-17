@@ -4,7 +4,9 @@ import 'package:build/src/builder/build_step.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:donuts/src/names/common/exception_name.dart';
+import 'package:donuts/src/names/repository/abstract_interface_api_name.dart';
 import 'package:donuts/src/names/repository/abstract_interface_repository_name.dart';
+import 'package:donuts/src/names/repository/api_impl_name.dart';
 import 'package:donuts/src/names/repository/in_memory_repository_impl_name.dart';
 import 'package:donuts/src/names/repository/repository_impl_name.dart';
 import 'package:donuts/src/names/repository/repository_provider_name.dart';
@@ -50,10 +52,24 @@ class RepositoryProviderGenerator
       exceptionBaseName: repositoryName.myClassName,
     );
 
+    final abstractInterfaceApiName = AbstractInterfaceApiName(
+      aggregateRootName: aggregateRootName,
+      abstractInterfaceRepositoryName: repositoryName,
+    );
+
+    final apiImplName = ApiImplName(
+      aggregateRootName: aggregateRootName,
+      abstractInterfaceApiName: abstractInterfaceApiName,
+      exceptionName: ExceptionName(
+        exceptionBaseName: "${aggregateRootName.myClassName}ApiImpl",
+      ),
+    );
+
     final repositoryImplName = RepositoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceRepositoryName: repositoryName,
       exceptionName: exception,
+      abstractInterfaceApiName: abstractInterfaceApiName,
     );
 
     final inMemoryRepositoryImpl = InMemoryRepositoryImplName(
@@ -67,6 +83,7 @@ class RepositoryProviderGenerator
       repositoryImplName: repositoryImplName,
       inMemoryRepositoryImpl: inMemoryRepositoryImpl,
       inMemory: inMemory,
+      apiImplName: apiImplName,
     );
 
     final lib = Library(((p0) {
@@ -84,6 +101,7 @@ class RepositoryProviderGenerator
         p0.directives.addAll([
           Directive.import(repositoryImplName.myPath),
           Directive.import(inMemoryRepositoryImpl.myPath),
+          Directive.import(apiImplName.myPath),
         ]);
       }
 
@@ -97,6 +115,7 @@ class RepositoryProviderGenerator
       if (aggregateRootName.customRepository) {
         p0.directives.addAll([
           Directive.import(repositoryImplName.myPath),
+          Directive.import(apiImplName.myPath),
         ]);
       }
 

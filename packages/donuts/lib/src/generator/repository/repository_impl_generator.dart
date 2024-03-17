@@ -3,6 +3,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
+import 'package:donuts/src/names/repository/abstract_interface_api_name.dart';
 import 'package:donuts/src/names/repository/abstract_interface_repository_name.dart';
 import 'package:donuts/src/names/common/exception_name.dart';
 import 'package:donuts/src/names/repository/repository_impl_name.dart';
@@ -36,10 +37,16 @@ class RepositoryImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
       exceptionBaseName: repositoryName.myClassName,
     );
 
+    final abstractInterfaceApiName = AbstractInterfaceApiName(
+      aggregateRootName: aggregateRootName,
+      abstractInterfaceRepositoryName: repositoryName,
+    );
+
     final repositoryImpl = RepositoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceRepositoryName: repositoryName,
       exceptionName: exception,
+      abstractInterfaceApiName: abstractInterfaceApiName,
     ).toClassElement();
 
     final dependenciesImportList = aggregateRootName
@@ -55,14 +62,8 @@ class RepositoryImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
       p0.directives.addAll([
         Directive.import(repositoryName.myPath),
         Directive.import(aggregateRootName.myPath),
-        Directive.import("package:http/http.dart", as: "http"),
-        Directive.import("dart:convert"),
+        Directive.import(abstractInterfaceApiName.myPath),
       ]);
-
-      if (aggregateRootName.jsonConverter != null) {
-        p0.directives
-            .add(Directive.import(aggregateRootName.jsonConverter!.myPath));
-      }
 
       p0.directives.addAll(dependenciesImportList);
     }));

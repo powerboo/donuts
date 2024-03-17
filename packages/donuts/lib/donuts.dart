@@ -1,4 +1,6 @@
 import 'package:build/build.dart';
+import 'package:donuts/src/generator/repository/abstract_interface_api_generator.dart';
+import 'package:donuts/src/generator/repository/api_impl_generator.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:donuts/src/generator/application_service/abstract_interface_application_service_generator.dart';
 import 'package:donuts/src/generator/application_service/application_service_impl_generator.dart';
@@ -99,6 +101,24 @@ Builder repositoryProviderBuilder(BuilderOptions options) {
   return LibraryBuilder(
     RepositoryProviderGenerator({'in_memory': true}),
     generatedExtension: ".repository_provider.dart",
+    options: options,
+  );
+}
+
+/// api builder
+Builder abstractInterfaceApiBuilder(BuilderOptions options) {
+  return LibraryBuilder(
+    AbstractInterfaceApiGenerator(),
+    generatedExtension: ".abstract_interface_api.dart",
+    options: options,
+  );
+}
+
+/// api impl builder
+Builder apiImplBuilder(BuilderOptions options) {
+  return LibraryBuilder(
+    ApiImplGenerator(),
+    generatedExtension: ".api_impl.dart",
     options: options,
   );
 }

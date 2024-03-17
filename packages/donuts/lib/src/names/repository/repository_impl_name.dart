@@ -1,25 +1,24 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts/src/names/common/exception_name.dart';
+import 'package:donuts/src/names/repository/abstract_interface_api_name.dart';
 import 'package:donuts/src/names/repository/abstract_interface_repository_name.dart';
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:path/path.dart' as p;
-import 'package:donuts/src/generator/common/element_checker.dart';
 
 class RepositoryImplName {
   final AggregateRootName _aggregateRootName;
   final AbstractInterfaceRepositoryName _abstractInterfaceRepositoryName;
-  final ExceptionName _exceptionName;
+  final AbstractInterfaceApiName _abstractInterfaceApiName;
 
   RepositoryImplName({
     required AggregateRootName aggregateRootName,
     required AbstractInterfaceRepositoryName abstractInterfaceRepositoryName,
     required ExceptionName exceptionName,
+    required AbstractInterfaceApiName abstractInterfaceApiName,
   })  : _aggregateRootName = aggregateRootName,
         _abstractInterfaceRepositoryName = abstractInterfaceRepositoryName,
-        _exceptionName = exceptionName {
-    // fromJson
-  }
+        _abstractInterfaceApiName = abstractInterfaceApiName;
 
   String get myClassName {
     return "${_aggregateRootName.element.displayName}RepositoryImpl";
@@ -44,22 +43,20 @@ class RepositoryImplName {
         ),
       ]);
 
-      late final String toJsonString;
-      late final String fromJsonString;
-      if (_aggregateRootName.jsonConverter == null) {
-        toJsonString = "${_aggregateRootName.myInstanceName}.toJson()";
-        fromJsonString = "${_aggregateRootName.myClassName}.fromJson";
-      } else {
-        p0.fields.add(Field((f) {
-          f.name = "converter";
-          f.type = refer(_aggregateRootName.jsonConverter!.myClassName);
-          f.assignment = Code('''
-          ${_aggregateRootName.jsonConverter!.myClassName}()
-''');
+      p0.constructors.add(Constructor((c) {
+        c.optionalParameters.add(Parameter((p) {
+          p.name = "api";
+          p.named = true;
+          p.required = true;
+          p.toThis = true;
         }));
-        toJsonString = "converter.toJson(${_aggregateRootName.myInstanceName})";
-        fromJsonString = "${_aggregateRootName.jsonConverter!.fromJson()}";
-      }
+      }));
+
+      p0.fields.add(Field((f) {
+        f.name = "api";
+        f.type = refer(_abstractInterfaceApiName.myClassName);
+        f.modifier = FieldModifier.final$;
+      }));
 
       final find = Method((p0) {
         p0.modifier = MethodModifier.async;
@@ -75,24 +72,7 @@ class RepositoryImplName {
           p1.required = true;
         }));
         p0.body = Code('''
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/${_aggregateRootName.myClassName.toKebabCase()}/\${${_aggregateRootName.keyInstanceName}}",
-      ),
-      headers: {},
-    );
-    
-    if(response.statusCode != 200){
-      throw ${_exceptionName.myClassName}("network error");
-    }
-    
-    final body = jsonDecode(response.body);
-    if(body is! Map<String, dynamic>){
-      throw ${_exceptionName.myClassName}("body is not Map<String, dynamic>");
-    }
-
-    return ${fromJsonString}(body);
+return api.find(${_aggregateRootName.keyInstanceName}: ${_aggregateRootName.keyInstanceName});
 ''');
       });
 
@@ -119,28 +99,7 @@ class RepositoryImplName {
           p1.required = false;
         }));
         p0.body = Code('''
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/${_aggregateRootName.myClassName.toKebabCase()}?cursor=\${cursor}&length=\${length}",
-      ),
-      headers: {},
-    );
-    
-    if(response.statusCode != 200){
-      throw ${_exceptionName.myClassName}("network error");
-    }
-
-    final data = jsonDecode(response.body);
-    if (data is! List<Map<String, dynamic>>) {
-      throw ${_exceptionName.myClassName}("data is not List<Map<String, dynamic>>");
-    }
-
-    final List<${_aggregateRootName.myClassName}> result = [];
-    for(final r in data){
-      result.add(${fromJsonString}(r));
-    }
-    return result;
+return api.all(cursor: cursor, length: length,);
 ''');
       });
 
@@ -159,18 +118,7 @@ class RepositoryImplName {
           p1.required = true;
         }));
         p0.body = Code('''
-    final response = await http.post(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/${_aggregateRootName.myClassName.toKebabCase()}",
-      ),
-      body: jsonEncode(${toJsonString}),
-      headers: {},
-    );
-    
-    if (response.statusCode != 200) {
-      throw ${_exceptionName.myClassName}("network error");
-    }
+api.save(${_aggregateRootName.myInstanceName}:${_aggregateRootName.myInstanceName});
 ''');
       });
 
@@ -189,17 +137,7 @@ class RepositoryImplName {
           p1.required = true;
         }));
         p0.body = Code('''
-    final response = await http.delete(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/${_aggregateRootName.myClassName.toKebabCase()}/\${${_aggregateRootName.keyInstanceName}}",
-      ),
-      headers: {},
-    );
-
-    if(response.statusCode != 200){
-      throw ${_exceptionName.myClassName}("network error");
-    }
+api.delete(${_aggregateRootName.keyInstanceName}:${_aggregateRootName.keyInstanceName});
 ''');
       });
       p0.methods = ListBuilder([

@@ -11,7 +11,9 @@ import 'package:donuts/src/names/common/exception_name.dart';
 import 'package:donuts/src/names/factory/abstract_interface_factory_name.dart';
 import 'package:donuts/src/names/factory/factory_impl_name.dart';
 import 'package:donuts/src/names/factory/factory_provider_name.dart';
+import 'package:donuts/src/names/repository/abstract_interface_api_name.dart';
 import 'package:donuts/src/names/repository/abstract_interface_repository_name.dart';
+import 'package:donuts/src/names/repository/api_impl_name.dart';
 import 'package:donuts/src/names/repository/in_memory_repository_impl_name.dart';
 import 'package:donuts/src/names/repository/repository_impl_name.dart';
 import 'package:donuts/src/names/repository/repository_provider_name.dart';
@@ -72,10 +74,24 @@ class DetailViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
           "${aggregateRootName.element.displayName}RepositoryImpl",
     );
 
+    final abstractInterfaceApiName = AbstractInterfaceApiName(
+      aggregateRootName: aggregateRootName,
+      abstractInterfaceRepositoryName: repositoryName,
+    );
+
+    final apiImplName = ApiImplName(
+      aggregateRootName: aggregateRootName,
+      abstractInterfaceApiName: abstractInterfaceApiName,
+      exceptionName: ExceptionName(
+        exceptionBaseName: "${aggregateRootName.myClassName}ApiImpl",
+      ),
+    );
+
     final repositoryImplName = RepositoryImplName(
       aggregateRootName: aggregateRootName,
       abstractInterfaceRepositoryName: repositoryName,
       exceptionName: repositoryException,
+      abstractInterfaceApiName: abstractInterfaceApiName,
     );
 
     final inMemoryRepositoryImpl = InMemoryRepositoryImplName(
@@ -112,6 +128,7 @@ class DetailViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
       repositoryImplName: repositoryImplName,
       inMemoryRepositoryImpl: inMemoryRepositoryImpl,
       inMemory: inMemory,
+      apiImplName: apiImplName,
     );
 
     final applicationServiceProvider = ApplicationServiceProviderName(

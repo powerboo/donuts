@@ -244,10 +244,9 @@ packages:
   donuts:
     dependency: "direct dev"
     description:
-      name: donuts
-      sha256: "593a1b1f4e3093607cf4e222d1d93c768eed45f720a23170b1319b187f63cfc5"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../donuts"
+      relative: true
+    source: path
     version: "0.1.6"
   donuts_annotation:
     dependency: "direct main"
@@ -488,6 +487,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  method_to_swagger_yaml:
+    dependency: "direct dev"
+    description:
+      name: method_to_swagger_yaml
+      sha256: daf78eccaa30b53e9068430c77988c2c8444c69a836f82405efce0a85c0a361c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
+  method_to_swagger_yaml_annotation:
+    dependency: "direct main"
+    description:
+      name: method_to_swagger_yaml_annotation
+      sha256: c0bb30912627d942fcbcced58d3114d4cb498f3d56b5b638eba7c6442e0116e0
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   mime:
     dependency: transitive
     description:

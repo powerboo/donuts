@@ -67,6 +67,25 @@ targets:
           include:
             - "lib/src/test_data/*"
             - "lib/src/test_data/**/*"
+      donuts|abstractInterfaceApiBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/repository/api/src/test_data/{{file}}.abstract_interface_api.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+      donuts|apiImplBuilder:
+        options:
+          build_extensions:
+            "^lib/src/test_data/{{file}}.dart": "lib/donuts/repository/api/src/test_data/{{file}}.api_impl.dart"
+        enabled: true
+        generate_for:
+          include:
+            - "lib/src/test_data/*"
+            - "lib/src/test_data/**/*"
+
       # ------------------------------------------------------------
       # application service
       # ------------------------------------------------------------
@@ -208,6 +227,31 @@ builders:
     auto_apply: dependents
     build_to: source
     applies_builders: ["source_gen|combining_builder"]
+  donuts|abstractInterfaceApiBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/repository/api/{{file}}.abstract_interface_api.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["abstractInterfaceApiBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+    runs_before: ["method_to_swagger_yaml|swaggerYamlBuilder"]
+  donuts|apiImplBuilder:
+    defaults:
+      options:
+        build_extensions:
+          "^lib/{{file}}.dart": "lib/donuts/repository/api/{{file}}.api_impl.dart"
+    import: "package:donuts/donuts.dart"
+    builder_factories: ["apiImplBuilder"]
+    build_extensions: {}
+    auto_apply: dependents
+    build_to: source
+    applies_builders: ["source_gen|combining_builder"]
+    runs_before: ["method_to_swagger_yaml|swaggerYamlBuilder"]
+
   # ------------------------------------------------------------
   # application service
   # ------------------------------------------------------------

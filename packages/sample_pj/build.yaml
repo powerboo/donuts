@@ -49,6 +49,13 @@ targets:
           include:
             - "lib/domain/*"
             - "lib/domain/**/*"
+      donuts|abstractInterfaceApiBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+
       # ------------------------------------------------------------
       # application service
       # ------------------------------------------------------------

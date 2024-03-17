@@ -7,6 +7,7 @@ class AggregateRoot {
   // repository
   final bool customRepository;
   final bool customInMemoryRepository;
+  final bool customApi;
   // final bool useInMemory;
 
   // application service
@@ -30,6 +31,7 @@ class AggregateRoot {
     // repository
     this.customRepository = false,
     this.customInMemoryRepository = false,
+    this.customApi = false,
     // this.useInMemory = false,
 
     // application service

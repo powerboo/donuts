@@ -1,3 +1,7 @@
+## 0.2.0
+
+- add api impl
+
 ## 0.1.1
 
 - compiled error

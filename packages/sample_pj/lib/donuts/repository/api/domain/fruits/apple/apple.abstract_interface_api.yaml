@@ -1,0 +1,53 @@
+openapi: 3.0.0
+info:
+  title: title
+  version: 0.0.1
+paths:
+  /apple/:id:
+    get:
+      operationId: find
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/FindId'
+      responses:
+        '200':
+          description: Successful operation
+  /apple:
+    get:
+      operationId: all
+      parameters:
+        - name: cursor
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: length
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+    post:
+      operationId: save
+      responses:
+        '200':
+          description: Successful operation
+components:
+  schemas:
+    FindId:
+      type: object
+      properties:
+        id:
+          type: object
+          properties:
+            value:
+              type: string
+    AllCursor:
+      type: integer
+    AllLength:
+      type: integer

@@ -4,28 +4,26 @@
   <img src="https://github.com/powerboo/donuts/raw/main/resources/icon/donuts.png" width="200">
 </p>
 
-Focus domain modeling and UI.
+Focus on domain modeling and UI.
 
-- You can generate a layered architecture boilerplate for domain-driven design
-- Once you have written the entity, you can generate the repository, factory, and application_service.
-- The generated code will be extensible to suit your project
+- You can generate a layered architecture boilerplate for Domain-Driven Design.
+- Once you have written the `entity`, you can generate the `repository`, `factory`, and `application service`.
+- The generated code will be extensible to suit your project.
 
 # Motivation
 
-- Domain-Driven Design is a Good Practice. But Domain-driven design has good point and boring stuff point.
+- Domain-Driven design is a Good Practice. But Domain-Driven design has good points and boring stuff points.
 
 - **Good Point**
+
   - Can be written directly from domain knowledge that is important to the business
   - Code is easier to maintain etc.
+
 - **Boring stuff Point**
 
-  - Many boiler plates
-    - ex.
-      - repository
-      - factory
-      - application_service
+  - Many boiler plates.for example `repository`, `factory`, and `application service`
 
-- The factory, repository, and application_service operate Entity. Then, if Entity can be defined, they can be generated.
+- The `factory`, `repository`, and `application service` operate `entity`. Then, if `entity` can be defined, they can be generated.
 
 ### Code Example
 
@@ -39,6 +37,15 @@ generated code
 
 ```dart
 // factory
+
+```
+
+<details>
+
+<summary>detail</summary>
+
+```dart
+// repository
 
 // factory_impl
 
@@ -59,7 +66,10 @@ generated code
 // detail view
 
 // create modal
+
 ```
+
+</details>
 
 ### Generate list view router list
 
@@ -70,11 +80,11 @@ generate `GoRouter` routes navigate to ListView
 
 - [ ] Make any class usable within an extended `part of` file
 
-- [ ] plan 1: Allow specifying imports in the @AggregatorRoot annotation
+- [ ] plan 1: Allow the specification of imports in the @AggregatorRoot annotation
 
 - [ ] generate interface for [method_to_swagger_yaml](https://pub.dev/packages/method_to_swagger_yaml)
 
 - [ ] Generate code using `riverpod` and `flutter_hooks` considering dependencies
 - [ ] Allow injecting initial in-memory data from outside
-- [ ] Performance Tuning
+- [ ] Optimize performance
   - [ ] Reduce the initial build time which takes more than 15 minutes

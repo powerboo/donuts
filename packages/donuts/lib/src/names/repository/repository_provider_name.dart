@@ -2,6 +2,7 @@ import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:donuts/src/names/common/aggregate_root_name.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:donuts/src/names/repository/abstract_interface_repository_name.dart';
+import 'package:donuts/src/names/repository/api_impl_name.dart';
 import 'package:donuts/src/names/repository/in_memory_repository_impl_name.dart';
 import 'package:donuts/src/names/repository/repository_impl_name.dart';
 import 'package:path/path.dart' as p;
@@ -12,6 +13,7 @@ class RepositoryProviderName {
   final RepositoryImplName _repositoryImplName;
   final InMemoryRepositoryImplName _inMemoryRepositoryImpl;
   final bool _inMemory;
+  final ApiImplName _apiImplName;
 
   RepositoryProviderName({
     required AggregateRootName aggregateRootName,
@@ -19,11 +21,13 @@ class RepositoryProviderName {
     required RepositoryImplName repositoryImplName,
     required InMemoryRepositoryImplName inMemoryRepositoryImpl,
     required bool inMemory,
+    required ApiImplName apiImplName,
   })  : _aggregateRootName = aggregateRootName,
         _repositoryName = repositoryName,
         _repositoryImplName = repositoryImplName,
         _inMemoryRepositoryImpl = inMemoryRepositoryImpl,
-        _inMemory = inMemory;
+        _inMemory = inMemory,
+        _apiImplName = apiImplName;
 
   String get myFieldName {
     return "${_repositoryName.myInstanceName}Provider";
@@ -90,7 +94,7 @@ Provider<${_repositoryName.myClassName}>((ref) {
   }
 
   ${!_inMemory ? "" : "// ignore: dead_code"}
-  return ${_repositoryImplName.myClassName}${_aggregateRootName.customRepository ? "Custom" : ""}();
+  return ${_repositoryImplName.myClassName}${_aggregateRootName.customRepository ? "Custom" : ""}(api: ${_apiImplName.myClassName}());
 })
 ''');
 
@@ -105,7 +109,7 @@ Provider<${_repositoryName.myClassName}>((ref) {
   }
 
   ${!_inMemory ? "" : "// ignore: dead_code"}
-  return ${_repositoryImplName.myClassName}();
+  return ${_repositoryImplName.myClassName}(api: ${_apiImplName.myClassName}());
 })
 ''');
       }
