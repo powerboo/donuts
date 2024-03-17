@@ -6,36 +6,17 @@
 
 import 'package:sample_pj/donuts/repository/domain/donuts_json_serializable_class.abstract_interface_repository.dart';
 import 'package:sample_pj/domain/donuts_json_serializable_class.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:sample_pj/domain/donuts_json_serializable_class.dart';
+import 'package:sample_pj/donuts/repository/api/domain/donuts_json_serializable_class.abstract_interface_api.dart';
 
 class DonutsJsonSerializableClassRepositoryImpl
     implements DonutsJsonSerializableClassRepository {
-  DonutsJsonSerializableJsonConverter converter =
-      DonutsJsonSerializableJsonConverter();
+  DonutsJsonSerializableClassRepositoryImpl({required this.api});
+
+  final DonutsJsonSerializableClassApi api;
 
   @override
   Future<DonutsJsonSerializableClass?> find({required String key}) async {
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/donuts-json-serializable-class/${key}",
-      ),
-      headers: {},
-    );
-
-    if (response.statusCode != 200) {
-      throw DonutsJsonSerializableClassRepositoryException("network error");
-    }
-
-    final body = jsonDecode(response.body);
-    if (body is! Map<String, dynamic>) {
-      throw DonutsJsonSerializableClassRepositoryException(
-          "body is not Map<String, dynamic>");
-    }
-
-    return converter.fromJson(body);
+    return api.find(key: key);
   }
 
   @override
@@ -43,62 +24,22 @@ class DonutsJsonSerializableClassRepositoryImpl
     int cursor = 0,
     int length = 100,
   }) async {
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/donuts-json-serializable-class?cursor=${cursor}&length=${length}",
-      ),
-      headers: {},
+    return api.all(
+      cursor: cursor,
+      length: length,
     );
-
-    if (response.statusCode != 200) {
-      throw DonutsJsonSerializableClassRepositoryException("network error");
-    }
-
-    final data = jsonDecode(response.body);
-    if (data is! List<Map<String, dynamic>>) {
-      throw DonutsJsonSerializableClassRepositoryException(
-          "data is not List<Map<String, dynamic>>");
-    }
-
-    final List<DonutsJsonSerializableClass> result = [];
-    for (final r in data) {
-      result.add(converter.fromJson(r));
-    }
-    return result;
   }
 
   @override
   Future<void> save(
       {required DonutsJsonSerializableClass
           donutsJsonSerializableClass}) async {
-    final response = await http.post(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/donuts-json-serializable-class",
-      ),
-      body: jsonEncode(converter.toJson(donutsJsonSerializableClass)),
-      headers: {},
-    );
-
-    if (response.statusCode != 200) {
-      throw DonutsJsonSerializableClassRepositoryException("network error");
-    }
+    api.save(donutsJsonSerializableClass: donutsJsonSerializableClass);
   }
 
   @override
   Future<void> delete({required String key}) async {
-    final response = await http.delete(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/donuts-json-serializable-class/${key}",
-      ),
-      headers: {},
-    );
-
-    if (response.statusCode != 200) {
-      throw DonutsJsonSerializableClassRepositoryException("network error");
-    }
+    api.delete(key: key);
   }
 }
 

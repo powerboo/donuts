@@ -6,31 +6,17 @@
 
 import 'package:sample_pj/donuts/repository/domain/fruits/orange/orange.abstract_interface_repository.dart';
 import 'package:sample_pj/domain/fruits/orange/orange.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:sample_pj/donuts/repository/api/domain/fruits/orange/orange.abstract_interface_api.dart';
 import 'package:sample_pj/domain/fruits/common/value_object/fruits_id.dart';
 
 class OrangeRepositoryImpl implements OrangeRepository {
+  OrangeRepositoryImpl({required this.api});
+
+  final OrangeApi api;
+
   @override
   Future<Orange?> find({required FruitsId id}) async {
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/orange/${id}",
-      ),
-      headers: {},
-    );
-
-    if (response.statusCode != 200) {
-      throw OrangeRepositoryException("network error");
-    }
-
-    final body = jsonDecode(response.body);
-    if (body is! Map<String, dynamic>) {
-      throw OrangeRepositoryException("body is not Map<String, dynamic>");
-    }
-
-    return Orange.fromJson(body);
+    return api.find(id: id);
   }
 
   @override
@@ -38,59 +24,20 @@ class OrangeRepositoryImpl implements OrangeRepository {
     int cursor = 0,
     int length = 100,
   }) async {
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/orange?cursor=${cursor}&length=${length}",
-      ),
-      headers: {},
+    return api.all(
+      cursor: cursor,
+      length: length,
     );
-
-    if (response.statusCode != 200) {
-      throw OrangeRepositoryException("network error");
-    }
-
-    final data = jsonDecode(response.body);
-    if (data is! List<Map<String, dynamic>>) {
-      throw OrangeRepositoryException("data is not List<Map<String, dynamic>>");
-    }
-
-    final List<Orange> result = [];
-    for (final r in data) {
-      result.add(Orange.fromJson(r));
-    }
-    return result;
   }
 
   @override
   Future<void> save({required Orange orange}) async {
-    final response = await http.post(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/orange",
-      ),
-      body: jsonEncode(orange.toJson()),
-      headers: {},
-    );
-
-    if (response.statusCode != 200) {
-      throw OrangeRepositoryException("network error");
-    }
+    api.save(orange: orange);
   }
 
   @override
   Future<void> delete({required FruitsId id}) async {
-    final response = await http.delete(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/orange/${id}",
-      ),
-      headers: {},
-    );
-
-    if (response.statusCode != 200) {
-      throw OrangeRepositoryException("network error");
-    }
+    api.delete(id: id);
   }
 }
 

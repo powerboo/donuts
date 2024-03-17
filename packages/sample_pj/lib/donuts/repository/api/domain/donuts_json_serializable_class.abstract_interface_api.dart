@@ -12,7 +12,7 @@ import 'package:method_to_swagger_yaml_annotation/method_to_swagger_yaml_annotat
   title: "title",
   version: "0.0.1",
 )
-abstract interface class DonutsJsonSerializableClassRepositoryApi
+abstract interface class DonutsJsonSerializableClassApi
     implements DonutsJsonSerializableClassRepository {
   @ConvertTargetMethod(
     httpMethod: HttpMethodDiv.get,
@@ -41,5 +41,5 @@ abstract interface class DonutsJsonSerializableClassRepositoryApi
     pathName: "donuts-json-serializable-class/:key",
   )
   @override
-  Future<DonutsJsonSerializableClass?> delete({required String key});
+  Future<void> delete({required String key});
 }

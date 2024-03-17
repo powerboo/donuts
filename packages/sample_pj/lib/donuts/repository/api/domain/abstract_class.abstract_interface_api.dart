@@ -12,8 +12,7 @@ import 'package:method_to_swagger_yaml_annotation/method_to_swagger_yaml_annotat
   title: "title",
   version: "0.0.1",
 )
-abstract interface class AbstractClassRepositoryApi
-    implements AbstractClassRepository {
+abstract interface class AbstractClassApi implements AbstractClassRepository {
   @ConvertTargetMethod(
     httpMethod: HttpMethodDiv.get,
     pathName: "abstract-class/:key",
@@ -40,5 +39,5 @@ abstract interface class AbstractClassRepositoryApi
     pathName: "abstract-class/:key",
   )
   @override
-  Future<AbstractClass?> delete({required String key});
+  Future<void> delete({required String key});
 }

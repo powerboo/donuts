@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  donuts_annotation: ^0.1.1
+  donuts_annotation: ^0.2.0
   annotation_indexer_annotation: ^0.0.1
   flutter_hooks: ^0.20.5
   uuid: ^4.3.3
@@ -32,9 +32,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.0
-  #donuts: ^0.1.6
-  donuts:
-    path: ../donuts
+  donuts: ^0.2.0
   annotation_indexer: ^0.0.3
   analyzer: ^6.2.0
   build_runner: ^2.4.8

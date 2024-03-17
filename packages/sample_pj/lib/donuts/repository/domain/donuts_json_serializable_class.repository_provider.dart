@@ -8,6 +8,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sample_pj/donuts/repository/domain/donuts_json_serializable_class.abstract_interface_repository.dart';
 import 'package:sample_pj/donuts/repository/domain/donuts_json_serializable_class.repository_impl.dart';
 import 'package:sample_pj/donuts/repository/domain/donuts_json_serializable_class.in_memory_repository_impl.dart';
+import 'package:sample_pj/donuts/repository/api/domain/donuts_json_serializable_class.api_impl.dart';
 
 final donutsJsonSerializableClassRepositoryProvider =
     Provider<DonutsJsonSerializableClassRepository>((ref) {
@@ -17,5 +18,6 @@ final donutsJsonSerializableClassRepositoryProvider =
   }
 
   // ignore: dead_code
-  return DonutsJsonSerializableClassRepositoryImpl();
+  return DonutsJsonSerializableClassRepositoryImpl(
+      api: DonutsJsonSerializableClassApiImpl());
 });

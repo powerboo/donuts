@@ -12,7 +12,7 @@ import 'package:method_to_swagger_yaml_annotation/method_to_swagger_yaml_annotat
   title: "title",
   version: "0.0.1",
 )
-abstract interface class SampleAggregateRootRepositoryApi
+abstract interface class SampleAggregateRootApi
     implements SampleAggregateRootRepository {
   @ConvertTargetMethod(
     httpMethod: HttpMethodDiv.get,
@@ -40,5 +40,5 @@ abstract interface class SampleAggregateRootRepositoryApi
     pathName: "sample-aggregate-root/:key",
   )
   @override
-  Future<SampleAggregateRoot?> delete({required ObjectId key});
+  Future<void> delete({required ObjectId key});
 }

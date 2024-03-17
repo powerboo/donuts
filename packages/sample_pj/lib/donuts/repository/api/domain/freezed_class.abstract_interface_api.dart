@@ -12,8 +12,7 @@ import 'package:method_to_swagger_yaml_annotation/method_to_swagger_yaml_annotat
   title: "title",
   version: "0.0.1",
 )
-abstract interface class FreezedClassRepositoryApi
-    implements FreezedClassRepository {
+abstract interface class FreezedClassApi implements FreezedClassRepository {
   @ConvertTargetMethod(
     httpMethod: HttpMethodDiv.get,
     pathName: "freezed-class/:key",
@@ -40,5 +39,5 @@ abstract interface class FreezedClassRepositoryApi
     pathName: "freezed-class/:key",
   )
   @override
-  Future<FreezedClass?> delete({required String key});
+  Future<void> delete({required String key});
 }

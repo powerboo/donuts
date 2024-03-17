@@ -8,6 +8,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sample_pj/donuts/repository/domain/sample_aggregate_root.abstract_interface_repository.dart';
 import 'package:sample_pj/donuts/repository/domain/sample_aggregate_root.repository_impl.dart';
 import 'package:sample_pj/donuts/repository/domain/sample_aggregate_root.in_memory_repository_impl.dart';
+import 'package:sample_pj/donuts/repository/api/domain/sample_aggregate_root.api_impl.dart';
 
 final sampleAggregateRootRepositoryProvider =
     Provider<SampleAggregateRootRepository>((ref) {
@@ -17,5 +18,5 @@ final sampleAggregateRootRepositoryProvider =
   }
 
   // ignore: dead_code
-  return SampleAggregateRootRepositoryImpl();
+  return SampleAggregateRootRepositoryImpl(api: SampleAggregateRootApiImpl());
 });

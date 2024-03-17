@@ -6,30 +6,16 @@
 
 import 'package:sample_pj/donuts/repository/domain/freezed_class.abstract_interface_repository.dart';
 import 'package:sample_pj/domain/freezed_class.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:sample_pj/donuts/repository/api/domain/freezed_class.abstract_interface_api.dart';
 
 class FreezedClassRepositoryImpl implements FreezedClassRepository {
+  FreezedClassRepositoryImpl({required this.api});
+
+  final FreezedClassApi api;
+
   @override
   Future<FreezedClass?> find({required String key}) async {
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/freezed-class/${key}",
-      ),
-      headers: {},
-    );
-
-    if (response.statusCode != 200) {
-      throw FreezedClassRepositoryException("network error");
-    }
-
-    final body = jsonDecode(response.body);
-    if (body is! Map<String, dynamic>) {
-      throw FreezedClassRepositoryException("body is not Map<String, dynamic>");
-    }
-
-    return FreezedClass.fromJson(body);
+    return api.find(key: key);
   }
 
   @override
@@ -37,60 +23,20 @@ class FreezedClassRepositoryImpl implements FreezedClassRepository {
     int cursor = 0,
     int length = 100,
   }) async {
-    final response = await http.get(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/freezed-class?cursor=${cursor}&length=${length}",
-      ),
-      headers: {},
+    return api.all(
+      cursor: cursor,
+      length: length,
     );
-
-    if (response.statusCode != 200) {
-      throw FreezedClassRepositoryException("network error");
-    }
-
-    final data = jsonDecode(response.body);
-    if (data is! List<Map<String, dynamic>>) {
-      throw FreezedClassRepositoryException(
-          "data is not List<Map<String, dynamic>>");
-    }
-
-    final List<FreezedClass> result = [];
-    for (final r in data) {
-      result.add(FreezedClass.fromJson(r));
-    }
-    return result;
   }
 
   @override
   Future<void> save({required FreezedClass freezedClass}) async {
-    final response = await http.post(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/freezed-class",
-      ),
-      body: jsonEncode(freezedClass.toJson()),
-      headers: {},
-    );
-
-    if (response.statusCode != 200) {
-      throw FreezedClassRepositoryException("network error");
-    }
+    api.save(freezedClass: freezedClass);
   }
 
   @override
   Future<void> delete({required String key}) async {
-    final response = await http.delete(
-      Uri.https(
-        'https://www.google.com',
-        "/v1/freezed-class/${key}",
-      ),
-      headers: {},
-    );
-
-    if (response.statusCode != 200) {
-      throw FreezedClassRepositoryException("network error");
-    }
+    api.delete(key: key);
   }
 }
 

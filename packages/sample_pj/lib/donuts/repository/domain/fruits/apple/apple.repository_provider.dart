@@ -8,6 +8,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sample_pj/donuts/repository/domain/fruits/apple/apple.abstract_interface_repository.dart';
 import 'package:sample_pj/donuts/repository/domain/fruits/apple/apple.repository_impl.dart';
 import 'package:sample_pj/donuts/repository/domain/fruits/apple/apple.in_memory_repository_impl.dart';
+import 'package:sample_pj/donuts/repository/api/domain/fruits/apple/apple.api_impl.dart';
 
 final appleRepositoryProvider = Provider<AppleRepository>((ref) {
   const bool inMemory = true;
@@ -16,5 +17,5 @@ final appleRepositoryProvider = Provider<AppleRepository>((ref) {
   }
 
   // ignore: dead_code
-  return AppleRepositoryImpl();
+  return AppleRepositoryImpl(api: AppleApiImpl());
 });

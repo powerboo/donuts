@@ -13,7 +13,7 @@ import 'package:sample_pj/domain/fruits/common/value_object/fruits_id.dart';
   title: "title",
   version: "0.0.1",
 )
-abstract interface class AppleRepositoryApi implements AppleRepository {
+abstract interface class AppleApi implements AppleRepository {
   @ConvertTargetMethod(
     httpMethod: HttpMethodDiv.get,
     pathName: "apple/:id",
@@ -40,5 +40,5 @@ abstract interface class AppleRepositoryApi implements AppleRepository {
     pathName: "apple/:id",
   )
   @override
-  Future<Apple?> delete({required FruitsId id});
+  Future<void> delete({required FruitsId id});
 }

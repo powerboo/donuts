@@ -244,18 +244,19 @@ packages:
   donuts:
     dependency: "direct dev"
     description:
-      path: "../donuts"
-      relative: true
-    source: path
-    version: "0.1.6"
+      name: donuts
+      sha256: "73d15fad57e7a17151cd3159477ac3136ed8afc7ed7ff826a0c67c94d4f01072"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   donuts_annotation:
     dependency: "direct main"
     description:
       name: donuts_annotation
-      sha256: "5db1a392b52b46fe4a5ffef180234e849c4cca86a01441fb584d1131cc89ac37"
+      sha256: "841d98b0bbb8c76c918b45e775a3a899fae063977b239504934dcd18bae9d27d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.2.0"
   fake_async:
     dependency: transitive
     description:

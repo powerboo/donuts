@@ -13,7 +13,7 @@ import 'package:sample_pj/domain/fruits/common/value_object/fruits_id.dart';
   title: "title",
   version: "0.0.1",
 )
-abstract interface class OrangeRepositoryApi implements OrangeRepository {
+abstract interface class OrangeApi implements OrangeRepository {
   @ConvertTargetMethod(
     httpMethod: HttpMethodDiv.get,
     pathName: "orange/:id",
@@ -40,5 +40,5 @@ abstract interface class OrangeRepositoryApi implements OrangeRepository {
     pathName: "orange/:id",
   )
   @override
-  Future<Orange?> delete({required FruitsId id});
+  Future<void> delete({required FruitsId id});
 }
