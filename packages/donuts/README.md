@@ -71,6 +71,129 @@ generated code
 
 </details>
 
+### Get Start
+
+Set the target folder for the builder to `domain`
+If you don't do this, the init build time will become very long. (Over 30 minutes~)
+
+```yaml
+targets:
+  $default:
+    builders:
+      # ------------------------------------------------------------
+      # factory
+      # ------------------------------------------------------------
+      donuts|abstractInterfaceFactoryBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|factoryImplBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|factoryProviderBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      # ------------------------------------------------------------
+      # repository
+      # ------------------------------------------------------------
+      donuts|abstractInterfaceRepositoryBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|repositoryImplBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|inMemoryRepositoryImplBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|repositoryProviderBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|abstractInterfaceApiBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+
+      # ------------------------------------------------------------
+      # application service
+      # ------------------------------------------------------------
+      donuts|abstractInterfaceApplicationServiceBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|applicationServiceImplBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|applicationServiceProviderBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      # ------------------------------------------------------------
+      # state
+      # ------------------------------------------------------------
+      donuts|listStateBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|singleStateBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      # ------------------------------------------------------------
+      # view
+      # ------------------------------------------------------------
+      donuts|listViewBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|detailViewBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+      donuts|createModalBuilder:
+        enabled: true
+        generate_for:
+          include:
+            - "lib/domain/*"
+            - "lib/domain/**/*"
+```
+
 ### Generate list view router list
 
 generate `GoRouter` routes navigate to ListView
