@@ -1,3 +1,7 @@
+## 0.2.1
+
+- update readme
+
 ## 0.2.0
 
 - add api swagger yaml
