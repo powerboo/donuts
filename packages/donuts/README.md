@@ -194,6 +194,21 @@ targets:
             - "lib/domain/**/*"
 ```
 
+This is a sample build command.
+
+```sh
+#!/bin/bash
+dart run build_runner clean
+dart run build_runner build --delete-conflicting-outputs
+
+if [ $? -eq 0 ]; then
+  dart run annotation_indexer
+else
+  echo "build_runner failed"
+  exit 1
+fi
+```
+
 ### Generate list view router list
 
 generate `GoRouter` routes navigate to ListView
