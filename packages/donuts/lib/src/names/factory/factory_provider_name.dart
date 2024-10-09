@@ -44,11 +44,24 @@ class FactoryProviderName {
       p0.modifier = FieldModifier.final$;
 
       if (_aggregateRootName.isInterface || _aggregateRootName.customFactory) {
-        p0.assignment = Code('''
+        late final String keyFactoryString;
+        if (!(_aggregateRootName.keyFactoryName == null ||
+            _aggregateRootName.keyType == "String")) {
+          keyFactoryString =
+              "const KeyFactory<${_aggregateRootName.keyType}> keyFactory = ${_aggregateRootName.keyFactoryName!.initializer()};";
+          p0.assignment = Code('''
+Provider<${_factoryName.myClassName}>((ref) {
+  ${keyFactoryString}
+  return ${_factoryNameImpl.myClassName}Custom(keyFactory: keyFactory);
+})
+''');
+        } else {
+          p0.assignment = Code('''
 Provider<${_factoryName.myClassName}>((ref) {
   return ${_factoryNameImpl.myClassName}Custom();
 })
 ''');
+        }
         p0.docs.addAll([
           "",
           "/// [${_aggregateRootName.myClassName}] is interface or abstract",
@@ -73,7 +86,7 @@ Provider<${_factoryName.myClassName}>((ref) {
         if (!(_aggregateRootName.keyFactoryName == null ||
             _aggregateRootName.keyType == "String")) {
           keyFactoryString =
-              "const KeyFactory? keyFactory = ${_aggregateRootName.keyFactoryName!.initializer()};";
+              "const KeyFactory<${_aggregateRootName.keyType}>? keyFactory = ${_aggregateRootName.keyFactoryName!.initializer()};";
           p0.assignment = Code('''
 Provider<${_factoryName.myClassName}>((ref) {
   ${keyFactoryString}

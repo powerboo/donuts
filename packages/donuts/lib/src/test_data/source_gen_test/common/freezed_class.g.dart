@@ -8,8 +8,8 @@ part of 'freezed_class.dart';
 
 _$FreezedClassImpl _$$FreezedClassImplFromJson(Map<String, dynamic> json) =>
     _$FreezedClassImpl(
-      json['intValue'] as int,
-      json['nullableInt'] as int?,
+      (json['intValue'] as num).toInt(),
+      (json['nullableInt'] as num?)?.toInt(),
       key: json['key'] as String,
       freezedClass: json['freezedClass'] as String,
       nullableString: json['nullableString'] as String?,

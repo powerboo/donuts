@@ -23,8 +23,12 @@ mixin _$IgnoreMethodClass {
   @KeyArgument()
   String get keyValue => throw _privateConstructorUsedError;
 
+  /// Serializes this IgnoreMethodClass to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of IgnoreMethodClass
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $IgnoreMethodClassCopyWith<IgnoreMethodClass> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,6 +52,8 @@ class _$IgnoreMethodClassCopyWithImpl<$Res, $Val extends IgnoreMethodClass>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of IgnoreMethodClass
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -81,6 +87,8 @@ class __$$IgnoreMethodClassImplCopyWithImpl<$Res>
       $Res Function(_$IgnoreMethodClassImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of IgnoreMethodClass
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -122,11 +130,13 @@ class _$IgnoreMethodClassImpl extends _IgnoreMethodClass {
                 other.keyValue == keyValue));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, keyValue);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of IgnoreMethodClass
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$IgnoreMethodClassImplCopyWith<_$IgnoreMethodClassImpl> get copyWith =>
@@ -153,8 +163,11 @@ abstract class _IgnoreMethodClass extends IgnoreMethodClass {
   @override
   @KeyArgument()
   String get keyValue;
+
+  /// Create a copy of IgnoreMethodClass
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$IgnoreMethodClassImplCopyWith<_$IgnoreMethodClassImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

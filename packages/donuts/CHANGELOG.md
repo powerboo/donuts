@@ -1,3 +1,7 @@
+## 0.2.2
+
+- add key type
+
 ## 0.2.1
 
 - update readme

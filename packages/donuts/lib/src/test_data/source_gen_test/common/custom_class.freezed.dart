@@ -23,8 +23,12 @@ mixin _$CustomClass {
   @KeyArgument()
   String get keyValue => throw _privateConstructorUsedError;
 
+  /// Serializes this CustomClass to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CustomClass
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CustomClassCopyWith<CustomClass> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,6 +52,8 @@ class _$CustomClassCopyWithImpl<$Res, $Val extends CustomClass>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CustomClass
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -81,6 +87,8 @@ class __$$CustomClassImplCopyWithImpl<$Res>
       _$CustomClassImpl _value, $Res Function(_$CustomClassImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CustomClass
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -121,11 +129,13 @@ class _$CustomClassImpl extends _CustomClass {
                 other.keyValue == keyValue));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, keyValue);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomClass
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomClassImplCopyWith<_$CustomClassImpl> get copyWith =>
@@ -150,8 +160,11 @@ abstract class _CustomClass extends CustomClass {
   @override
   @KeyArgument()
   String get keyValue;
+
+  /// Create a copy of CustomClass
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomClassImplCopyWith<_$CustomClassImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
