@@ -146,7 +146,7 @@ return list;
       });
 
       final create = Method((m) {
-        m.returns = refer("Future<void>");
+        m.returns = refer("Future<${_aggregateRootName.myClassName}?>");
         m.name = "create";
         m.modifier = MethodModifier.async;
         // Distribute arguments to the appropriate lists
@@ -184,13 +184,14 @@ final service = ref.watch(${_applicationServiceProviderName.myFieldName});
 final (created, err) = await service.create(${_aggregateRootName.initArgumentString(ignoreKey: true)});
 if (err != null) {
   state = AsyncValue.error(err.error, err.stackTrace);
-  return;
+  return null;
 }
 if(created == null){
   state = AsyncValue.error("[${myClassName}Error] ${_aggregateRootName.myInstanceName} is null.", StackTrace.current);
-  return;
+  return null;
 }
 await _fetchAll();
+return created;
 ''');
       });
       final delete = Method((m) {

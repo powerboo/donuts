@@ -1,3 +1,7 @@
+## 0.2.3
+
+- fix list state impl return type
+
 ## 0.2.2
 
 - add key type
