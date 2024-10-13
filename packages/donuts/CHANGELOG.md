@@ -1,3 +1,7 @@
+## 0.2.4
+
+- add ignore method annotation
+
 ## 0.2.3
 
 - fix list state impl return type

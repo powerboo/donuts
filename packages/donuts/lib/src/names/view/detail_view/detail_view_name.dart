@@ -68,6 +68,11 @@ await showModalBottomSheet(
   Class toClassElement() {
     final StringBuffer fieldWidgetList = StringBuffer();
     for (final field in _aggregateRootName.element.fields) {
+      // annotated IgnoreAccessor
+      if (field.metadata.any((annotation) =>
+          annotation.element?.displayName == 'IgnoreAccessor')) {
+        continue;
+      }
       fieldWidgetList.writeln('''
 Row(
   children: [
@@ -82,6 +87,10 @@ Row(
     for (final mixin in _aggregateRootName.element.mixins) {
       for (final accessor in mixin.accessors) {
         if (accessor.name == "copyWith") {
+          continue;
+        }
+        if (accessor.metadata.any((annotation) =>
+            annotation.element?.displayName == 'IgnoreMethod')) {
           continue;
         }
         accessorWidgetList.writeln('''
