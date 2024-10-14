@@ -1,3 +1,7 @@
+## 0.2.6
+
+- fix list state impl save method
+
 ## 0.2.5
 
 - add save method for list state impl

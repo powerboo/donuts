@@ -248,6 +248,12 @@ await _fetchAll();
         m.returns = refer("Future<void>");
         m.name = "save";
         m.modifier = MethodModifier.async;
+        m.optionalParameters.add(Parameter((p) {
+          p.name = _aggregateRootName.myInstanceName;
+          p.type = refer(_aggregateRootName.myClassName);
+          p.required = true;
+          p.named = true;
+        }));
         m.body = Code('''
 final service = ref.watch(${_applicationServiceProviderName.myFieldName});
 final (_, err) = await service.save(${_aggregateRootName.myInstanceName});
