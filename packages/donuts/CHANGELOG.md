@@ -1,3 +1,7 @@
+## 0.2.7
+
+- fix list state impl save method
+
 ## 0.2.6
 
 - fix list state impl save method

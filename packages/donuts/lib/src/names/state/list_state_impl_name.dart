@@ -256,7 +256,7 @@ await _fetchAll();
         }));
         m.body = Code('''
 final service = ref.watch(${_applicationServiceProviderName.myFieldName});
-final (_, err) = await service.save(${_aggregateRootName.myInstanceName});
+final (_, err) = await service.save(${_aggregateRootName.myInstanceName}: ${_aggregateRootName.myInstanceName});
 if (err != null) {
   return;
 }
