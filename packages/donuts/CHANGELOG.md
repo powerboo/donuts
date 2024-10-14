@@ -1,3 +1,7 @@
+## 0.2.5
+
+- add save method for list state impl
+
 ## 0.2.4
 
 - add ignore method annotation

@@ -244,12 +244,26 @@ await _fetchAll();
 ''');
       });
 
+      final save = Method((m) {
+        m.returns = refer("Future<void>");
+        m.name = "save";
+        m.modifier = MethodModifier.async;
+        m.body = Code('''
+final service = ref.watch(${_applicationServiceProviderName.myFieldName});
+final (_, err) = await service.save(${_aggregateRootName.myInstanceName});
+if (err != null) {
+  return;
+}
+''');
+      });
+
       p0.methods.addAll([
         fetchAll,
         build,
         create,
         find,
         delete,
+        save,
         refresh,
       ]);
     });
