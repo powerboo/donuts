@@ -1,3 +1,7 @@
+## 0.2.8
+
+- add inMemoryRepositoryImplBuilder
+
 ## 0.2.7
 
 - fix list state impl save method

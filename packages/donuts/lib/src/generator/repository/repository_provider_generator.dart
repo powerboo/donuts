@@ -114,6 +114,7 @@ class RepositoryProviderGenerator
 
       if (aggregateRootName.customRepository) {
         p0.directives.addAll([
+          Directive.import(inMemoryRepositoryImpl.myPath),
           Directive.import(repositoryImplName.myPath),
           Directive.import(apiImplName.myPath),
         ]);
