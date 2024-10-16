@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:donuts/src/names/common/exception_name.dart';
@@ -14,6 +15,9 @@ import 'package:dart_style/dart_style.dart';
 final _formatter = DartFormatter();
 
 class ApiImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
+  final BuilderOptions options;
+  ApiImplGenerator(this.options);
+
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) {
     return super.generate(library, buildStep);
@@ -25,6 +29,15 @@ class ApiImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
+    var apiDomain = options.config['api_domain'] as String?;
+    if (apiDomain == null) {
+      apiDomain = "https://example.com";
+    }
+    var apiVersion = options.config['api_version'] as String?;
+    if (apiVersion == null) {
+      apiVersion = "v1";
+    }
+
     final aggregateRootName =
         await elementChecker(element, annotation, buildStep);
 
@@ -45,6 +58,8 @@ class ApiImplGenerator extends GeneratorForAnnotation<AggregateRoot> {
       aggregateRootName: aggregateRootName,
       abstractInterfaceApiName: abstractInterfaceApi,
       exceptionName: exception,
+      apiDomain: apiDomain,
+      apiVersion: apiVersion,
     );
 
     final dependenciesImportList = aggregateRootName

@@ -62,6 +62,8 @@ targets:
         options:
           build_extensions:
             "^lib/src/test_data/{{file}}.dart": "lib/donuts/repository/src/test_data/{{file}}.repository_provider.dart"
+          api_domain: "https://xxx.example.com"
+          api_version: "v99"
         enabled: true
         generate_for:
           include:
@@ -80,6 +82,8 @@ targets:
         options:
           build_extensions:
             "^lib/src/test_data/{{file}}.dart": "lib/donuts/repository/api/src/test_data/{{file}}.api_impl.dart"
+          api_domain: "https://xxx.example.com"
+          api_version: "v99"
         enabled: true
         generate_for:
           include:
@@ -111,6 +115,8 @@ targets:
         options:
           build_extensions:
             "^lib/src/test_data/{{file}}.dart": "lib/donuts/application_service/src/test_data/{{file}}.application_service_provider.dart"
+          api_domain: "https://xxx.example.com"
+          api_version: "v99"
         enabled: true
         generate_for:
           include:
@@ -123,10 +129,14 @@ targets:
         options:
           build_extensions:
             "^lib/src/test_data/{{file}}.dart": "lib/donuts/state/src/test_data/{{file}}.list_state_impl.dart"
+          api_domain: "https://xxx.example.com"
+          api_version: "v99"
       donuts|singleStateBuilder:
         options:
           build_extensions:
             "^lib/src/test_data/{{file}}.dart": "lib/donuts/state/src/test_data/{{file}}.single_state_impl.dart"
+          api_domain: "https://xxx.example.com"
+          api_version: "v99"
       # ------------------------------------------------------------
       # view
       # ------------------------------------------------------------
@@ -134,14 +144,20 @@ targets:
         options:
           build_extensions:
             "^lib/src/test_data/{{file}}.dart": "lib/donuts/view/src/test_data/{{file}}.list_view.dart"
+          api_domain: "https://xxx.example.com"
+          api_version: "v99"
       donuts|detailViewBuilder:
         options:
           build_extensions:
             "^lib/src/test_data/{{file}}.dart": "lib/donuts/view/src/test_data/{{file}}.detail_view.dart"
+          api_domain: "https://xxx.example.com"
+          api_version: "v99"
       donuts|createModalBuilder:
         options:
           build_extensions:
             "^lib/src/test_data/{{file}}.dart": "lib/donuts/view/src/test_data/{{file}}.create_modal.dart"
+          api_domain: "https://xxx.example.com"
+          api_version: "v99"
 
 builders:
   # ------------------------------------------------------------

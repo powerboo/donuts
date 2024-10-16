@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:analyzer/dart/element/element.dart';
@@ -27,7 +28,9 @@ final _formatter = DartFormatter();
 
 class DetailViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
   final Map<String, dynamic> config;
-  DetailViewGenerator(this.config);
+  final BuilderOptions options;
+
+  DetailViewGenerator(this.config, this.options);
 
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) {
@@ -48,6 +51,14 @@ class DetailViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
       );
     }
     inMemory = config["in_memory"] as bool;
+    final apiDomain = options.config['api_domain'] as String?;
+    final apiVersion = options.config['api_version'] as String?;
+    if (apiDomain == null) {
+      throw Exception("api_domain is not set");
+    }
+    if (apiVersion == null) {
+      throw Exception("api_version is not set");
+    }
 
     final aggregateRootName =
         await elementChecker(element, annotation, buildStep);
@@ -85,6 +96,8 @@ class DetailViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
       exceptionName: ExceptionName(
         exceptionBaseName: "${aggregateRootName.myClassName}ApiImpl",
       ),
+      apiDomain: apiDomain,
+      apiVersion: apiVersion,
     );
 
     final repositoryImplName = RepositoryImplName(

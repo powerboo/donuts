@@ -99,7 +99,7 @@ Builder inMemoryRepositoryImplBuilder(BuilderOptions options) {
 /// repository provider
 Builder repositoryProviderBuilder(BuilderOptions options) {
   return LibraryBuilder(
-    RepositoryProviderGenerator({'in_memory': true}),
+    RepositoryProviderGenerator({'in_memory': true}, options),
     generatedExtension: ".repository_provider.dart",
     options: options,
   );
@@ -117,7 +117,7 @@ Builder abstractInterfaceApiBuilder(BuilderOptions options) {
 /// api impl builder
 Builder apiImplBuilder(BuilderOptions options) {
   return LibraryBuilder(
-    ApiImplGenerator(),
+    ApiImplGenerator(options),
     generatedExtension: ".api_impl.dart",
     options: options,
   );
@@ -145,7 +145,7 @@ Builder applicationServiceImplBuilder(BuilderOptions options) {
 /// application service provider
 Builder applicationServiceProviderBuilder(BuilderOptions options) {
   return LibraryBuilder(
-    ApplicationServiceProviderGenerator({'in_memory': true}),
+    ApplicationServiceProviderGenerator({'in_memory': true}, options),
     generatedExtension: ".application_service_provider.dart",
     options: options,
   );
@@ -155,7 +155,7 @@ Builder applicationServiceProviderBuilder(BuilderOptions options) {
 /// list state
 Builder listStateBuilder(BuilderOptions options) {
   return LibraryBuilder(
-    ListStateGenerator({'in_memory': false}),
+    ListStateGenerator({'in_memory': false}, options),
     generatedExtension: ".list_state_impl.dart",
     options: options,
   );
@@ -164,7 +164,7 @@ Builder listStateBuilder(BuilderOptions options) {
 /// single state
 Builder singleStateBuilder(BuilderOptions options) {
   return LibraryBuilder(
-    SingleStateGenerator({'in_memory': false}),
+    SingleStateGenerator({'in_memory': false}, options),
     generatedExtension: ".single_state_impl.dart",
     options: options,
   );
@@ -174,7 +174,7 @@ Builder singleStateBuilder(BuilderOptions options) {
 /// list view
 Builder listViewBuilder(BuilderOptions options) {
   return LibraryBuilder(
-    ListViewGenerator({'in_memory': false}),
+    ListViewGenerator({'in_memory': false}, options),
     generatedExtension: ".list_view.dart",
     options: options,
   );
@@ -183,7 +183,7 @@ Builder listViewBuilder(BuilderOptions options) {
 /// detail view
 Builder detailViewBuilder(BuilderOptions options) {
   return LibraryBuilder(
-    DetailViewGenerator({'in_memory': false}),
+    DetailViewGenerator({'in_memory': false}, options),
     generatedExtension: ".detail_view.dart",
     options: options,
   );
@@ -192,7 +192,7 @@ Builder detailViewBuilder(BuilderOptions options) {
 /// create view
 Builder createModalBuilder(BuilderOptions options) {
   return LibraryBuilder(
-    CreateModalGenerator({'in_memory': false}),
+    CreateModalGenerator({'in_memory': false}, options),
     generatedExtension: ".create_modal.dart",
     options: options,
   );

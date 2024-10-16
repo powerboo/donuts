@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:donuts/src/generator/common/element_checker.dart';
 import 'package:donuts/src/names/application_service/abstract_interface_application_service_name.dart';
@@ -25,7 +26,9 @@ final _formatter = DartFormatter();
 
 class SingleStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
   final Map<String, dynamic> config;
-  SingleStateGenerator(this.config);
+  final BuilderOptions options;
+
+  SingleStateGenerator(this.config, this.options);
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) {
     return super.generate(library, buildStep);
@@ -45,6 +48,15 @@ class SingleStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
       );
     }
     inMemory = config["in_memory"] as bool;
+
+    final apiDomain = options.config['api_domain'] as String?;
+    final apiVersion = options.config['api_version'] as String?;
+    if (apiDomain == null) {
+      throw Exception("api_domain is not set");
+    }
+    if (apiVersion == null) {
+      throw Exception("api_version is not set");
+    }
 
     final aggregateRootName =
         await elementChecker(element, annotation, buildStep);
@@ -117,6 +129,8 @@ class SingleStateGenerator extends GeneratorForAnnotation<AggregateRoot> {
       exceptionName: ExceptionName(
         exceptionBaseName: "${aggregateRootName.myClassName}ApiImpl",
       ),
+      apiDomain: apiDomain,
+      apiVersion: apiVersion,
     );
 
     final repositoryProvider = RepositoryProviderName(

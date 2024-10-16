@@ -1,3 +1,7 @@
+## 0.2.9
+
+- add api domain and version
+
 ## 0.2.8
 
 - add inMemoryRepositoryImplBuilder

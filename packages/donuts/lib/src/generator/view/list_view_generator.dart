@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:analyzer/dart/element/element.dart';
@@ -30,7 +31,9 @@ final _formatter = DartFormatter();
 
 class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
   final Map<String, dynamic> config;
-  ListViewGenerator(this.config);
+  final BuilderOptions options;
+
+  ListViewGenerator(this.config, this.options);
 
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) {
@@ -43,6 +46,14 @@ class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
+    final apiDomain = options.config['api_domain'] as String?;
+    final apiVersion = options.config['api_version'] as String?;
+    if (apiDomain == null) {
+      throw Exception("api_domain is not set");
+    }
+    if (apiVersion == null) {
+      throw Exception("api_version is not set");
+    }
     late final bool inMemory;
     if (!config.containsKey("in_memory")) {
       throw InvalidGenerationSourceError(
@@ -123,6 +134,8 @@ class ListViewGenerator extends GeneratorForAnnotation<AggregateRoot> {
       exceptionName: ExceptionName(
         exceptionBaseName: "${aggregateRootName.myClassName}ApiImpl",
       ),
+      apiDomain: apiDomain,
+      apiVersion: apiVersion,
     );
 
     final repositoryProvider = RepositoryProviderName(

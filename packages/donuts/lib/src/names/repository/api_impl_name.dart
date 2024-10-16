@@ -9,14 +9,20 @@ class ApiImplName {
   final AggregateRootName _aggregateRootName;
   final AbstractInterfaceApiName _abstractInterfaceApiName;
   final ExceptionName _exceptionName;
+  final String _apiDomain;
+  final String _apiVersion;
 
   ApiImplName({
     required AggregateRootName aggregateRootName,
     required AbstractInterfaceApiName abstractInterfaceApiName,
     required ExceptionName exceptionName,
+    required String apiDomain,
+    required String apiVersion,
   })  : _aggregateRootName = aggregateRootName,
         _abstractInterfaceApiName = abstractInterfaceApiName,
-        _exceptionName = exceptionName;
+        _exceptionName = exceptionName,
+        _apiDomain = apiDomain,
+        _apiVersion = apiVersion;
 
   String get myClassName {
     return "${_aggregateRootName.element.displayName}ApiImpl";
@@ -73,8 +79,8 @@ class ApiImplName {
         p0.body = Code('''
     final response = await http.get(
       Uri.https(
-        'https://www.google.com',
-        "/v1/${_aggregateRootName.myClassName.toKebabCase()}/\${${_aggregateRootName.keyInstanceName}}",
+        '$_apiDomain',
+        "/${_apiVersion}/${_aggregateRootName.myClassName.toKebabCase()}/\${${_aggregateRootName.keyInstanceName}}",
       ),
       headers: {},
     );
@@ -117,8 +123,8 @@ class ApiImplName {
         p0.body = Code('''
     final response = await http.get(
       Uri.https(
-        'https://www.google.com',
-        "/v1/${_aggregateRootName.myClassName.toKebabCase()}?cursor=\${cursor}&length=\${length}",
+        '$_apiDomain',
+        "/${_apiVersion}/${_aggregateRootName.myClassName.toKebabCase()}?cursor=\${cursor}&length=\${length}",
       ),
       headers: {},
     );
@@ -157,8 +163,8 @@ class ApiImplName {
         p0.body = Code('''
     final response = await http.post(
       Uri.https(
-        'https://www.google.com',
-        "/v1/${_aggregateRootName.myClassName.toKebabCase()}",
+        '$_apiDomain',
+        "/${_apiVersion}/${_aggregateRootName.myClassName.toKebabCase()}",
       ),
       body: jsonEncode(${toJsonString}),
       headers: {},
@@ -187,8 +193,8 @@ class ApiImplName {
         p0.body = Code('''
     final response = await http.delete(
       Uri.https(
-        'https://www.google.com',
-        "/v1/${_aggregateRootName.myClassName.toKebabCase()}/\${${_aggregateRootName.keyInstanceName}}",
+        '$_apiDomain',
+        "/${_apiVersion}/${_aggregateRootName.myClassName.toKebabCase()}/\${${_aggregateRootName.keyInstanceName}}",
       ),
       headers: {},
     );
