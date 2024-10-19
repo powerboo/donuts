@@ -50,7 +50,7 @@ ConvertTargetClass(
               Code('''
 ConvertTargetMethod(
     httpMethod: HttpMethodDiv.get,
-    pathName: "${_aggregateRootName.myClassName.toKebabCase()}/:${_aggregateRootName.keyInstanceName}",
+    pathName: "${_aggregateRootName.myClassName.toKebabCase()}/{${_aggregateRootName.keyInstanceName}}",
 )
 '''),
             ),
@@ -131,7 +131,7 @@ ConvertTargetMethod(
               Code('''
 ConvertTargetMethod(
     httpMethod: HttpMethodDiv.delete,
-    pathName: "${_aggregateRootName.myClassName.toKebabCase()}/:${_aggregateRootName.keyInstanceName}",
+    pathName: "${_aggregateRootName.myClassName.toKebabCase()}/{${_aggregateRootName.keyInstanceName}}",
 )
 '''),
             ),

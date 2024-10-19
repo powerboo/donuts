@@ -1,3 +1,7 @@
+## 0.2.11
+
+- fix api path parameter
+
 ## 0.2.10
 
 - add api path parameter annotation
