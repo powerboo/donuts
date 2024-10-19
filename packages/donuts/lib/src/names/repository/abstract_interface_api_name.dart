@@ -62,6 +62,12 @@ ConvertTargetMethod(
             p.type = refer(_aggregateRootName.keyClassName);
             p.required = true;
             p.named = true;
+            p.annotations.add(CodeExpression(Code('''
+RequestParameter(
+  requestParameterDiv: RequestParameterDiv.path,
+  useToString: true,
+)
+''')));
           }));
         });
 
@@ -137,6 +143,12 @@ ConvertTargetMethod(
             p.type = refer(_aggregateRootName.keyClassName);
             p.required = true;
             p.named = true;
+            p.annotations.add(CodeExpression(Code('''
+RequestParameter(
+  requestParameterDiv: RequestParameterDiv.path,
+  useToString: true,
+)
+''')));
           }));
         });
 

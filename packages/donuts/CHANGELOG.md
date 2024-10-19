@@ -1,3 +1,7 @@
+## 0.2.10
+
+- add api path parameter annotation
+
 ## 0.2.9
 
 - add api domain and version
