@@ -74,4 +74,9 @@ class DonutsError {
   final Object error;
   final StackTrace stackTrace;
   DonutsError(this.error, this.stackTrace);
+
+  @override
+  String toString() {
+    return 'DonutsError: $error\n$stackTrace';
+  }
 }

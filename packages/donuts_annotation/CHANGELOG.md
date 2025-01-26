@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Output errors using toString
+
 ## 0.2.0
 
 - add api impl
